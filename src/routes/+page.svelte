@@ -80,7 +80,7 @@
 			</a>
 		</li>
 		<li class="h-9">
-			<a href="https://how-is-my-backend.whiteloves.in/">
+			<a href="https://blogs.whiteloves.in/">
 				<img src={getAssetsPath('hashnode-logo.svg')} alt="hash-node" class="inline h-5" />
 			</a>
 		</li>
@@ -124,16 +124,10 @@
 </div>
 <div class="relative">
 	<div class="absolute z-0 h-full w-full opacity-50">
-		<Squares
-			speed={0.5}
-			squareSize={40}
-			direction="diagonal"
-			borderColor="#fff"
-			hoverFillColor="#111"
-		/>
+		<Squares />
 	</div>
-	<div class="page-block space-y-10 p-10">
-		<h1 class="text-center text-5xl sm:text-7xl">
+	<div class="page-block space-y-10 p-4 md:p-10">
+		<h1 class="text-center text-4xl sm:text-5xl md:text-7xl">
 			Meet
 			<button class="pink-link cursor-pointer" on:click={openPopup}>
 				<img src="Panth-logo.svg" class="inline h-12 font-mono sm:h-16" alt="Panth" />
@@ -171,8 +165,8 @@
 	</div>
 </div>
 <!-- <div class="w-full border border-dashed"></div> -->
-<div class="page-block space-y-10 p-10">
-	<h2 class="text-center text-5xl sm:text-7xl">
+<div class="page-block space-y-10 p-4 md:p-10">
+	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">
 		😏 Naah Bro! <br />This is
 		<a class="pink-link" href="https://svelte.dev/" aria-label="Svelte">
 			<img src={getAssetsPath('svelte-logo.svg')} alt="Svelte" class="inline h-10 sm:h-14" />
@@ -244,94 +238,108 @@
 <!-- <div class="w-full border border-dashed"></div> -->
 <div class="relative">
 	<div class="absolute z-0 h-full w-full opacity-50">
-		<Squares
-			speed={0.5}
-			squareSize={40}
-			direction="diagonal"
-			borderColor="#fff"
-			hoverFillColor="#111"
-		/>
+		<Squares />
 	</div>
-	<div class="page-block space-y-10 p-10 font-mono">
-		<h2 class="text-center text-5xl md:text-7xl">Techstack</h2>
+	<div class="page-block space-y-10 p-4 font-mono md:p-10">
+		<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">Techstack</h2>
 		<div>
-			<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl"
-				>Langages & Runtimes:</span
-			>
+			<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">
+				Langages & Runtimes:
+			</span>
 			<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
 				<img
 					src={getAssetsPath('JavaScript-logo.png')}
 					alt="JS"
-					class="mx-0.5 inline h-8 md:h-12"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
 				/>
 			</a>
 			<a href="https://www.typescriptlang.org/">
 				<img
 					src={getAssetsPath('Typescript-logo.svg')}
 					alt="TS"
-					class="mx-0.5 inline h-8 md:h-12"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
 				/>
 			</a>
 			<a href="https://nodejs.org/en">
 				<img
 					src={getAssetsPath('nodejs-logo.svg')}
 					alt="Node.js"
-					class="mx-0.5 inline h-8 md:h-12"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
 				/>
 			</a>
 			<a href="https://deno.com/">
-				<img src={getAssetsPath('deno-logo.svg')} alt="Deno" class="mx-0.5 inline h-8 md:h-12" />
+				<img
+					src={getAssetsPath('deno-logo.svg')}
+					alt="Deno"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
+				/>
 			</a>
 			<a href="https://go.dev/">
 				<img
 					src={getAssetsPath('GoLang-logo.svg')}
 					alt="GoLang"
-					class="mx-0.5 inline h-16 md:h-20"
+					class="mx-0.5 inline h-14 sm:h-16 md:h-20"
 				/>
 			</a>
 			<a href="https://www.python.org/">
 				<img
 					src={getAssetsPath('python-logo.svg')}
 					alt="Python"
-					class="mx-0.5 inline h-8 md:h-12"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
 				/>
 			</a>
 			<a href="https://cran.r-project.org/web/packages/rlang/index.html">
-				<img src={getAssetsPath('RLang-logo.svg')} alt="R" class="mx-0.5 inline h-8 md:h-12" />
+				<img
+					src={getAssetsPath('RLang-logo.svg')}
+					alt="R"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
+				/>
 			</a>
 			<a href="https://dart.dev/">
-				<img src={getAssetsPath('dart-logo.svg')} alt="Dart" class="mx-0.5 inline h-8 md:h-12" />
+				<img
+					src={getAssetsPath('dart-logo.svg')}
+					alt="Dart"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
+				/>
 			</a>
 		</div>
 		<div>
 			<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">Frameworks:</span>
 			<a href="https://react.dev/">
-				<img src={getAssetsPath('react-logo.svg')} alt="React" class="mx-0.5 inline h-8 md:h-12" />
+				<img
+					src={getAssetsPath('react-logo.svg')}
+					alt="React"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
+				/>
 				<span class="text-lg md:text-2xl">React</span>
 			</a>
 			<a href="https://svelte.dev/">
 				<img
 					src={getAssetsPath('svelte-logo.svg')}
 					alt="Svelte"
-					class="mx-0.5 inline h-8 md:h-12"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
 				/>
 			</a>
 			<a href="https://flutter.dev/">
 				<img
 					src={getAssetsPath('flutter-logo.svg')}
 					alt="Flutter"
-					class="mx-0.5 inline h-8 md:h-12"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
 				/>
 			</a>
 			<a href="https://expressjs.com/">
 				<img
 					src={getAssetsPath('expressjs-logo.svg')}
 					alt="ExpressJs"
-					class="mx-0.5 inline h-8 md:h-12"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
 				/>
 			</a>
 			<a href="https://hono.dev/">
-				<img src={getAssetsPath('hono-logo.svg')} alt="Hono" class="mx-0.5 inline h-8 md:h-12" />
+				<img
+					src={getAssetsPath('hono-logo.svg')}
+					alt="Hono"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
+				/>
 				<span class="text-lg md:text-2xl">Hono</span>
 			</a>
 		</div>
@@ -341,21 +349,21 @@
 				<img
 					src={getAssetsPath('PostgreSQL-logo.svg')}
 					alt="PostgreSQL"
-					class="mx-0.5 inline h-12 md:h-16"
+					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
 				/>
 			</a>
 			<a href="https://cassandra.apache.org/_/index.html">
 				<img
 					src={getAssetsPath('Cassandra-logo.svg')}
 					alt="Cassandra"
-					class="mx-0.5 inline h-12 md:h-16"
+					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
 				/>
 			</a>
 			<a href="https://www.influxdata.com/">
 				<img
 					src={getAssetsPath('Influxdb-logo.svg')}
 					alt="Influxdb"
-					class="mx-0.5 inline h-12 md:h-16"
+					class="mx-0.5 inline h-4 sm:h-6 md:h-10"
 				/>
 			</a>
 			<a href="https://redis.io/">
@@ -365,14 +373,14 @@
 				<img
 					src={getAssetsPath('MongoDB-logo.svg')}
 					alt="MongoDb"
-					class="mx-0.5 inline h-6 md:h-10"
+					class="mx-0.5 inline h-4 sm:h-6 md:h-10"
 				/>
 			</a>
 			<a href="https://firebase.google.com/docs/firestore">
 				<img
 					src={getAssetsPath('firestore-logo.svg')}
 					alt="Firestore"
-					class="mx-0.5 inline h-20 md:h-24"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
 				/>
 			</a>
 		</div>
@@ -389,17 +397,21 @@
 				<img
 					src={getAssetsPath('DigitalOcean-logo.svg')}
 					alt="DigitalOcean"
-					class="mx-0.5 inline h-12 md:h-16"
+					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
 				/>
 			</a>
 			<a href="https://www.docker.com/">
-				<img src={getAssetsPath('docker-logo.svg')} alt="Docker" class="mx-0.5 inline h-4 md:h-8" />
+				<img
+					src={getAssetsPath('docker-logo.svg')}
+					alt="Docker"
+					class="mx-0.5 inline h-2 sm:h-4 md:h-8"
+				/>
 			</a>
 			<a href="https://www.portainer.io/">
 				<img
 					src={getAssetsPath('portainer-logo.png')}
 					alt="Portainer"
-					class="mx-0.5 inline h-12 md:h-16"
+					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
 				/>
 			</a>
 		</div>
@@ -409,17 +421,21 @@
 				<img
 					src={getAssetsPath('nodered-logo.svg')}
 					alt="NodeRed"
-					class="mx-0.5 inline h-12 md:h-16"
+					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
 				/>
 			</a>
 			<a href="https://mqtt.org/">
-				<img src={getAssetsPath('mqtt-logo.svg')} alt="Mqtt" class="mx-0.5 inline h-8 md:h-12" />
+				<img
+					src={getAssetsPath('mqtt-logo.svg')}
+					alt="Mqtt"
+					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
+				/>
 			</a>
 			<a href="https://kafka.apache.org/">
 				<img
 					src={getAssetsPath('kafka-logo.png')}
-					alt="Mqtt"
-					class="mx-0.5 inline h-8 bg-white md:h-12"
+					alt="Kafka"
+					class="mx-0.5 inline h-10 bg-white sm:h-8 md:h-12"
 				/>
 			</a>
 		</div>
@@ -456,7 +472,7 @@
 	</div>
 </div>
 <!-- <div class="w-full border border-dashed"></div> -->
-<div class="page-block aaa space-y-10 p-10">
+<div class="page-block space-y-10 p-4 md:p-10">
 	<h2 class="text-center text-5xl sm:text-7xl">Professional Experience</h2>
 	<div class="space-y-5">
 		<div class="flex space-x-4 align-bottom">
@@ -725,7 +741,7 @@
 	</div>
 </div>
 <!-- <div class="w-full border border-dashed"></div> -->
-<div class="page-block space-y-10 p-10">
+<div class="page-block space-y-10 p-4 md:p-10">
 	<h1 class="text-center font-mono text-5xl sm:text-6xl md:text-7xl">
 		<GradientText>{'<Show Cases />'}</GradientText>
 	</h1>
@@ -747,10 +763,7 @@
 	<div class="border-r-2 border-b-2 border-pink-900 bg-gray-800 shadow-lg">
 		<div class="mb-3 block bg-gray-200 px-5 py-3 font-mono text-lg text-black sm:text-2xl">
 			<img src={getAssetsPath('hashnode-logo.svg')} alt="hashnode" class="inline h-6 sm:h-10" />
-			<a
-				class="pink-link"
-				href="https://how-is-my-backend.whiteloves.in/how-i-generated-heatmaps-100x-faster"
-			>
+			<a class="pink-link" href="https://blogs.whiteloves.in/how-i-generated-heatmaps-100x-faster">
 				Heatmap x100 faster
 			</a>
 		</div>
@@ -781,15 +794,9 @@
 <!-- <div class="w-full border border-dashed"></div> -->
 <div class="relative">
 	<div class="absolute z-0 h-full w-full opacity-70">
-		<Squares
-			speed={0.5}
-			squareSize={40}
-			direction="diagonal"
-			borderColor="#fff"
-			hoverFillColor="#111"
-		/>
+		<Squares />
 	</div>
-	<div class="page-block z-10 space-y-10 p-10">
+	<div class="page-block z-10 space-y-10 p-4 md:p-10">
 		<h1 class="text-center font-mono text-base text-[deeppink]">thanks for taking the time!</h1>
 		<h1 class="text-center text-5xl sm:text-7xl">
 			Contact
@@ -813,7 +820,7 @@
 					</a>
 				</li>
 				<li class="h-9">
-					<a href="https://how-is-my-backend.whiteloves.in/">
+					<a href="https://blogs.whiteloves.in/">
 						<img src={getAssetsPath('hashnode-logo.svg')} alt="hash-node" class="inline h-5" />
 					</a>
 				</li>

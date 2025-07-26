@@ -8,16 +8,14 @@
 		y: number;
 	}
 
-	export let direction: 'diagonal' | 'up' | 'right' | 'down' | 'left' = 'right';
-	export let speed: number = 1;
-	export let borderColor: CanvasStrokeStyle = '#999';
+	export let direction: 'diagonal' | 'up' | 'right' | 'down' | 'left' = 'diagonal';
+	export let speed: number = 0.5;
+	export let borderColor: CanvasStrokeStyle = '#FFA500';
 	export let squareSize: number = 40;
-	export let hoverFillColor: CanvasStrokeStyle = '#222';
+	export let hoverFillColor: CanvasStrokeStyle = '#111';
 
 	let canvas: HTMLCanvasElement;
 	let requestRef: number | null = null;
-	let numSquaresX: number = 0;
-	let numSquaresY: number = 0;
 	let gridOffset: GridOffset = { x: 0, y: 0 };
 	let hoveredSquare: GridOffset | null = null;
 
