@@ -63,7 +63,7 @@
 <div
 	bind:this={popupDiv}
 	style="display: {isPopupOpen ? 'block' : 'none'};"
-	class="fixed right-5 bottom-5 z-50 border-2 border-pink-900 bg-gray-200 p-2 px-4 font-mono text-xl text-black shadow-lg"
+	class="fixed right-5 bottom-5 z-50 border-2 border-pink-900 bg-gray-200 p-2 px-4 text-xl text-black font-stretch-75% shadow-lg"
 >
 	<ol class="space-y-2">
 		<li class="h-9">
@@ -133,7 +133,7 @@
 				<img src="Panth-logo.svg" class="inline h-12 font-mono sm:h-16" alt="Panth" />
 			</button>
 			<br />
-			<span class="font-mono text-2xl sm:text-4xl">ˈSēnyər Developer</span>
+			<span class="font-mono text-2xl sm:text-4xl"> ˈSēnyər Developer </span>
 		</h1>
 
 		<div class="flex justify-around">
@@ -148,30 +148,41 @@
 		</div>
 
 		<p class="mt-15 text-center text-2xl sm:text-4xl">
-			Another
+			<span class="italic">Another</span>
 			<a class="pink-link" href="https://react.dev/">
 				<img src={getAssetsPath('react-logo.svg')} alt="react" class="inline h-5 sm:h-9" /> React
 			</a>
 			Website 🥱?
-			<br /> Maybe
+			<br /> Maybe some
 			<a class="pink-link" href="https://reactbits.dev/" aria-label="React Bits">
 				<img
 					src={getAssetsPath('react-bits-logo.svg')}
 					alt="react-bits"
 					class="inline h-5 sm:h-9"
 				/>
-			</a>?
+			</a>
+			again?
 		</p>
+		<div class="text-center">
+			<a
+				href="https://github.com/Panth977/portfolio"
+				class="pink-link mt-15 pb-1 text-center text-base"
+			>
+				Hard Pass
+				<img src={getAssetsPath('github-logo.svg')} alt="react-bits" class="ml-1 inline h-6" />
+			</a>
+		</div>
 	</div>
 </div>
-<!-- <div class="w-full border border-dashed"></div> -->
-<div class="page-block space-y-10 p-4 md:p-10">
-	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">
-		😏 Naah Bro! <br />This is
+<!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
+<div class="page-block space-y-10 p-4 font-stretch-75% md:p-10">
+	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">😏 Naah Bro!</h2>
+	<p class="text-center text-3xl text-gray-500 sm:text-4xl md:text-6xl">
+		This one's built using
 		<a class="pink-link" href="https://svelte.dev/" aria-label="Svelte">
 			<img src={getAssetsPath('svelte-logo.svg')} alt="Svelte" class="inline h-10 sm:h-14" />
 		</a>
-	</h2>
+	</p>
 	<div class="m-3 text-base font-light sm:text-xl">
 		<span class="text-sm sm:text-lg">
 			<br /><span class="text-xl sm:text-3xl">B</span>ackend Engineer,
@@ -188,9 +199,9 @@
 		with <span class="text-xl text-[deeppink] selection:bg-white sm:text-3xl">3+ Years</span> of
 		experience in designing robust, scalable, and high-performance systems. Expertise in backend
 		architecture,
-		<span class="text-xl text-[deeppink] selection:bg-white sm:text-3xl"
-			>Schema & Cache safe APIs</span
-		>
+		<span class="text-xl text-[deeppink] selection:bg-white sm:text-3xl">
+			Schema & Cache safe APIs
+		</span>
 		⚡️ infrastructure, handling massive scale—over
 		<span class="text-xl text-[deeppink] selection:bg-white sm:text-3xl">5M+ DataPoints</span> on a
 		single request and
@@ -199,11 +210,13 @@
 		<br />
 		I can code without any <span class="text-xl sm:text-3xl">GPTs</span> 😂. Infact past few months
 		I have been very Driven to Building
-		<span class="text-xl text-[deeppink] selection:bg-white sm:text-3xl">High Performance Apps</span
-		>. Using
-		<span class="text-xl text-[deeppink] selection:bg-white sm:text-3xl"
-			>Node.Js, GoLang, SvelteKit,</span
-		>
+		<span class="text-xl text-[deeppink] selection:bg-white sm:text-3xl">
+			High Performance Apps
+		</span>
+		. Using
+		<span class="text-xl text-[deeppink] selection:bg-white sm:text-3xl">
+			Node.Js, GoLang, SvelteKit,
+		</span>
 		etc.,. Yes you can very much build high performance with this tech, if you know what you are doing,
 		and how APIs work behind the seen.
 		<br />
@@ -211,14 +224,16 @@
 		This Days my daily work looks like
 		<ol class="mx-0.5 list-inside list-disc text-xl">
 			<li>
-				<span class="text-xl text-gray-500 selection:bg-white sm:text-3xl"
-					>Understanding the Requirements</span
-				> this can be features, performance, or just overall vage features.
+				<span class="text-xl text-gray-500 selection:bg-white sm:text-3xl">
+					Understanding the Requirements
+				</span>
+				this can be features, performance, or just overall vage features.
 			</li>
 			<li>
-				<span class="text-xl text-gray-500 selection:bg-white sm:text-3xl"
-					>Solving the Requirement</span
-				> on whiteboard along with wireframe.
+				<span class="text-xl text-gray-500 selection:bg-white sm:text-3xl">
+					Solving the Requirement
+				</span>
+				on whiteboard along with wireframe.
 			</li>
 			<li>
 				<span class="text-xl text-gray-500 selection:bg-white sm:text-3xl">Creating Tasks</span> we use
@@ -235,7 +250,7 @@
 		</ol>
 	</div>
 </div>
-<!-- <div class="w-full border border-dashed"></div> -->
+<!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
 <div class="relative">
 	<div class="absolute z-0 h-full w-full opacity-50">
 		<Squares />
@@ -471,13 +486,17 @@
 		</p>
 	</div>
 </div>
-<!-- <div class="w-full border border-dashed"></div> -->
+<!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
 <div class="page-block space-y-10 p-4 md:p-10">
-	<h2 class="text-center text-5xl sm:text-7xl">Professional Experience</h2>
+	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">Professional Experience</h2>
 	<div class="space-y-5">
-		<div class="flex space-x-4 align-bottom">
+		<div class="align-bottom sm:flex">
 			<a href="https://oizom.com/" aria-label="Oizom">
-				<img src={getAssetsPath('oizom-logo.png')} alt="oizom" class="inline h-12 sm:h-16" />
+				<img
+					src={getAssetsPath('oizom-logo.png')}
+					alt="oizom"
+					class="mr-4 mb-4 inline aspect-[210/64] h-12 sm:h-16"
+				/>
 			</a>
 			<h3>
 				<span class="block text-lg sm:text-2xl">Feb 2024 – Present | Ahmedabad, India</span>
@@ -486,7 +505,7 @@
 				</span>
 			</h3>
 		</div>
-		<h4 class="mb-10 text-2xl sm:text-4xl">
+		<h4 class="text-2xl sm:text-4xl">
 			Senior Engineer <span class="text-lg text-gray-500 sm:text-2xl">April 2025</span>
 		</h4>
 		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
@@ -520,7 +539,7 @@
 				sessions.
 			</li>
 		</ol>
-		<h4 class="mb-10 text-2xl sm:text-4xl">
+		<h4 class="text-2xl sm:text-4xl">
 			Full Stack Engineer <span class="text-2xl text-gray-500">Feb 2024</span>
 		</h4>
 		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
@@ -587,9 +606,13 @@
 	</div>
 	<div class="w-full border border-dashed border-gray-500"></div>
 	<div class="space-y-5">
-		<div class="flex space-x-4 align-bottom">
+		<div class="align-bottom sm:flex">
 			<a href="https://oizom.com/" aria-label="BeGenuin">
-				<img src={getAssetsPath('begenuin-logo.svg')} alt="begenuin" class="inline h-12 sm:h-16" />
+				<img
+					src={getAssetsPath('begenuin-logo.svg')}
+					alt="begenuin"
+					class="mr-4 mb-4 inline h-12 sm:h-16"
+				/>
 			</a>
 			<h3>
 				<span class="block text-lg sm:text-2xl">May 2023 – Jan 2024 | Ahmedabad, India</span>
@@ -598,7 +621,7 @@
 				</span>
 			</h3>
 		</div>
-		<h4 class="mb-10 text-2xl sm:text-4xl">Software Engineer I</h4>
+		<h4 class="text-2xl sm:text-4xl">Software Engineer I</h4>
 		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
 			<li>
 				Optimized 24k lines of code to 19k, adding
@@ -635,12 +658,12 @@
 	</div>
 	<div class="w-full border border-dashed border-gray-500"></div>
 	<div class="space-y-5">
-		<div class="flex space-x-4 align-bottom">
+		<div class="align-bottom sm:flex">
 			<a href="https://www.techcrista.com/" aria-label="Tech-Crista">
 				<img
 					src={getAssetsPath('tech-crista-logo.png')}
 					alt="tech-crista"
-					class="inline h-12 sm:h-16"
+					class="mr-4 mb-4 inline h-12 sm:h-16"
 				/>
 			</a>
 			<h3>
@@ -650,7 +673,7 @@
 				</span>
 			</h3>
 		</div>
-		<h4 class="mb-10 text-2xl sm:text-4xl">Junior Developer</h4>
+		<h4 class="text-2xl sm:text-4xl">Junior Developer</h4>
 		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
 			<li>
 				Developed
@@ -688,7 +711,7 @@
 	</div>
 	<div class="w-full border border-dashed border-gray-500"></div>
 	<div class="space-y-5">
-		<div class="flex space-x-4 align-bottom">
+		<div class="align-bottom sm:flex">
 			<a
 				href="https://www.google.com/maps/place/Vardayini+Dairy+Products/data=!4m2!3m1!1s0x0:0x79fb04f0c03021c6?sa=X&ved=1t:2428&ictx=111"
 				aria-label="Tech-Crista"
@@ -696,7 +719,7 @@
 				<img
 					src={getAssetsPath('vdp-logo.svg')}
 					alt="Vardayini Dairy Products"
-					class="inline h-12 sm:h-16"
+					class="mr-4 mb-4 inline h-12 sm:h-16"
 				/>
 			</a>
 			<h3>
@@ -706,7 +729,7 @@
 				</span>
 			</h3>
 		</div>
-		<h4 class="mb-10 text-2xl sm:text-4xl">Full Stack Engineer</h4>
+		<h4 class="text-2xl sm:text-4xl">Full Stack Engineer</h4>
 		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
 			<li>
 				A complete
@@ -740,15 +763,15 @@
 		</ol>
 	</div>
 </div>
-<!-- <div class="w-full border border-dashed"></div> -->
+<!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
 <div class="page-block space-y-10 p-4 md:p-10">
-	<h1 class="text-center font-mono text-5xl sm:text-6xl md:text-7xl">
+	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">
 		<GradientText>{'<Show Cases />'}</GradientText>
-	</h1>
+	</h2>
 	<div class="border-r-2 border-b-2 border-pink-900 bg-gray-800 shadow-lg">
-		<div class="mb-3 block bg-gray-200 px-5 py-3 font-mono text-lg text-black sm:text-2xl">
+		<div class="mb-3 block bg-gray-200 px-5 py-3 text-lg text-black sm:text-2xl">
 			<img src={getAssetsPath('jsr-logo.svg')} alt="jsr" class="inline h-6 sm:h-10" />
-			<a class="pink-link" href="https://jsr.io/@panth977"> @panth977 </a>
+			<a class="pink-link font-stretch-75%" href="https://jsr.io/@panth977"> @panth977 </a>
 		</div>
 		<ol class="list-inside list-disc px-5 py-3 text-base font-light font-stretch-75%">
 			<li>Goal: to making Backend projects easy integratable.</li>
@@ -761,9 +784,12 @@
 		</ol>
 	</div>
 	<div class="border-r-2 border-b-2 border-pink-900 bg-gray-800 shadow-lg">
-		<div class="mb-3 block bg-gray-200 px-5 py-3 font-mono text-lg text-black sm:text-2xl">
+		<div class="mb-3 block bg-gray-200 px-5 py-3 text-lg text-black sm:text-2xl">
 			<img src={getAssetsPath('hashnode-logo.svg')} alt="hashnode" class="inline h-6 sm:h-10" />
-			<a class="pink-link" href="https://blogs.whiteloves.in/how-i-generated-heatmaps-100x-faster">
+			<a
+				class="pink-link font-stretch-75%"
+				href="https://blogs.whiteloves.in/how-i-generated-heatmaps-100x-faster"
+			>
 				Heatmap x100 faster
 			</a>
 		</div>
@@ -775,10 +801,10 @@
 		</ol>
 	</div>
 	<div class="border-r-2 border-b-2 border-pink-900 bg-gray-800 shadow-lg">
-		<div class="mb-3 block bg-gray-200 px-5 py-3 font-mono text-lg text-black sm:text-2xl">
+		<div class="mb-3 block bg-gray-200 px-5 py-3 text-lg text-black sm:text-2xl">
 			<img src={getAssetsPath('youtube-logo.png')} alt="youtube" class="inline h-6 sm:h-10" />
 			<a
-				class="pink-link"
+				class="pink-link font-stretch-75%"
 				href="https://youtube.com/playlist?list=PLeXF8QGCGNK7MrBOweoDSd6E1L_7upSPV&si=FDVE_6IrqF0m4STB"
 			>
 				1mil+ DataPonits in NodeJs
@@ -791,24 +817,26 @@
 		</ol>
 	</div>
 </div>
-<!-- <div class="w-full border border-dashed"></div> -->
+<!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
 <div class="relative">
 	<div class="absolute z-0 h-full w-full opacity-70">
 		<Squares />
 	</div>
 	<div class="page-block z-10 space-y-10 p-4 md:p-10">
 		<h1 class="text-center font-mono text-base text-[deeppink]">thanks for taking the time!</h1>
-		<h1 class="text-center text-5xl sm:text-7xl">
+		<h1 class="text-center text-4xl sm:text-5xl md:text-7xl">
 			Contact
 			<button class="pink-link cursor-pointer" on:click={openPopup}>
-				<img src="Panth-logo.svg" class="inline h-13 font-mono sm:h-17" alt="Panth" />
+				<img src="Panth-logo.svg" class="inline h-12 font-mono sm:h-16" alt="Panth" />
 			</button>
 		</h1>
-		<div class="border-2 border-pink-900 bg-gray-200 p-10 font-mono text-xl text-black shadow-lg">
+		<div
+			class="border-2 border-pink-900 bg-gray-200 p-10 text-xl text-black font-stretch-75% shadow-lg"
+		>
 			<ol class="space-y-5">
 				<li class="h-9">
 					<a href={getAssetsPath('Panth-Patel-Resume.pdf')}>
-						<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-9" />
+						<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-8 md:h-9" />
 						Resume.pdf
 					</a>
 				</li>

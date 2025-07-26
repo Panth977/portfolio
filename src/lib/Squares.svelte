@@ -19,6 +19,8 @@
 	let gridOffset: GridOffset = { x: 0, y: 0 };
 	let hoveredSquare: GridOffset | null = null;
 
+	let numSquaresX: number, numSquaresY: number;
+
 	onMount(() => {
 		const ctx = canvas.getContext('2d');
 

@@ -15,7 +15,7 @@
 	export let title: string = ''; // 'Software Engineer';
 	export let handle: string = ''; // 'javicodes';
 	export let status: string = ''; // 'Online';
-	export let contactText: string = ''; // 'Contact';
+	export let contactText: string = 'Contact';
 	export let showUserInfo: boolean = true;
 	export let onContactClick: VoidFunction | undefined = undefined;
 
