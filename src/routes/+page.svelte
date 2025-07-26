@@ -54,89 +54,21 @@
 	<title>Meet Panth</title>
 </svelte:head>
 
-<button class="fixed right-5 bottom-5 z-50" on:click={openPopup}>
-	<img src={getAssetsPath('communicate.png')} alt="communicate" class="inline h-17" />
-</button>
-<a href={getAssetsPath('Panth-Patel-Resume.pdf')} class="fixed right-8 bottom-20 z-50">
-	<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-13" />
-</a>
-<div
-	bind:this={popupDiv}
-	style="display: {isPopupOpen ? 'block' : 'none'};"
-	class="fixed right-5 bottom-5 z-50 border-2 border-pink-900 bg-gray-200 p-2 px-4 text-xl text-black font-stretch-75% shadow-lg"
->
-	<ol class="space-y-2">
-		<li class="h-9">
-			<a href={getAssetsPath('Panth-Patel-Resume.pdf')}>
-				<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-9" />
-				Resume.pdf
-			</a>
-		</li>
-		<div class="w-full border border-dashed"></div>
-		<li class="h-9">
-			<a href="https://github.com/Panth977">
-				<img src={getAssetsPath('github-logo.svg')} alt="github" class="inline h-5" />
-				<img src={getAssetsPath('GitHub-logo.png')} alt="github" class="inline h-6" />
-			</a>
-		</li>
-		<li class="h-9">
-			<a href="https://blogs.whiteloves.in/">
-				<img src={getAssetsPath('hashnode-logo.svg')} alt="hash-node" class="inline h-5" />
-			</a>
-		</li>
-		<li class="h-9">
-			<a href="https://www.linkedin.com/in/panth-patel-447a88240/">
-				<img src={getAssetsPath('LinkedIn-logo.png')} alt="linkedin" class="inline h-5" />
-			</a>
-		</li>
-		<li class="h-9">
-			<a href="https://www.youtube.com/@panthpatel4870">
-				<img src={getAssetsPath('youtube-logo.png')} alt="youtube" class="inline h-5" />
-			</a>
-		</li>
-		<div class="w-full border border-dashed"></div>
-		<li class="h-9">
-			<a href="mailto:ppanth977@gmail.com">
-				<img src={getAssetsPath('email-icon.svg')} alt="email" class="inline h-6" />
-				ppanth977@gmail.com
-			</a>
-		</li>
-		<li class="h-9">
-			<a href="tel:+919157338227">
-				<img src={getAssetsPath('phone-icon.svg')} alt="phone" class="inline h-6" />
-				+91 91573 38227
-			</a>
-		</li>
-		<li class="h-9">
-			<a href="https://wa.me/919157338227">
-				<img src={getAssetsPath('whatsapp-logo.svg')} alt="phone" class="inline h-6" />
-				WhatsApp
-			</a>
-		</li>
-		<!-- <li class="h-9">
-			<a href="https://www.instagram.com/panth.xyz/">
-				<img src={getAssetsPath("Instagram-logo.svg")} alt="Instagram" class="inline h-6" />
-				Instagram
-			</a>
-		</li> -->
-	</ol>
-	<button class="fixed right-8 bottom-7 text-2xl" on:click={closePopup}> ❌ </button>
-</div>
 <div class="relative">
 	<div class="absolute z-0 h-full w-full opacity-50">
 		<Squares />
 	</div>
-	<div class="page-block space-y-10 p-4 md:p-10">
-		<h1 class="text-center text-4xl sm:text-5xl md:text-7xl">
+	<div class="page-block p-4 md:px-10">
+		<h1 class="mt-5 text-center text-4xl sm:text-5xl md:text-7xl">
 			Meet
 			<button class="pink-link cursor-pointer" on:click={openPopup}>
 				<img src="Panth-logo.svg" class="inline h-12 font-mono sm:h-16" alt="Panth" />
 			</button>
-			<br />
-			<span class="font-mono text-2xl sm:text-4xl"> ˈSēnyər Developer </span>
 		</h1>
-
-		<div class="flex justify-around">
+		<h2 class="mt-2 text-center font-mono text-2xl sm:text-4xl">
+			<span class="mr-3 italic"> ˈSēnyər </span>Developer
+		</h2>
+		<div class="mt-10 flex justify-around">
 			<ProfileCard
 				avatarUrl={getAssetsPath('ai1.png')}
 				handle="PanthPatel"
@@ -146,8 +78,7 @@
 				onContactClick={openPopup}
 			/>
 		</div>
-
-		<p class="mt-15 text-center text-2xl sm:text-4xl">
+		<p class="mt-10 text-center text-2xl sm:text-4xl">
 			<span class="italic">Another</span>
 			<a class="pink-link" href="https://react.dev/">
 				<img src={getAssetsPath('react-logo.svg')} alt="react" class="inline h-5 sm:h-9" /> React
@@ -163,7 +94,7 @@
 			</a>
 			again?
 		</p>
-		<div class="text-center">
+		<div class="mt-10 text-center">
 			<a
 				href="https://github.com/Panth977/portfolio"
 				class="pink-link mt-15 pb-1 text-center text-base"
@@ -175,7 +106,7 @@
 	</div>
 </div>
 <!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
-<div class="page-block space-y-10 p-4 font-stretch-75% md:p-10">
+<div class="page-block space-y-10 p-4 font-stretch-75% md:px-10">
 	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">😏 Naah Bro!</h2>
 	<p class="text-center text-3xl text-gray-500 sm:text-4xl md:text-6xl">
 		This one's built using
@@ -255,7 +186,7 @@
 	<div class="absolute z-0 h-full w-full opacity-50">
 		<Squares />
 	</div>
-	<div class="page-block space-y-10 p-4 font-mono md:p-10">
+	<div class="page-block space-y-10 p-4 font-mono md:px-10">
 		<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">Techstack</h2>
 		<div>
 			<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">
@@ -487,7 +418,7 @@
 	</div>
 </div>
 <!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
-<div class="page-block space-y-10 p-4 md:p-10">
+<div class="page-block space-y-10 p-4 md:px-10">
 	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">Professional Experience</h2>
 	<div class="space-y-5">
 		<div class="align-bottom sm:flex">
@@ -764,7 +695,7 @@
 	</div>
 </div>
 <!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
-<div class="page-block space-y-10 p-4 md:p-10">
+<div class="page-block space-y-10 p-4 md:px-10">
 	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">
 		<GradientText>{'<Show Cases />'}</GradientText>
 	</h2>
@@ -822,8 +753,8 @@
 	<div class="absolute z-0 h-full w-full opacity-70">
 		<Squares />
 	</div>
-	<div class="page-block z-10 space-y-10 p-4 md:p-10">
-		<h1 class="text-center font-mono text-base text-[deeppink]">thanks for taking the time!</h1>
+	<div class="page-block z-10 space-y-10 p-4 md:px-10">
+		<h1 class="text-center font-mono text-base text-[deeppink]">thanks for taking your time!</h1>
 		<h1 class="text-center text-4xl sm:text-5xl md:text-7xl">
 			Contact
 			<button class="pink-link cursor-pointer" on:click={openPopup}>
@@ -890,6 +821,75 @@
 			</ol>
 		</div>
 	</div>
+</div>
+
+<button class="fixed right-5 bottom-5 z-50" on:click={openPopup}>
+	<img src={getAssetsPath('communicate.png')} alt="communicate" class="inline h-17" />
+</button>
+<a href={getAssetsPath('Panth-Patel-Resume.pdf')} class="fixed right-8 bottom-20 z-50">
+	<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-13" />
+</a>
+<div
+	bind:this={popupDiv}
+	style="display: {isPopupOpen ? 'block' : 'none'};"
+	class="fixed right-5 bottom-5 z-50 border-2 border-pink-900 bg-gray-200 p-2 px-4 text-xl text-black font-stretch-75% shadow-lg"
+>
+	<ol class="space-y-2">
+		<li class="h-9">
+			<a href={getAssetsPath('Panth-Patel-Resume.pdf')}>
+				<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-9" />
+				Resume.pdf
+			</a>
+		</li>
+		<div class="w-full border border-dashed"></div>
+		<li class="h-9">
+			<a href="https://github.com/Panth977">
+				<img src={getAssetsPath('github-logo.svg')} alt="github" class="inline h-5" />
+				<img src={getAssetsPath('GitHub-logo.png')} alt="github" class="inline h-6" />
+			</a>
+		</li>
+		<li class="h-9">
+			<a href="https://blogs.whiteloves.in/">
+				<img src={getAssetsPath('hashnode-logo.svg')} alt="hash-node" class="inline h-5" />
+			</a>
+		</li>
+		<li class="h-9">
+			<a href="https://www.linkedin.com/in/panth-patel-447a88240/">
+				<img src={getAssetsPath('LinkedIn-logo.png')} alt="linkedin" class="inline h-5" />
+			</a>
+		</li>
+		<li class="h-9">
+			<a href="https://www.youtube.com/@panthpatel4870">
+				<img src={getAssetsPath('youtube-logo.png')} alt="youtube" class="inline h-5" />
+			</a>
+		</li>
+		<div class="w-full border border-dashed"></div>
+		<li class="h-9">
+			<a href="mailto:ppanth977@gmail.com">
+				<img src={getAssetsPath('email-icon.svg')} alt="email" class="inline h-6" />
+				ppanth977@gmail.com
+			</a>
+		</li>
+		<li class="h-9">
+			<a href="tel:+919157338227">
+				<img src={getAssetsPath('phone-icon.svg')} alt="phone" class="inline h-6" />
+				+91 91573 38227
+			</a>
+		</li>
+		<li class="h-9">
+			<a href="https://wa.me/919157338227">
+				<img src={getAssetsPath('whatsapp-logo.svg')} alt="phone" class="inline h-6" />
+				WhatsApp
+			</a>
+		</li>
+		<!-- <li class="h-9">
+			<a href="https://www.instagram.com/panth.xyz/">
+				<img src={getAssetsPath("Instagram-logo.svg")} alt="Instagram" class="inline h-6" />
+				Instagram
+			</a>
+		</li> -->
+	</ol>
+	<button class="fixed right-8 bottom-7 text-2xl" on:click={closePopup}> ❌ </button>
 </div>
 
 <style>
