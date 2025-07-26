@@ -17,7 +17,7 @@
 			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'p') {
 				event.preventDefault();
 				event.stopPropagation();
-				window.location.href = '/Panth-Patel-Resume.pdf';
+				window.location.href = getAssetsPath('Panth-Patel-Resume.pdf');
 			}
 		});
 	});
@@ -57,7 +57,7 @@
 <button class="fixed right-5 bottom-5 z-50" on:click={openPopup}>
 	<img src={getAssetsPath('communicate.png')} alt="communicate" class="inline h-17" />
 </button>
-<a href="/Panth-Patel-Resume.pdf" class="fixed right-8 bottom-20 z-50">
+<a href={getAssetsPath('Panth-Patel-Resume.pdf')} class="fixed right-8 bottom-20 z-50">
 	<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-13" />
 </a>
 <div
@@ -67,7 +67,7 @@
 >
 	<ol class="space-y-2">
 		<li class="h-9">
-			<a href="/Panth-Patel-Resume.pdf">
+			<a href={getAssetsPath('Panth-Patel-Resume.pdf')}>
 				<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-9" />
 				Resume.pdf
 			</a>
@@ -800,7 +800,7 @@
 		<div class="border-2 border-pink-900 bg-gray-200 p-10 font-mono text-xl text-black shadow-lg">
 			<ol class="space-y-5">
 				<li class="h-9">
-					<a href="/Panth-Patel-Resume.pdf">
+					<a href={getAssetsPath('Panth-Patel-Resume.pdf')}>
 						<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-9" />
 						Resume.pdf
 					</a>
