@@ -369,54 +369,58 @@
 				/>
 			</a>
 		</div>
-		<h4 class="mt-10 text-3xl text-gray-500 md:text-5xl">SMALL NOTE</h4>
-		<p class="px-3 text-base">
-			I like using languages that <span class="italic">solve problems</span>, not just ones I happen
-			to know well.
-			<span class=" bg-gray-300 text-black">“We’ll use it because I know it”</span> is
-			<span class="text-[deeppink]">not a good enough</span>
-			reason!
-			<br />
-			<br />
-			I prefer frameworks that
-			<span class="text-[deeppink] italic">do the heavy lifting for me</span>. And no—<span
-				class=" bg-gray-300 text-black">“React has a big ecosystem”</span
+		<div>
+			<h4 class="text-3xl text-gray-500 md:text-5xl">SMALL NOTE</h4>
+			<p class="text-sm md:text-base">
+				I like using languages that <span class="italic">solve problems</span>, not just ones I
+				happen to know well.
+				<span class=" bg-gray-300 text-black">“We’ll use it because I know it”</span> is
+				<span class="text-[deeppink]">not a good enough</span>
+				reason!
+				<br />
+				<br />
+				I prefer frameworks that
+				<span class="text-[deeppink] italic">do the heavy lifting for me</span>. And no—<span
+					class=" bg-gray-300 text-black">“React has a big ecosystem”</span
+				>
+				isn’t a strong argument. By that logic, we should all just
+				<span class="text-[deeppink]">stick to plain JavaScript</span>—it has an even bigger
+				ecosystem!
+				<br />
+				And maybe we should, for a simple form app, I dont need a 50MB webpack optimized react ecosystem,
+				just think about it!
+				<br />
+				<br />
+				<span class="text-[deeppink]">ORMs are the worst</span>. There’s no real standard across
+				them, and if you care about optimizing queries, you’ll eventually need to learn how to
+				<span class="text-[deeppink]">write raw SQL</span>
+				anyway. So unless your product is just a bunch of CRUD operations, there’s no point investing
+				heavily in an ORM.
+				<br />
+				<br />
+				I’m not fully driven by <span class="text-[deeppink] italic">developer experience</span>. Do
+				you think German automotive engineers were obsessed with
+				<span class=" bg-gray-300 text-black">“engineering experience”</span>?
+				<br />
+				No—they were focused on <span class="text-[deeppink] italic">driving experience</span>.
+				Similarly, the only experience that truly matters in software is
+				<span class="font-bold text-[deeppink]">User Experience</span>.
+			</p>
+			<p
+				class="mt-10 border-r-2 border-b-2 border-yellow-700 bg-gray-300 p-3 text-xs text-black shadow-lg md:text-sm"
 			>
-			isn’t a strong argument. By that logic, we should all just
-			<span class="text-[deeppink]">stick to plain JavaScript</span>—it has an even bigger
-			ecosystem!
-			<br />
-			And maybe we should, for a simple form app, I dont need a 50MB webpack optimized react ecosystem,
-			just think about it!
-			<br />
-			<br />
-			<span class="text-[deeppink]">ORMs are the worst</span>. There’s no real standard across them,
-			and if you care about optimizing queries, you’ll eventually need to learn how to
-			<span class="text-[deeppink]">write raw SQL</span>
-			anyway. So unless your product is just a bunch of CRUD operations, there’s no point investing heavily
-			in an ORM.
-			<br />
-			<br />
-			I’m not fully driven by <span class="text-[deeppink] italic">developer experience</span>. Do
-			you think German automotive engineers were obsessed with
-			<span class=" bg-gray-300 text-black">“engineering experience”</span>?
-			<br />
-			No—they were focused on <span class="text-[deeppink] italic">driving experience</span>.
-			Similarly, the only experience that truly matters in software is
-			<span class="font-bold text-[deeppink]">User Experience</span>.
-		</p>
-		<p class="mt-10 bg-gray-300 p-3 text-base text-black">
-			Because at the end of the day, no client is ever going to say,
-			<br />
-			“Wow, this was built with Svelte!” or “They used an OOP approach—so cool!”
-			<br />
-			<br />
-			They don’t care about the tech stack.
-			<br />
-			They care about performance, reliability, intuitive design, and a bug-free experience.
-			<br />
-			That’s what matters. Everything else is just an implementation detail.
-		</p>
+				Because at the end of the day, no user is ever going to say,
+				<br />
+				“Wow, this was built with Svelte!” or “They used an OOP approach—so cool!”
+				<br />
+				<br />
+				User don’t care about the tech stack.
+				<br />
+				User care about performance, reliability, intuitive design, and a bug-free experience.
+				<br />
+				That’s what matters to user. Everything else is just an implementation detail.
+			</p>
+		</div>
 	</div>
 </div>
 <!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
