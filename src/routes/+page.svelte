@@ -80,40 +80,24 @@
 		</div>
 		<p class="mt-10 text-center text-2xl sm:text-4xl">
 			<span class="italic">Another</span>
-			<a class="pink-link" href="https://react.dev/">
-				<img src={getAssetsPath('react-logo.svg')} alt="react" class="inline h-5 sm:h-9" /> React
-			</a>
+			<img src={getAssetsPath('react-logo.svg')} alt="react" class="inline h-5 sm:h-9" /> React
 			Website 🥱?
 			<br /> Maybe some
-			<a class="pink-link" href="https://reactbits.dev/" aria-label="React Bits">
-				<img
-					src={getAssetsPath('react-bits-logo.svg')}
-					alt="react-bits"
-					class="inline h-5 sm:h-9"
-				/>
-			</a>
+			<img src={getAssetsPath('react-bits-logo.svg')} alt="react-bits" class="inline h-5 sm:h-9" />
 			again?
 		</p>
 		<div class="mt-10 text-center">
-			<a
-				href="https://github.com/Panth977/portfolio"
-				class="pink-link mt-15 pb-1 text-center text-base"
-			>
-				Hard Pass
-				<img src={getAssetsPath('github-logo.svg')} alt="react-bits" class="ml-1 inline h-6" />
-			</a>
+			<p class="text-center text-base text-gray-500">
+				This one's built using
+				<a class="pink-link" href="https://github.com/Panth977/portfolio" aria-label="Svelte">
+					<img src={getAssetsPath('svelte-logo.svg')} alt="Svelte" class="inline h-6" />
+				</a>
+			</p>
 		</div>
 	</div>
 </div>
 <!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
 <div class="page-block space-y-10 p-4 font-stretch-75% md:px-10">
-	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">😏 Naah Bro!</h2>
-	<p class="text-center text-3xl text-gray-500 sm:text-4xl md:text-6xl">
-		This one's built using
-		<a class="pink-link" href="https://svelte.dev/" aria-label="Svelte">
-			<img src={getAssetsPath('svelte-logo.svg')} alt="Svelte" class="inline h-10 sm:h-14" />
-		</a>
-	</p>
 	<div class="m-3 text-base font-light sm:text-xl">
 		<span class="text-sm sm:text-lg">
 			<br /><span class="text-xl sm:text-3xl">B</span>ackend Engineer,
@@ -385,35 +369,53 @@
 				/>
 			</a>
 		</div>
-		<p class="mt-10 text-base">
-			<span class="text-3xl text-gray-500 md:text-5xl">SMALL NOTE</span>
+		<h4 class="mt-10 text-3xl text-gray-500 md:text-5xl">SMALL NOTE</h4>
+		<p class="px-3 text-base">
+			I like using languages that <span class="italic">solve problems</span>, not just ones I happen
+			to know well.
+			<span class=" bg-gray-300 text-black">“We’ll use it because I know it”</span> is
+			<span class="text-[deeppink]">not a good enough</span>
+			reason!
 			<br />
 			<br />
-			I like using language that solves our problem, we will use it because I know it well, is not good
-			enought answer!
+			I prefer frameworks that
+			<span class="text-[deeppink] italic">do the heavy lifting for me</span>. And no—<span
+				class=" bg-gray-300 text-black">“React has a big ecosystem”</span
+			>
+			isn’t a strong argument. By that logic, we should all just
+			<span class="text-[deeppink]">stick to plain JavaScript</span>—it has an even bigger
+			ecosystem!
+			<br />
+			And maybe we should, for a simple form app, I dont need a 50MB webpack optimized react ecosystem,
+			just think about it!
 			<br />
 			<br />
-			I prefer a Framework that <span class="text-[deeppink]">works for me</span>. And noo
-			<span class="text-[deeppink]">React has a big ecosystem</span>
-			is not good enough argument,
-			<span class="text-[deeppink]">JavaScript has even bigger ecosystem then react</span>!
+			<span class="text-[deeppink]">ORMs are the worst</span>. There’s no real standard across them,
+			and if you care about optimizing queries, you’ll eventually need to learn how to
+			<span class="text-[deeppink]">write raw SQL</span>
+			anyway. So unless your product is just a bunch of CRUD operations, there’s no point investing heavily
+			in an ORM.
 			<br />
 			<br />
-			ORMs are the worst, there is no standards to them and if you like to optimize your query, you will
-			need to learn how to write Query, so No point in investing in ORM, unless your product is just
-			bunch of CRUD opt.
+			I’m not fully driven by <span class="text-[deeppink] italic">developer experience</span>. Do
+			you think German automotive engineers were obsessed with
+			<span class=" bg-gray-300 text-black">“engineering experience”</span>?
+			<br />
+			No—they were focused on <span class="text-[deeppink] italic">driving experience</span>.
+			Similarly, the only experience that truly matters in software is
+			<span class="font-bold text-[deeppink]">User Experience</span>.
+		</p>
+		<p class="mt-10 bg-gray-300 p-3 text-base text-black">
+			Because at the end of the day, no client is ever going to say,
+			<br />
+			“Wow, this was built with Svelte!” or “They used an OOP approach—so cool!”
 			<br />
 			<br />
-			I am
-			<span class="text-[deeppink]">not</span>
-			fully driven by
-			<span class="text-[deeppink]">developer experience</span>
-			. Do you think German Car Engineers were talking about a Engineering experience? They were focused
-			on making driving experience! Similarly The Only thing that matters is, Code should look 80% consistent
-			looking, Should be easily debugable and learing the basics should not be a huge overhead! Should
-			not have too many abstractions within codebase, and most importantly the only experience that really
-			matters is
-			<span class="text-[deeppink]">User Experience</span>
+			They don’t care about the tech stack.
+			<br />
+			They care about performance, reliability, intuitive design, and a bug-free experience.
+			<br />
+			That’s what matters. Everything else is just an implementation detail.
 		</p>
 	</div>
 </div>
