@@ -55,11 +55,11 @@
 		...options
 	}: WSRVOptions & { skip?: boolean; class: string; src: Src | (string & {}) } = $props();
 	const originalUrl = getAssetsPath(src);
-	const cheapUrl = generatePreviewUrl(originalUrl, { ...options, height: 400, webp: true });
+	const cheapUrl = generatePreviewUrl(originalUrl, { ...options, height: 401, webp: true });
 	const initialUrl = skip ? originalUrl : cheapUrl;
 	const finalUrl = generatePreviewUrl(
 		getAssetsPath(src),
-		Object.keys(options).length ? options : { webp: true, height: 400 }
+		Object.keys(options).length ? options : { webp: true, height: 401 }
 	);
 	let url = $state<string>(initialUrl);
 
