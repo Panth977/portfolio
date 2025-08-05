@@ -94,11 +94,11 @@ export interface WSRVOptions {
 	enlarge?: boolean;
 }
 
-const WSRVBaseUrl = `https://wsrv.nl/`;
+const WSRVBaseUrl = 'https://panth.whiteloves.in/wsrv'; // 'https://wsrv.nl/';
 const hostname = 'panth.whiteloves.in';
 
 export function getAssetsPath(filename: string) {
-	return `https://${hostname}/firebase_storage/${filename}`;
+	return `https://${hostname}/assets/${filename}`;
 	// return `https://firebasestorage.googleapis.com/v0/b/panth-personal.firebasestorage.app/o/portfolio%2F${filename}?alt=media`;
 }
 export function generatePreviewUrl(url: string, options: WSRVOptions) {
