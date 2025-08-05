@@ -1,3 +1,4 @@
+import { env } from '$env/dynamic/public';
 import { derived, writable } from 'svelte/store';
 
 /**
@@ -94,8 +95,8 @@ export interface WSRVOptions {
 	enlarge?: boolean;
 }
 
-const WSRVBaseUrl = 'https://panth.whiteloves.in/wsrv'; // 'https://wsrv.nl/';
-const hostname = 'panth.whiteloves.in';
+const WSRVBaseUrl = env.PUBLIC_WSRV_URL ?? 'https://panth.whiteloves.in/wsrv'; // 'https://wsrv.nl/';
+const hostname = env.PUBLIC_HOSTNAME ?? 'panth.whiteloves.in';
 
 export function getAssetsPath(filename: string) {
 	return `https://${hostname}/assets/${filename}`;
