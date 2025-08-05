@@ -97,12 +97,13 @@ export interface WSRVOptions {
 
 const WSRVBaseUrl = env.PUBLIC_WSRV_URL ?? 'https://panth.whiteloves.in/wsrv'; // 'https://wsrv.nl/';
 const hostname = env.PUBLIC_HOSTNAME ?? 'panth.whiteloves.in';
-
+const allowImagePreview = env.PUBLIC_IMAGE_PREVIEW ?? false;
 export function getAssetsPath(filename: string) {
 	return `https://${hostname}/assets/${filename}`;
 	// return `https://firebasestorage.googleapis.com/v0/b/panth-personal.firebasestorage.app/o/portfolio%2F${filename}?alt=media`;
 }
 export function generatePreviewUrl(url: string, options: WSRVOptions) {
+	if (!allowImagePreview) return url;
 	const query = new URLSearchParams();
 	query.set('url', url);
 	if (options.width) query.set('w', `${options.width}`);
