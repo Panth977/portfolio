@@ -1,8 +1,10 @@
 <script lang="ts">
 	import GradientText from '$lib/GradientText.svelte';
-	import ProfileCard from '$lib/ProfileCard.svelte';
 	import Squares from '$lib/Squares.svelte';
 	import { onDestroy, onMount } from 'svelte';
+	import Oizom from './oizom.svelte';
+	import { getAssetsPath } from './utils';
+	import Genuin from './genuin.svelte';
 	let frame = 0;
 	onMount(() => {
 		const i = setInterval(() => {
@@ -44,10 +46,6 @@
 		if (popupDiv?.contains(event.target as Node)) return;
 		closePopup();
 	}
-
-	function getAssetsPath(filename: string) {
-		return `https://firebasestorage.googleapis.com/v0/b/panth-personal.firebasestorage.app/o/portfolio%2F${filename}?alt=media`;
-	}
 </script>
 
 <svelte:head>
@@ -69,14 +67,20 @@
 			<span class="mr-3 italic"> ˈSēnyər </span>Developer
 		</h2>
 		<div class="mt-10 flex justify-around">
-			<ProfileCard
-				avatarUrl={getAssetsPath('ai1.png')}
-				handle="PanthPatel"
-				status="Cooking{dots}"
-				showUserInfo={true}
-				enableTilt={true}
-				onContactClick={openPopup}
-			/>
+			{#await import('$lib/ProfileCard.svelte')}
+				<img class="profile-img" src={getAssetsPath('ai1.png')} alt="Panth Patel" />
+			{:then ProfileCard}
+				<ProfileCard.default
+					avatarUrl={getAssetsPath('ai1.png')}
+					handle="PanthPatel"
+					status="Cooking{dots}"
+					showUserInfo={true}
+					enableTilt={true}
+					onContactClick={openPopup}
+				/>
+			{:catch}
+				<img class="profile-img" src={getAssetsPath('ai1.png')} alt="Panth Patel" />
+			{/await}
 		</div>
 		<p class="mt-10 text-center text-2xl sm:text-4xl">
 			<span class="italic">Another</span>
@@ -172,203 +176,26 @@
 	</div>
 	<div class="page-block space-y-10 p-4 font-mono md:px-10">
 		<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">Techstack</h2>
-		<div>
-			<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">
-				Langages & Runtimes:
-			</span>
-			<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
-				<img
-					src={getAssetsPath('JavaScript-logo.png')}
-					alt="JS"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://www.typescriptlang.org/">
-				<img
-					src={getAssetsPath('Typescript-logo.svg')}
-					alt="TS"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://nodejs.org/en">
-				<img
-					src={getAssetsPath('nodejs-logo.svg')}
-					alt="Node.js"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://deno.com/">
-				<img
-					src={getAssetsPath('deno-logo.svg')}
-					alt="Deno"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://go.dev/">
-				<img
-					src={getAssetsPath('GoLang-logo.svg')}
-					alt="GoLang"
-					class="mx-0.5 inline h-14 sm:h-16 md:h-20"
-				/>
-			</a>
-			<a href="https://www.python.org/">
-				<img
-					src={getAssetsPath('python-logo.svg')}
-					alt="Python"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://cran.r-project.org/web/packages/rlang/index.html">
-				<img
-					src={getAssetsPath('RLang-logo.svg')}
-					alt="R"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://dart.dev/">
-				<img
-					src={getAssetsPath('dart-logo.svg')}
-					alt="Dart"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-		</div>
-		<div>
-			<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">Frameworks:</span>
-			<a href="https://react.dev/">
-				<img
-					src={getAssetsPath('react-logo.svg')}
-					alt="React"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-				<span class="text-lg md:text-2xl">React</span>
-			</a>
-			<a href="https://svelte.dev/">
-				<img
-					src={getAssetsPath('svelte-logo.svg')}
-					alt="Svelte"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://flutter.dev/">
-				<img
-					src={getAssetsPath('flutter-logo.svg')}
-					alt="Flutter"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://expressjs.com/">
-				<img
-					src={getAssetsPath('expressjs-logo.svg')}
-					alt="ExpressJs"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://hono.dev/">
-				<img
-					src={getAssetsPath('hono-logo.svg')}
-					alt="Hono"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-				<span class="text-lg md:text-2xl">Hono</span>
-			</a>
-		</div>
-		<div>
-			<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">Database:</span>
-			<a href="https://www.postgresql.org/">
-				<img
-					src={getAssetsPath('PostgreSQL-logo.svg')}
-					alt="PostgreSQL"
-					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
-				/>
-			</a>
-			<a href="https://cassandra.apache.org/_/index.html">
-				<img
-					src={getAssetsPath('Cassandra-logo.svg')}
-					alt="Cassandra"
-					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
-				/>
-			</a>
-			<a href="https://www.influxdata.com/">
-				<img
-					src={getAssetsPath('Influxdb-logo.svg')}
-					alt="Influxdb"
-					class="mx-0.5 inline h-4 sm:h-6 md:h-10"
-				/>
-			</a>
-			<a href="https://redis.io/">
-				<img src={getAssetsPath('Redis-logo.svg')} alt="Redis" class="mx-0.5 inline h-4 md:h-8" />
-			</a>
-			<a href="https://www.mongodb.com/">
-				<img
-					src={getAssetsPath('MongoDB-logo.svg')}
-					alt="MongoDb"
-					class="mx-0.5 inline h-4 sm:h-6 md:h-10"
-				/>
-			</a>
-			<a href="https://firebase.google.com/docs/firestore">
-				<img
-					src={getAssetsPath('firestore-logo.svg')}
-					alt="Firestore"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-		</div>
-		<div>
-			<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">Deployment:</span>
-			<a href="https://cloud.google.com/">
-				<img
-					src={getAssetsPath('Google-Cloud-logo.svg')}
-					alt="GCP"
-					class="mx-0.5 inline h-4 md:h-8"
-				/>
-			</a>
-			<a href="https://www.digitalocean.com/">
-				<img
-					src={getAssetsPath('DigitalOcean-logo.svg')}
-					alt="DigitalOcean"
-					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
-				/>
-			</a>
-			<a href="https://www.docker.com/">
-				<img
-					src={getAssetsPath('docker-logo.svg')}
-					alt="Docker"
-					class="mx-0.5 inline h-2 sm:h-4 md:h-8"
-				/>
-			</a>
-			<a href="https://www.portainer.io/">
-				<img
-					src={getAssetsPath('portainer-logo.png')}
-					alt="Portainer"
-					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
-				/>
-			</a>
-		</div>
-		<div>
-			<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">Utilities:</span>
-			<a href="https://nodered.org/">
-				<img
-					src={getAssetsPath('nodered-logo.svg')}
-					alt="NodeRed"
-					class="mx-0.5 inline h-10 sm:h-12 md:h-16"
-				/>
-			</a>
-			<a href="https://mqtt.org/">
-				<img
-					src={getAssetsPath('mqtt-logo.svg')}
-					alt="Mqtt"
-					class="mx-0.5 inline h-6 sm:h-8 md:h-12"
-				/>
-			</a>
-			<a href="https://kafka.apache.org/">
-				<img
-					src={getAssetsPath('kafka-logo.png')}
-					alt="Kafka"
-					class="mx-0.5 inline h-10 bg-white sm:h-8 md:h-12"
-				/>
-			</a>
-		</div>
+		{#await import('./techstack.json')}
+			Loading{dots}
+		{:then techstack}
+			{#each techstack.default as ele}
+				<div>
+					<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">
+						{ele.label}:
+					</span>
+					{#each ele.imgs as img}
+						<a href={img.href}>
+							<img
+								src={getAssetsPath(img.src)}
+								alt={img.alt}
+								class="inline h-6 p-1 sm:h-8 md:h-12"
+							/>
+						</a>
+					{/each}
+				</div>
+			{/each}
+		{/await}
 		<div>
 			<h4 class="text-3xl text-gray-500 md:text-5xl">SMALL NOTE</h4>
 			<p class="text-sm md:text-base">
@@ -426,281 +253,23 @@
 <!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
 <div class="page-block space-y-10 p-4 md:px-10">
 	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">Professional Experience</h2>
-	<div class="space-y-5">
-		<div class="align-bottom sm:flex">
-			<a href="https://oizom.com/" aria-label="Oizom">
-				<img
-					src={getAssetsPath('oizom-logo.png')}
-					alt="oizom"
-					class="mr-4 mb-4 inline aspect-[210/64] h-12 sm:h-16"
-				/>
-			</a>
-			<h3>
-				<span class="block text-lg sm:text-2xl">Feb 2024 – Present | Ahmedabad, India</span>
-				<span class="block text-base font-thin text-gray-500 sm:text-lg">
-					World’s Leading Air Quality Monitoring IoT Company
-				</span>
-			</h3>
-		</div>
-		<h4 class="text-2xl sm:text-4xl">
-			Senior Engineer <span class="text-lg text-gray-500 sm:text-2xl">April 2025</span>
-		</h4>
-		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
-			<li>
-				Frontend Lead, Reremping the existing website into
-				<GradientText>SvelteKit</GradientText>
-				Making things
-				<GradientText>
-					<span class="font-mono">10x</span>
-				</GradientText>
-				faster
-			</li>
-			<li>
-				Leading the entire Software Team of
-				<GradientText>10 peopel</GradientText>
-				including me, Understanding Product Requirements along with
-				<GradientText>Task allocation, RnD & POC</GradientText>
-			</li>
-			<li>
-				Weekly
-				<GradientText>Know Your Product</GradientText>
-				sessions, along with a
-				<GradientText>Tech Problem Brainstrom</GradientText>
-				for any one to solve and share there findings.
-			</li>
-			<li>
-				Defining a proper
-				<GradientText>KYP & KT documents</GradientText>
-				to reduce over processing and
-				<span class="font-mono text-gray-500">"Figuring out"</span>
-				sessions.
-			</li>
-		</ol>
-		<h4 class="text-2xl sm:text-4xl">
-			Full Stack Engineer <span class="text-2xl text-gray-500">Feb 2024</span>
-		</h4>
-		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
-			<li>
-				Complete reramp of the backend from scratch, making it
-				<GradientText>
-					<span class="font-mono">2x</span> faster
-				</GradientText>
-			</li>
-			<li>
-				Auto gen
-				<span class="text-gray-500">Swagger Docs</span>, Safe garding all apis with strict
-				<span class="text-gray-500">I/O schema</span>
-			</li>
-			<li>
-				Rest Api Request wise
-				<span class="text-gray-500">Logging system</span>
-				using cassandra
-			</li>
-			<li>
-				Cache Postgres Queries and
-				<GradientText>Auto Cache Invalidation</GradientText>
-				from Postgres triggers
-			</li>
-			<li>
-				Reduce Number Services in use, taking atomic & code control, reducing cost by almost
-				<GradientText>
-					<span class="font-mono">1,000 USD/yr</span>
-				</GradientText>
-				.
-			</li>
-			<li>
-				Building Docker & Docker Compose, on
-				<span class="text-gray-500">OpenSource</span> Tech for
-				<GradientText>Premise Deployables</GradientText>
-			</li>
-			<li>
-				Optimization using
-				<span class="text-gray-500">Buffer</span>
-				for millions of data points instead of JSON Increasing time performance by
-				<GradientText>
-					<span class="font-mono">8x</span>
-				</GradientText>
-				and memory performance by
-				<GradientText>
-					<span class="font-mono">30x</span>
-				</GradientText>
-			</li>
-			<li>
-				A complete reramp of Heatmaps, reducing cost by
-				<GradientText>
-					<span class="font-mono">500 USD/yr</span>
-				</GradientText>
-				And changing from
-				<span class="text-gray-500">Cron → On The Fly</span>
-				architecture. Standardation of simulation schema over API gateways
-			</li>
-			<li>
-				A complete reramp of Display, Reports and Dashboard, from static If/Else conditions to
-				<span class="text-gray-500">Drag And Drop</span>
-				architecture. Improving all possible Permutations & Combinations for personal needs.
-			</li>
-		</ol>
-	</div>
-	<div class="w-full border border-dashed border-gray-500"></div>
-	<div class="space-y-5">
-		<div class="align-bottom sm:flex">
-			<a href="https://oizom.com/" aria-label="BeGenuin">
-				<img
-					src={getAssetsPath('begenuin-logo.svg')}
-					alt="begenuin"
-					class="mr-4 mb-4 inline h-12 sm:h-16"
-				/>
-			</a>
-			<h3>
-				<span class="block text-lg sm:text-2xl">May 2023 – Jan 2024 | Ahmedabad, India</span>
-				<span class="block text-base font-thin text-gray-500 sm:text-lg">
-					Video-Based communities integrations On Android, IOS & Web SDK
-				</span>
-			</h3>
-		</div>
-		<h4 class="text-2xl sm:text-4xl">Software Engineer I</h4>
-		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
-			<li>
-				Optimized 24k lines of code to 19k, adding
-				<GradientText>
-					<span class="font-mono">10k+</span> lines
-				</GradientText>
-				of new features.
-			</li>
-			<li>
-				Enhanced database query performance by
-				<GradientText>
-					<span class="font-mono">70%</span>
-				</GradientText>.
-			</li>
-			<li>
-				Revamped a project to support
-				<span class="font-mono text-gray-500">5k+</span>
-				users/sec with minimal resources
-			</li>
-			<li>
-				Created
-				<GradientText>
-					<span class="font-mono">5+</span> Dev Tools
-				</GradientText>
-				to better stream line the developer experience
-			</li>
-			<li>
-				Improving Web Embeded SDK, in React
-				<GradientText>
-					<span class="font-mono">3x</span> faster
-				</GradientText>.
-			</li>
-		</ol>
-	</div>
-	<div class="w-full border border-dashed border-gray-500"></div>
-	<div class="space-y-5">
-		<div class="align-bottom sm:flex">
-			<a href="https://www.techcrista.com/" aria-label="Tech-Crista">
-				<img
-					src={getAssetsPath('tech-crista-logo.png')}
-					alt="tech-crista"
-					class="mr-4 mb-4 inline h-12 sm:h-16"
-				/>
-			</a>
-			<h3>
-				<span class="block text-lg sm:text-2xl">Oct 2022 – Feb 2023 | Remote</span>
-				<span class="block text-base font-thin text-gray-500 sm:text-lg">
-					Overseas Service Based Company
-				</span>
-			</h3>
-		</div>
-		<h4 class="text-2xl sm:text-4xl">Junior Developer</h4>
-		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
-			<li>
-				Developed
-				<GradientText>
-					<span class="font-mono">35+</span> bots
-				</GradientText>
-				for various actions and web scraping, including
-				<GradientText>
-					<span class="font-mono">10+</span> SSO
-				</GradientText>
-				login bots.
-			</li>
-			<li>
-				Optimized bot login, making things
-				<GradientText>
-					<span class="font-mono">4x</span> faster
-				</GradientText>, cutting down the process from
-				<span class="text-gray-500">5min → 1min</span>.
-			</li>
-			<li>
-				Creating a new bot
-				<span class="text-gray-500"> Code Design </span>
-				standard detect & process approach, reducing code by
-				<GradientText>
-					<span class="font-mono">30%</span>
-				</GradientText>.
-			</li>
-			<li>
-				Standardized bot-client communication using
-				<GradientText>"Server Driven UI"</GradientText>
-				simplifying from
-				<span class="text-gray-500"> 50 → 4 cases </span>.
-			</li>
-		</ol>
-	</div>
-	<div class="w-full border border-dashed border-gray-500"></div>
-	<div class="space-y-5">
-		<div class="align-bottom sm:flex">
-			<a
-				href="https://www.google.com/maps/place/Vardayini+Dairy+Products/data=!4m2!3m1!1s0x0:0x79fb04f0c03021c6?sa=X&ved=1t:2428&ictx=111"
-				aria-label="Tech-Crista"
-			>
-				<img
-					src={getAssetsPath('vdp-logo.svg')}
-					alt="Vardayini Dairy Products"
-					class="mr-4 mb-4 inline h-12 sm:h-16"
-				/>
-			</a>
-			<h3>
-				<span class="block text-lg sm:text-2xl">Oct 2021 – Jul 2022 | Remote</span>
-				<span class="block text-base font-thin text-gray-500 sm:text-lg">
-					Desi Premium Quality Dairy Products.
-				</span>
-			</h3>
-		</div>
-		<h4 class="text-2xl sm:text-4xl">Full Stack Engineer</h4>
-		<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
-			<li>
-				A complete
-				<GradientText>Inventory Management</GradientText>
-				App, with User with
-				<GradientText>Atomic Roles</GradientText>
-				.
-			</li>
-			<li>Cash counter dashboard, Realtime updates, Auto Generated Log Book, Reports</li>
-			<li>
-				<GradientText>
-					Level <span class="font-mono">3</span>
-				</GradientText>
-				of Hierarchy: Org > Stocks > Cash-Counter
-			</li>
-			<li>
-				Developed a product meeting business needs, saving
-				<span class="text-gray-500">
-					<span class="font-mono">3</span> hours daily
-				</span>
-				in company notary processes
-			</li>
-			<li>
-				Designed efficient UIs for rapid data entry, managing
-				<GradientText>
-					<span class="font-mono">5000+</span> entries
-				</GradientText>
-				daily.
-			</li>
-			<li>Created 4 distinct apps addressing various use cases.</li>
-		</ol>
-	</div>
+	<Oizom />
+	<!-- import Genuin from './genuin.svelte';
+	import Techcrista from './techcrista.svelte';
+	import Vdp from './vdp.svelte'; -->
+	{#await import('./genuin.svelte') then Genuin}
+		<div class="w-full border border-dashed border-gray-500"></div>
+		<Genuin.default />
+	{/await}
+	{#await import('./techcrista.svelte') then Techcrista}
+		<div class="w-full border border-dashed border-gray-500"></div>
+		<Techcrista.default />
+	{/await}
+	{#await import('./vdp.svelte') then Vdp}
+		<div class="w-full border border-dashed border-gray-500"></div>
+		<Vdp.default />
+	{/await}
 </div>
-<!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
 <div class="page-block space-y-10 p-4 md:px-10">
 	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">
 		<GradientText>{'<Show Cases />'}</GradientText>
@@ -754,7 +323,6 @@
 		</ol>
 	</div>
 </div>
-<!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
 <div class="relative">
 	<div class="absolute z-0 h-full w-full opacity-70">
 		<Squares />
@@ -899,6 +467,18 @@
 </div>
 
 <style>
+	.profile-img {
+		height: 80svh;
+		max-height: 540px;
+		display: grid;
+		aspect-ratio: 0.718;
+	}
+	@media (max-width: 480px) {
+		.profile-img {
+			height: 60svh;
+			max-height: 380px;
+		}
+	}
 	.pink-link {
 		border-bottom: 2px dashed deeppink;
 	}
