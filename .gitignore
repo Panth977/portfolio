@@ -6,7 +6,7 @@ node_modules
 .netlify
 .wrangler
 /.svelte-kit
-/firebase_storage
+**/firebase_storage
 /build
 
 # OS

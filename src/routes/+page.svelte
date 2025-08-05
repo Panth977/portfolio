@@ -1,20 +1,12 @@
 <script lang="ts">
 	import GradientText from '$lib/GradientText.svelte';
 	import Squares from '$lib/Squares.svelte';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import Oizom from './oizom.svelte';
-	import { getAssetsPath } from './utils';
-	import Genuin from './genuin.svelte';
-	let frame = 0;
-	onMount(() => {
-		const i = setInterval(() => {
-			frame++;
-			frame = frame % 1000;
-		}, 500);
-		onDestroy(() => {
-			clearInterval(i);
-		});
+	import { getAssetsPath, dots, generatePreviewUrl } from './utils.svelte';
+	import Img from './img.svelte';
 
+	onMount(() => {
 		window.addEventListener('keydown', function (event) {
 			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'p') {
 				event.preventDefault();
@@ -23,9 +15,6 @@
 			}
 		});
 	});
-	const mapping: Record<number, string> = { 1: '.', 2: '..', 3: '...', 4: '....', 5: '.....' };
-	$: dots = mapping[Math.abs(4 - (frame % 9)) + 1] ?? '.';
-
 	let popupDiv: HTMLDivElement | null = null;
 	let isPopupOpen = false;
 	function openPopup() {
@@ -46,6 +35,164 @@
 		if (popupDiv?.contains(event.target as Node)) return;
 		closePopup();
 	}
+	const techstack: { label: string; imgs: { href: string; src: string; alt: string }[] }[] =
+		JSON.parse(`[
+		{"label": "Langages & Runtimes",
+			"imgs": [
+				{
+					"href": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+					"src": "JavaScript-logo.png",
+					"alt": "JS"
+				},
+				{
+					"href": "https://www.typescriptlang.org/",
+					"src": "Typescript-logo.svg",
+					"alt": "TS"
+				},
+				{
+					"href": "https://nodejs.org/en",
+					"src": "nodejs-logo.svg",
+					"alt": "Node.js"
+				},
+				{
+					"href": "https://deno.com/",
+					"src": "deno-logo.svg",
+					"alt": "Deno"
+				},
+				{
+					"href": "https://go.dev/",
+					"src": "GoLang-logo.svg",
+					"alt": "GoLang"
+				},
+				{
+					"href": "https://www.python.org/",
+					"src": "python-logo.svg",
+					"alt": "Python"
+				},
+				{
+					"href": "https://cran.r-project.org/web/packages/rlang/index.html",
+					"src": "RLang-logo.svg",
+					"alt": "R"
+				},
+				{
+					"href": "https://dart.dev/",
+					"src": "dart-logo.svg",
+					"alt": "Dart"
+				}
+			]
+		},
+		{"label": "Frameworks",
+			"imgs": [
+				{
+					"href": "https://react.dev/",
+					"src": "react-logo.svg",
+					"alt": "React"
+				},
+				{
+					"href": "https://svelte.dev/",
+					"src": "svelte-logo.svg",
+					"alt": "Svelte"
+				},
+				{
+					"href": "https://flutter.dev/",
+					"src": "flutter-logo.svg",
+					"alt": "Flutter"
+				},
+				{
+					"href": "https://expressjs.com/",
+					"src": "expressjs-logo.svg",
+					"alt": "ExpressJs"
+				},
+				{
+					"href": "https://hono.dev/",
+					"src": "hono-logo.svg",
+					"alt": "Hono"
+				}
+			]
+		},
+		{"label": "Database",
+			"imgs": [
+				{
+					"href": "https://www.postgresql.org/",
+					"src": "PostgreSQL-logo.svg",
+					"alt": "PostgreSQL"
+				},
+				{
+					"href": "https://cassandra.apache.org/_/index.html",
+					"src": "Cassandra-logo.svg",
+					"alt": "Cassandra"
+				},
+				{
+					"href": "https://www.influxdata.com/",
+					"src": "Influxdb-logo.svg",
+					"alt": "Influxdb"
+				},
+				{
+					"href": "https://redis.io/",
+					"src": "Redis-logo.svg",
+					"alt": "Redis"
+				},
+				{
+					"href": "https://www.mongodb.com/",
+					"src": "MongoDB-logo.svg",
+					"alt": "MongoDb"
+				},
+				{
+					"href": "https://firebase.google.com/docs/firestore",
+					"src": "firestore-logo.svg",
+					"alt": "Firestore"
+				},
+				{
+					"href": "https://axiom.co/",
+					"src": "axiom-logo.svg",
+					"alt": "Axiom"
+				}
+			]
+		},
+		{"label": "Deployment",
+			"imgs": [
+				{
+					"href": "https://cloud.google.com/",
+					"src": "Google-Cloud-logo.svg",
+					"alt": "GCP"
+				},
+				{
+					"href": "https://www.digitalocean.com/",
+					"src": "DigitalOcean-logo.svg",
+					"alt": "DigitalOcean"
+				},
+				{
+					"href": "https://www.docker.com/",
+					"src": "docker-logo.svg",
+					"alt": "Docker"
+				},
+				{
+					"href": "https://www.portainer.io/",
+					"src": "portainer-logo.png",
+					"alt": "Portainer"
+				}
+			]
+		},
+		{"label": "Utilities",
+			"imgs": [
+				{
+					"href": "https://nodered.org/",
+					"src": "nodered-logo.svg",
+					"alt": "NodeRed"
+				},
+				{
+					"href": "https://mqtt.org/",
+					"src": "mqtt-logo.svg",
+					"alt": "Mqtt"
+				},
+				{
+					"href": "https://kafka.apache.org/",
+					"src": "kafka-logo.png",
+					"alt": "Kafka"
+				}
+			]
+		}
+	]`);
 </script>
 
 <svelte:head>
@@ -60,7 +207,7 @@
 		<h1 class="mt-5 text-center text-4xl sm:text-5xl md:text-7xl">
 			Meet
 			<button class="pink-link cursor-pointer" on:click={openPopup}>
-				<img src="Panth-logo.svg" class="inline h-12 font-mono sm:h-16" alt="Panth" />
+				<Img skip src="Panth-logo.svg" class="inline h-12 font-mono sm:h-16" />
 			</button>
 		</h1>
 		<h2 class="mt-2 text-center font-mono text-2xl sm:text-4xl">
@@ -68,33 +215,36 @@
 		</h2>
 		<div class="mt-10 flex justify-around">
 			{#await import('$lib/ProfileCard.svelte')}
-				<img class="profile-img" src={getAssetsPath('ai1.png')} alt="Panth Patel" />
+				<Img class="profile-img" src="ai1-cheap.png" />
 			{:then ProfileCard}
 				<ProfileCard.default
-					avatarUrl={getAssetsPath('ai1.png')}
+					src={generatePreviewUrl(getAssetsPath('ai1-cheap.png'), {
+						webp: true,
+						height: 500
+					})}
 					handle="PanthPatel"
-					status="Cooking{dots}"
+					status="Cooking{$dots}"
 					showUserInfo={true}
 					enableTilt={true}
 					onContactClick={openPopup}
 				/>
 			{:catch}
-				<img class="profile-img" src={getAssetsPath('ai1.png')} alt="Panth Patel" />
+				<Img class="profile-img" src="ai1-cheap.png" />
 			{/await}
 		</div>
 		<p class="mt-10 text-center text-2xl sm:text-4xl">
 			<span class="italic">Another</span>
-			<img src={getAssetsPath('react-logo.svg')} alt="react" class="inline h-5 sm:h-9" /> React
-			Website 🥱?
+			<Img src="react-logo.svg" class="inline h-5 sm:h-9" />
+			React Website 🥱?
 			<br /> Maybe some
-			<img src={getAssetsPath('react-bits-logo.svg')} alt="react-bits" class="inline h-5 sm:h-9" />
+			<Img src="react-bits-logo.svg" class="inline h-5 sm:h-9" />
 			again?
 		</p>
 		<div class="mt-10 text-center">
 			<p class="text-center text-base text-gray-500">
 				This one's built using
 				<a class="pink-link" href="https://github.com/Panth977/portfolio" aria-label="Svelte">
-					<img src={getAssetsPath('svelte-logo.svg')} alt="Svelte" class="inline h-6" />
+					<Img src="svelte-logo.svg" class="inline h-6" />
 				</a>
 			</p>
 		</div>
@@ -174,41 +324,33 @@
 	<div class="absolute z-0 h-full w-full opacity-50">
 		<Squares />
 	</div>
-	<div class="page-block space-y-10 p-4 font-mono md:px-10">
+	<div class="page-block space-y-5 p-4 font-mono md:space-y-10 md:px-10">
 		<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">Techstack</h2>
-		{#await import('./techstack.json')}
-			Loading{dots}
-		{:then techstack}
-			{#each techstack.default as ele}
-				<div>
-					<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">
-						{ele.label}:
-					</span>
-					{#each ele.imgs as img}
-						<a href={img.href}>
-							<img
-								src={getAssetsPath(img.src)}
-								alt={img.alt}
-								class="inline h-6 p-1 sm:h-8 md:h-12"
-							/>
-						</a>
-					{/each}
-				</div>
-			{/each}
-		{/await}
+		{#each techstack as ele}
+			<div>
+				<span class="text-lg text-[deeppink] selection:bg-white md:text-2xl">
+					{ele.label}:
+				</span>
+				{#each ele.imgs as img}
+					<a href={img.href}>
+						<Img src={img.src} class="inline h-6 p-1 sm:h-8 md:h-12" />
+					</a>
+				{/each}
+			</div>
+		{/each}
 		<div>
 			<h4 class="text-3xl text-gray-500 md:text-5xl">SMALL NOTE</h4>
 			<p class="text-sm md:text-base">
 				I like using languages that <span class="italic">solve problems</span>, not just ones I
 				happen to know well.
-				<span class=" bg-gray-300 text-black">“We’ll use it because I know it”</span> is
+				<span class="bg-gray-300 text-black">“We’ll use it because I know it”</span> is
 				<span class="text-[deeppink]">not a good enough</span>
 				reason!
 				<br />
 				<br />
 				I prefer frameworks that
 				<span class="text-[deeppink] italic">do the heavy lifting for me</span>. And no—<span
-					class=" bg-gray-300 text-black">“React has a big ecosystem”</span
+					class="bg-gray-300 text-black">“React has a big ecosystem”</span
 				>
 				isn’t a strong argument. By that logic, we should all just
 				<span class="text-[deeppink]">stick to plain JavaScript</span>—it has an even bigger
@@ -227,7 +369,7 @@
 				<br />
 				I’m not fully driven by <span class="text-[deeppink] italic">developer experience</span>. Do
 				you think German automotive engineers were obsessed with
-				<span class=" bg-gray-300 text-black">“engineering experience”</span>?
+				<span class="bg-gray-300 text-black">“engineering experience”</span>?
 				<br />
 				No—they were focused on <span class="text-[deeppink] italic">driving experience</span>.
 				Similarly, the only experience that truly matters in software is
@@ -276,7 +418,7 @@
 	</h2>
 	<div class="border-r-2 border-b-2 border-pink-900 bg-gray-800 shadow-lg">
 		<div class="mb-3 block bg-gray-200 px-5 py-3 text-lg text-black sm:text-2xl">
-			<img src={getAssetsPath('jsr-logo.svg')} alt="jsr" class="inline h-6 sm:h-10" />
+			<Img src="jsr-logo.svg" class="inline h-6 sm:h-10" />
 			<a class="pink-link font-stretch-75%" href="https://jsr.io/@panth977"> @panth977 </a>
 		</div>
 		<ol class="list-inside list-disc px-5 py-3 text-base font-light font-stretch-75%">
@@ -291,7 +433,7 @@
 	</div>
 	<div class="border-r-2 border-b-2 border-pink-900 bg-gray-800 shadow-lg">
 		<div class="mb-3 block bg-gray-200 px-5 py-3 text-lg text-black sm:text-2xl">
-			<img src={getAssetsPath('hashnode-logo.svg')} alt="hashnode" class="inline h-6 sm:h-10" />
+			<Img src="hashnode-logo.svg" class="inline h-6 sm:h-10" />
 			<a
 				class="pink-link font-stretch-75%"
 				href="https://blogs.whiteloves.in/how-i-generated-heatmaps-100x-faster"
@@ -308,7 +450,7 @@
 	</div>
 	<div class="border-r-2 border-b-2 border-pink-900 bg-gray-800 shadow-lg">
 		<div class="mb-3 block bg-gray-200 px-5 py-3 text-lg text-black sm:text-2xl">
-			<img src={getAssetsPath('youtube-logo.png')} alt="youtube" class="inline h-6 sm:h-10" />
+			<Img src="youtube-logo.png" class="inline h-6 sm:h-10" />
 			<a
 				class="pink-link font-stretch-75%"
 				href="https://youtube.com/playlist?list=PLeXF8QGCGNK7MrBOweoDSd6E1L_7upSPV&si=FDVE_6IrqF0m4STB"
@@ -332,7 +474,7 @@
 		<h1 class="text-center text-4xl sm:text-5xl md:text-7xl">
 			Contact
 			<button class="pink-link cursor-pointer" on:click={openPopup}>
-				<img src="Panth-logo.svg" class="inline h-12 font-mono sm:h-16" alt="Panth" />
+				<Img skip src="Panth-logo.svg" class="inline h-12 font-mono sm:h-16" />
 			</button>
 		</h1>
 		<div
@@ -341,54 +483,54 @@
 			<ol class="space-y-5">
 				<li class="h-9">
 					<a href={getAssetsPath('Panth-Patel-Resume.pdf')}>
-						<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-8 md:h-9" />
+						<Img src="PDF-icon.svg" class="inline h-8 md:h-9" />
 						Resume.pdf
 					</a>
 				</li>
 				<div class="w-full border border-dashed"></div>
 				<li class="h-9">
 					<a href="https://github.com/Panth977">
-						<img src={getAssetsPath('github-logo.svg')} alt="github" class="inline h-5" />
-						<img src={getAssetsPath('GitHub-logo.png')} alt="github" class="inline h-6" />
+						<Img src="github-logo.svg" class="inline h-5" />
+						<Img src="GitHub-logo.png" class="inline h-6" />
 					</a>
 				</li>
 				<li class="h-9">
 					<a href="https://blogs.whiteloves.in/">
-						<img src={getAssetsPath('hashnode-logo.svg')} alt="hash-node" class="inline h-5" />
+						<Img src="hashnode-logo.svg" class="inline h-5" />
 					</a>
 				</li>
 				<li class="h-9">
 					<a href="https://www.linkedin.com/in/panth-patel-447a88240/">
-						<img src={getAssetsPath('LinkedIn-logo.png')} alt="linkedin" class="inline h-5" />
+						<Img src="LinkedIn-logo.png" class="inline h-5" />
 					</a>
 				</li>
 				<li class="h-9">
 					<a href="https://www.youtube.com/@panthpatel4870">
-						<img src={getAssetsPath('youtube-logo.png')} alt="youtube" class="inline h-5" />
+						<Img src="youtube-logo.png" class="inline h-5" />
 					</a>
 				</li>
 				<div class="w-full border border-dashed"></div>
 				<li class="h-9">
 					<a href="mailto:ppanth977@gmail.com">
-						<img src={getAssetsPath('email-icon.svg')} alt="email" class="inline h-6" />
+						<Img src="email-icon.svg" class="inline h-6" />
 						ppanth977@gmail.com
 					</a>
 				</li>
 				<li class="h-9">
 					<a href="tel:+919157338227">
-						<img src={getAssetsPath('phone-icon.svg')} alt="phone" class="inline h-6" />
+						<Img src="phone-icon.svg" class="inline h-6" />
 						+91 91573 38227
 					</a>
 				</li>
 				<li class="h-9">
 					<a href="https://wa.me/919157338227">
-						<img src={getAssetsPath('whatsapp-logo.svg')} alt="phone" class="inline h-6" />
+						<Img src="whatsapp-logo.svg" class="inline h-6" />
 						WhatsApp
 					</a>
 				</li>
 				<!-- <li class="h-9">
 			<a href="https://www.instagram.com/panth.xyz/">
-				<img src={getAssetsPath("Instagram-logo.svg")} alt="Instagram" class="inline h-6" />
+				<Img src="Instagram-logo.svg" class="inline h-6" />
 				Instagram
 			</a>
 		</li> -->
@@ -398,10 +540,10 @@
 </div>
 
 <button class="fixed right-5 bottom-5 z-50" on:click={openPopup}>
-	<img src={getAssetsPath('communicate.png')} alt="communicate" class="inline h-17" />
+	<Img src="communicate.png" class="inline h-17" />
 </button>
 <a href={getAssetsPath('Panth-Patel-Resume.pdf')} class="fixed right-8 bottom-20 z-50">
-	<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-13" />
+	<Img src="PDF-icon.svg" class="inline h-13" />
 </a>
 <div
 	bind:this={popupDiv}
@@ -411,54 +553,54 @@
 	<ol class="space-y-2">
 		<li class="h-9">
 			<a href={getAssetsPath('Panth-Patel-Resume.pdf')}>
-				<img src={getAssetsPath('PDF-icon.svg')} alt="PDF" class="inline h-9" />
+				<Img src="PDF-icon.svg" class="inline h-9" />
 				Resume.pdf
 			</a>
 		</li>
 		<div class="w-full border border-dashed"></div>
 		<li class="h-9">
 			<a href="https://github.com/Panth977">
-				<img src={getAssetsPath('github-logo.svg')} alt="github" class="inline h-5" />
-				<img src={getAssetsPath('GitHub-logo.png')} alt="github" class="inline h-6" />
+				<Img src="github-logo.svg" class="inline h-5" />
+				<Img src="GitHub-logo.png" class="inline h-6" />
 			</a>
 		</li>
 		<li class="h-9">
 			<a href="https://blogs.whiteloves.in/">
-				<img src={getAssetsPath('hashnode-logo.svg')} alt="hash-node" class="inline h-5" />
+				<Img src="hashnode-logo.svg" class="inline h-5" />
 			</a>
 		</li>
 		<li class="h-9">
 			<a href="https://www.linkedin.com/in/panth-patel-447a88240/">
-				<img src={getAssetsPath('LinkedIn-logo.png')} alt="linkedin" class="inline h-5" />
+				<Img src="LinkedIn-logo.png" class="inline h-5" />
 			</a>
 		</li>
 		<li class="h-9">
 			<a href="https://www.youtube.com/@panthpatel4870">
-				<img src={getAssetsPath('youtube-logo.png')} alt="youtube" class="inline h-5" />
+				<Img src="youtube-logo.png" class="inline h-5" />
 			</a>
 		</li>
 		<div class="w-full border border-dashed"></div>
 		<li class="h-9">
 			<a href="mailto:ppanth977@gmail.com">
-				<img src={getAssetsPath('email-icon.svg')} alt="email" class="inline h-6" />
+				<Img src="email-icon.svg" class="inline h-6" />
 				ppanth977@gmail.com
 			</a>
 		</li>
 		<li class="h-9">
 			<a href="tel:+919157338227">
-				<img src={getAssetsPath('phone-icon.svg')} alt="phone" class="inline h-6" />
+				<Img src="phone-icon.svg" class="inline h-6" />
 				+91 91573 38227
 			</a>
 		</li>
 		<li class="h-9">
 			<a href="https://wa.me/919157338227">
-				<img src={getAssetsPath('whatsapp-logo.svg')} alt="phone" class="inline h-6" />
+				<Img src="whatsapp-logo.svg" class="inline h-6" />
 				WhatsApp
 			</a>
 		</li>
 		<!-- <li class="h-9">
 			<a href="https://www.instagram.com/panth.xyz/">
-				<img src={getAssetsPath("Instagram-logo.svg")} alt="Instagram" class="inline h-6" />
+				<Img src="Instagram-logo.svg" class="inline h-6" />
 				Instagram
 			</a>
 		</li> -->
@@ -467,14 +609,14 @@
 </div>
 
 <style>
-	.profile-img {
+	:global(.profile-img) {
 		height: 80svh;
 		max-height: 540px;
 		display: grid;
 		aspect-ratio: 0.718;
 	}
 	@media (max-width: 480px) {
-		.profile-img {
+		:global(.profile-img) {
 			height: 60svh;
 			max-height: 380px;
 		}

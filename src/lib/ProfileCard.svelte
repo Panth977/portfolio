@@ -2,9 +2,10 @@
 	import { onMount, onDestroy } from 'svelte';
 
 	// Props interface
-	export let avatarUrl: string = '<Placeholder for avatar URL>';
-	export let iconUrl: string = '<Placeholder for icon URL>';
-	export let grainUrl: string = '<Placeholder for grain URL>';
+	export let src: string;
+	let avatarUrl: string = src;
+	export let iconUrl: string = src;
+	export let grainUrl: string = src;
 	export let behindGradient: string | undefined = undefined;
 	export let innerGradient: string | undefined = undefined;
 	export let showBehindGradient: boolean = true;

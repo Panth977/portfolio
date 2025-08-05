@@ -1,6 +1,6 @@
 <script>
 	import GradientText from '$lib/GradientText.svelte';
-	import { getAssetsPath } from './utils';
+	import Img from './img.svelte';
 </script>
 
 <div class="space-y-5">
@@ -9,11 +9,7 @@
 			href="https://www.google.com/maps/place/Vardayini+Dairy+Products/data=!4m2!3m1!1s0x0:0x79fb04f0c03021c6?sa=X&ved=1t:2428&ictx=111"
 			aria-label="Tech-Crista"
 		>
-			<img
-				src={getAssetsPath('vdp-logo.svg')}
-				alt="Vardayini Dairy Products"
-				class="mr-4 mb-4 inline h-12 sm:h-16"
-			/>
+			<Img height={70} src="vdp-logo.svg" class="mr-4 mb-4 inline h-12 sm:h-16" />
 		</a>
 		<h3>
 			<span class="block text-lg sm:text-2xl">Oct 2021 – Jul 2022 | Remote</span>

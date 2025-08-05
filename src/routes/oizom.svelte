@@ -1,16 +1,12 @@
 <script lang="ts">
 	import GradientText from '$lib/GradientText.svelte';
-	import { getAssetsPath } from './utils';
+	import Img from './img.svelte';
 </script>
 
 <div class="space-y-5">
 	<div class="align-bottom sm:flex">
 		<a href="https://oizom.com/" aria-label="Oizom">
-			<img
-				src={getAssetsPath('oizom-logo.png')}
-				alt="oizom"
-				class="mr-4 mb-4 inline aspect-[210/64] h-12 sm:h-16"
-			/>
+			<Img height={70} src="oizom-logo.png" class="mr-4 mb-4 inline aspect-[210/64] h-12 sm:h-16" />
 		</a>
 		<h3>
 			<span class="block text-lg sm:text-2xl">Feb 2024 – Present | Ahmedabad, India</span>

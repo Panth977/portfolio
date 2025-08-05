@@ -1,12 +1,13 @@
 <script lang="ts">
 	import GradientText from '$lib/GradientText.svelte';
-	import { getAssetsPath } from './utils';
+	import { getAssetsPath } from './utils.svelte';
 </script>
 
 <div class="space-y-5">
 	<div class="align-bottom sm:flex">
 		<a href="https://oizom.com/" aria-label="BeGenuin">
 			<img
+				height={70}
 				src={getAssetsPath('begenuin-logo.svg')}
 				alt="begenuin"
 				class="mr-4 mb-4 inline h-12 sm:h-16"

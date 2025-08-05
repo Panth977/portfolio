@@ -1,16 +1,12 @@
 <script lang="ts">
 	import GradientText from '$lib/GradientText.svelte';
-	import { getAssetsPath } from './utils';
+	import Img from './img.svelte';
 </script>
 
 <div class="space-y-5">
 	<div class="align-bottom sm:flex">
 		<a href="https://www.techcrista.com/" aria-label="Tech-Crista">
-			<img
-				src={getAssetsPath('tech-crista-logo.png')}
-				alt="tech-crista"
-				class="mr-4 mb-4 inline h-12 sm:h-16"
-			/>
+			<Img height={70} src="tech-crista-logo.png" class="mr-4 mb-4 inline h-12 sm:h-16" />
 		</a>
 		<h3>
 			<span class="block text-lg sm:text-2xl">Oct 2022 – Feb 2023 | Remote</span>
