@@ -1,4 +1,4 @@
-import { env } from '$env/dynamic/public';
+import * as env from '$env/static/public';
 import { derived, writable } from 'svelte/store';
 
 /**
@@ -97,7 +97,7 @@ export interface WSRVOptions {
 
 const WSRVBaseUrl = env.PUBLIC_WSRV_URL ?? 'https://panth.whiteloves.in/wsrv'; // 'https://wsrv.nl/';
 const hostname = env.PUBLIC_HOSTNAME ?? 'panth.whiteloves.in';
-const allowImagePreview = env.PUBLIC_IMAGE_PREVIEW ?? false;
+const allowImagePreview = env.PUBLIC_IMAGE_PREVIEW === 'true';
 export function getAssetsPath(filename: string) {
 	return `https://${hostname}/assets/${filename}`;
 	// return `https://firebasestorage.googleapis.com/v0/b/panth-personal.firebasestorage.app/o/portfolio%2F${filename}?alt=media`;
