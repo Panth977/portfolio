@@ -1,5 +1,3 @@
-import { resolveRoute } from '$app/paths';
-
 export const Position = {
 	// column
 	cA: 'A',
@@ -161,7 +159,7 @@ class XPiece<T> {
 	}
 }
 
-class ChessBoard<T> {
+abstract class ChessBoard<T> {
 	protected constructor(
 		protected root: HTMLElement,
 		private cellSize: number,
@@ -183,14 +181,16 @@ class ChessBoard<T> {
 	private focusSecondaryDivs: HTMLDivElement[] = [];
 	private focusDangerDivs: HTMLDivElement[] = [];
 	private pickablePieces: XPiece<T>[] = [];
-	private dropableDivs: HTMLDivElement[] = [];
 	private grabedPiece: null | XPiece<T> = null;
-	private lstHover: null | [number, number] = null;
 	private selectionPopup: HTMLDivElement | null = null;
 	private fieldClickDivs: HTMLDivElement[] = [];
-	getPieceStatus(p: XPiece<T>): 'first' | 'ghost' | 'kill-1' | 'kill-2' | `coin-${number}` | null {
-		return null;
+	private scalingFactor: number = 1;
+	setScalingFactor(scale: number) {
+		this.scalingFactor = scale;
 	}
+	abstract getPieceStatus(
+		p: XPiece<T>
+	): 'first' | 'ghost' | 'kill-1' | 'kill-2' | `coin-${number}` | null;
 	protected paintPlainCurrentState() {
 		this.boardDiv = null;
 		this.tileDivs = [];
@@ -200,9 +200,14 @@ class ChessBoard<T> {
 		this.focusSecondaryDivs = [];
 		this.focusDangerDivs = [];
 		this.pickablePieces = [];
-		this.dropableDivs = [];
 		this.grabedPiece = null;
-		this.lstHover = null;
+		this.startX = 0;
+		this.startY = 0;
+		this.dRow = 0;
+		this.dCol = 0;
+		this.lstHovered = null;
+		this.hoverDiv = null;
+		this.dropableSpots = [];
 		this.selectionPopup = null;
 		this.fieldClickDivs = [];
 		this.root.innerHTML = '';
@@ -219,7 +224,7 @@ class ChessBoard<T> {
 		boardDiv.style.setProperty(`user-select`, 'none');
 		boardDiv.style.setProperty(`font-family`, '"Courier New", Courier, monospace');
 		boardDiv.style.setProperty(`font-weight`, '900');
-		boardDiv.style.setProperty(`font-size`, `${cellSize * 0.125}px`);
+		boardDiv.style.setProperty(`font-size`, `${cellSize * 0.1875}px`);
 		boardDiv.style.setProperty(`color`, `black`);
 
 		for (let rowIndex = 0; rowIndex < 8; rowIndex++) {
@@ -265,14 +270,19 @@ class ChessBoard<T> {
 			pieceDiv.style.setProperty(`position`, `absolute`);
 			pieceDiv.style.setProperty(`bottom`, `${p.rowIndex * cellSize}px`);
 			pieceDiv.style.setProperty(`left`, `${p.colIndex * cellSize}px`);
-			pieceDiv.style.setProperty(`background-image`, `url(chess/pieces/${p.nameOf()}.png)`);
-			pieceDiv.style.setProperty(`background-size`, `cover`);
-			pieceDiv.style.setProperty(`background-repeat`, `no-repeat`);
-			pieceDiv.style.setProperty(`background-position`, `center`);
-			pieceDiv.style.setProperty(`background-padding`, `50px`);
-			pieceDiv.style.setProperty(`z-index`, `10`);
 			pieceDiv.style.setProperty('height', `${cellSize}px`);
 			pieceDiv.style.setProperty('width', `${cellSize}px`);
+			pieceDiv.style.setProperty(`padding`, `${cellSize * 0.1}px`);
+			pieceDiv.style.setProperty(`z-index`, `10`);
+			const div = document.createElement('div');
+			pieceDiv.appendChild(div);
+			div.style.setProperty(`background-image`, `url(chess/pieces/${p.nameOf()}.png)`);
+			div.style.setProperty(`background-size`, `cover`);
+			div.style.setProperty(`background-repeat`, `no-repeat`);
+			div.style.setProperty(`background-position`, `center`);
+			div.style.setProperty(`width`, `100%`);
+			div.style.setProperty(`height`, `100%`);
+
 			const span = document.createElement('span');
 			pieceDiv.appendChild(span);
 			span.style.setProperty(`position`, `absolute`);
@@ -481,9 +491,7 @@ class ChessBoard<T> {
 		}
 		this.fieldClickDivs = [];
 	}
-	protected onFieldClick(colIndex: number, rowIndex: number) {
-		// CONTINUE AS HOOKS
-	}
+	protected abstract onFieldClick(colIndex: number, rowIndex: number): void;
 	protected openSelection(colIndex: number, rowIndex: number, player: Player, ranks: Rank[]) {
 		if (colIndex >= 8 || colIndex <= -1) return;
 		if (rowIndex >= 8 || rowIndex <= -1) return;
@@ -549,27 +557,110 @@ class ChessBoard<T> {
 		div.style.setProperty(`color`, `black`);
 		div.onclick = this.onSelectCancel.bind(this);
 	}
-	protected onSelect(colIndex: number, rowIndex: number, player: Player, rank: Rank) {
-		this.closeSelection();
-		// CONTINUE AS HOOKS
-	}
-	protected onSelectCancel() {
-		this.closeSelection();
-		// CONTINUE AS HOOKS
-	}
+	protected abstract onSelect(colIndex: number, rowIndex: number, player: Player, rank: Rank): void;
+	protected abstract onSelectCancel(): void;
 	protected closeSelection() {
 		if (!this.selectionPopup) return;
 		this.selectionPopup.remove();
 		this.selectionPopup = null;
 	}
+
+	// GRAB & PUT
+	private startX = 0;
+	private startY = 0;
+	private dRow = 0;
+	private dCol = 0;
+	private lstHovered: [number, number] | null = null;
+	private hoverDiv: HTMLDivElement | null = null;
+	private dropableSpots: [number, number][] = [];
 	protected allowPiecePicking(p: XPiece<T>) {
 		if (!p) return;
 		const pieceDiv = p.div!;
 		this.pickablePieces.push(p);
 		pieceDiv.style.setProperty('cursor', 'grab');
-		pieceDiv.setAttribute(`draggable`, 'true');
-		pieceDiv.ondragstart = this.onPieceGrab.bind(this, p);
-		pieceDiv.ondragend = this.onPieceGrabLeave.bind(this, p);
+		pieceDiv.onpointerdown = this.__onpointergrab.bind(this, p);
+		pieceDiv.onpointerup = pieceDiv.onpointercancel = this.__onpointerdrop.bind(this, p);
+		pieceDiv.onpointermove = this.__onpointermoveandgrab.bind(this, p);
+	}
+	private static __preventDefaultTouchMove(ev: TouchEvent) {
+		ev.preventDefault();
+	}
+	private __onpointergrab(p: XPiece<T>, e: PointerEvent) {
+		window.addEventListener('touchmove', ChessBoard.__preventDefaultTouchMove, { passive: false });
+		const pieceDiv = p.div!;
+		document.documentElement.style.overflow = 'hidden';
+		document.body.style.overscrollBehavior = 'contain';
+		pieceDiv.style.setProperty('cursor', 'grabbing');
+		pieceDiv.setPointerCapture(e.pointerId);
+		this.grabedPiece = p;
+		this.startX = e.clientX;
+		this.startY = e.clientY;
+		this.dRow = 0;
+		this.dCol = 0;
+		this.lstHovered = null;
+		this.dropableSpots = [];
+		this.onPieceGrab(p);
+	}
+	private async __onpointerdrop(p: XPiece<T>, e: PointerEvent) {
+		window.removeEventListener('touchmove', ChessBoard.__preventDefaultTouchMove);
+		const pieceDiv = p.div!;
+		pieceDiv.onpointerdown = null;
+		pieceDiv.onpointerup = null;
+		pieceDiv.onpointercancel = null;
+		pieceDiv.onpointermove = null;
+		document.documentElement.style.overflow = '';
+		document.body.style.overscrollBehavior = '';
+		if (!this.grabedPiece) return;
+		pieceDiv.style.setProperty('cursor', 'grab');
+		pieceDiv.releasePointerCapture(e.pointerId);
+		const fRow = p.rowIndex * this.cellSize + this.dRow;
+		const fCol = p.colIndex * this.cellSize + this.dCol;
+		const colIndex = Math.floor((fCol + this.cellSize / 2) / this.cellSize);
+		const rowIndex = Math.floor((fRow + this.cellSize / 2) / this.cellSize);
+		if (this.dropableSpots.find((x) => x[0] === colIndex && x[1] === rowIndex)) {
+			this.onGrabedPiecePut(p, colIndex, rowIndex);
+		} else {
+			await this.movePiece(p, p.colIndex, p.rowIndex);
+			this.onPieceGrabLeave(p);
+		}
+		this.grabedPiece = null;
+	}
+	private __onpointermoveandgrab(p: XPiece<T>, e: PointerEvent) {
+		const pieceDiv = p.div!;
+		if (!this.grabedPiece) return;
+		this.dCol = (e.clientX - this.startX) / this.scalingFactor;
+		this.dRow = (this.startY - e.clientY) / this.scalingFactor;
+		const fRow = p.rowIndex * this.cellSize + this.dRow;
+		const fCol = p.colIndex * this.cellSize + this.dCol;
+		pieceDiv.style.bottom = `${fRow}px`;
+		pieceDiv.style.left = `${fCol}px`;
+		const colIndex = Math.floor((fCol + this.cellSize / 2) / this.cellSize);
+		const rowIndex = Math.floor((fRow + this.cellSize / 2) / this.cellSize);
+		if (this.lstHovered && this.lstHovered[0] === colIndex && this.lstHovered[1] === rowIndex) {
+			// nothing
+		} else {
+			if (this.lstHovered) {
+				this.onGrabedPieceHoverExit(p, ...this.lstHovered);
+				this.lstHovered = null;
+				this.hoverDiv?.remove();
+				this.hoverDiv = null;
+			}
+			if (this.dropableSpots.find((x) => x[0] === colIndex && x[1] === rowIndex)) {
+				this.lstHovered = [colIndex, rowIndex];
+				const div = document.createElement('div');
+				this.hoverDiv = div;
+				this.boardDiv!.appendChild(div);
+				div.style.setProperty(`position`, `absolute`);
+				div.style.setProperty(`bottom`, `${rowIndex * this.cellSize}px`);
+				div.style.setProperty(`left`, `${colIndex * this.cellSize}px`);
+				div.style.setProperty(`padding`, `${this.cellSize * 0.04}px`);
+				div.style.setProperty(`border`, `${this.cellSize * 0.04}px solid black`);
+				div.style.setProperty(`z-index`, `3`);
+				div.style.setProperty('height', `${this.cellSize}px`);
+				div.style.setProperty('width', `${this.cellSize}px`);
+				this.onGrabedPieceHover(p, ...this.lstHovered);
+			}
+		}
 	}
 	protected clearPickables() {
 		for (const p of this.pickablePieces) {
@@ -585,79 +676,17 @@ class ChessBoard<T> {
 		if (colIndex >= 8 || colIndex <= -1) return;
 		if (rowIndex >= 8 || rowIndex <= -1) return;
 		if (!this.grabedPiece) return;
-		const div = document.createElement('div');
-		this.dropableDivs.push(div);
-		this.boardDiv!.appendChild(div);
-		div.style.setProperty(`position`, `absolute`);
-		div.style.setProperty(`bottom`, `${rowIndex * this.cellSize}px`);
-		div.style.setProperty(`left`, `${colIndex * this.cellSize}px`);
-		div.style.setProperty(`z-index`, `30`);
-		div.style.setProperty('height', `${this.cellSize}px`);
-		div.style.setProperty('width', `${this.cellSize}px`);
-		div.ondragenter = this.onGrabedPieceHover.bind(this, colIndex, rowIndex);
-		div.ondragleave = this.onGrabedPieceHoverExit.bind(this, colIndex, rowIndex);
-		div.ondrop = this.onGrabedPiecePut.bind(this, colIndex, rowIndex);
-		div.ondragover = this.__ondragover.bind(this);
-	}
-	private __ondragover(ev: DragEvent) {
-		ev.preventDefault();
+		this.dropableSpots.push([colIndex, rowIndex]);
 	}
 	protected clearDropSpots() {
-		this.lstHover = null;
-		for (const div of this.dropableDivs) {
-			div.remove();
-		}
-		this.dropableDivs = [];
+		this.dropableSpots = [];
 	}
-	protected onPieceGrab(p: XPiece<T>, ev: null | DragEvent) {
-		(ev?.target as HTMLDivElement)?.style.setProperty(`cursor`, 'grabbing');
-		p.div!.style.setProperty(`cursor`, 'grabbing');
-		this.grabedPiece = p;
-		// CONTINUE AS HOOKS
-	}
-	protected onPieceGrabLeave(p: XPiece<T>, ev: null | DragEvent) {
-		(ev?.target as HTMLDivElement)?.style.setProperty(`cursor`, 'grab');
-		p.div!.style.setProperty(`cursor`, 'grab');
-		if (p === this.grabedPiece) this.grabedPiece = null;
-		// CONTINUE AS HOOKS
-	}
-	protected onGrabedPieceHover(colIndex: number, rowIndex: number, ev: null | DragEvent) {
-		ev?.preventDefault();
-		if (this.lstHover && this.lstHover[0] === colIndex && this.lstHover[1] === rowIndex) {
-			return false;
-		}
-		this.lstHover = [colIndex, rowIndex];
-		// CONTINUE AS HOOKS
-		return true;
-	}
-	protected onGrabedPieceHoverExit(colIndex: number, rowIndex: number, ev: null | DragEvent) {
-		ev?.preventDefault();
-		if (!(this.lstHover && this.lstHover[0] === colIndex && this.lstHover[1] === rowIndex)) {
-			return false;
-		}
-		this.lstHover = null;
-		// CONTINUE AS HOOKS
-		return true;
-	}
-	protected getGrabedPiece() {
-		return this.grabedPiece;
-	}
-	protected async onGrabedPiecePut(colIndex: number, rowIndex: number, ev: null | DragEvent) {
-		ev?.preventDefault();
-		const p = this.grabedPiece!;
-		this.lstHover = null;
-		this.grabedPiece = null;
-		const rect = this.boardDiv!.getBoundingClientRect();
-		if (ev) {
-			const x = ev.clientX - rect.left;
-			const y = rect.height - (ev.clientY - rect.top);
-			const pieceDiv = p.div!;
-			pieceDiv.style.setProperty(`left`, `${x - this.cellSize * 0.5}px`);
-			pieceDiv.style.setProperty(`bottom`, `${y - this.cellSize * 0.5}px`);
-			await delay(100);
-		}
-		// CONTINUE AS HOOKS
-	}
+	protected abstract onPieceGrab(p: XPiece<T>): void;
+	protected abstract onPieceGrabLeave(p: XPiece<T>): void;
+	protected abstract onGrabedPieceHover(p: XPiece<T>, colIndex: number, rowIndex: number): void;
+	protected abstract onGrabedPieceHoverExit(p: XPiece<T>, colIndex: number, rowIndex: number): void;
+	protected abstract onGrabedPiecePut(p: XPiece<T>, colIndex: number, rowIndex: number): void;
+
 	getCurrentSetup(): Piece<T>[] {
 		return this.pieces.map((x) => x.toPiece());
 	}
@@ -902,7 +931,6 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		}
 	}
 	protected override onFieldClick(colIndex: number, rowIndex: number): void {
-		super.onFieldClick(colIndex, rowIndex);
 		if (this.setup) {
 			this.clearFocusInteractions('*');
 			this.clearFieldClick();
@@ -950,7 +978,6 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		player: Player,
 		rank: Rank
 	): void {
-		super.onSelect(colIndex, rowIndex, player, rank);
 		if (this.setup) {
 			this.insertPiece(new XPiece<PieceMeta>(Pieces.pBlack, rank, colIndex, 7, { isFirst: true }));
 			this.insertPiece(new XPiece<PieceMeta>(Pieces.pWhite, rank, colIndex, 0, { isFirst: true }));
@@ -981,7 +1008,6 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		this.gameLoop();
 	}
 	protected override onSelectCancel(): void {
-		super.onSelectCancel();
 		this.gameLoop();
 	}
 	getPieceStatus(
@@ -1002,8 +1028,7 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		if (p.player !== self) return 'oponent';
 		return 'self';
 	}
-	protected override onPieceGrab(p: XPiece<PieceMeta>, ev: null | DragEvent): void {
-		super.onPieceGrab(p, ev);
+	protected override onPieceGrab(p: XPiece<PieceMeta>): void {
 		this.clearFieldClick();
 		this.clearFocusInteractions('*');
 		this.focusInteractions(p.colIndex, p.rowIndex, 'primary');
@@ -1150,8 +1175,7 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 			this.allowDropSpot(colIndex, rowIndex);
 		}
 	}
-	protected override onPieceGrabLeave(p: XPiece<PieceMeta>, ev: null | DragEvent): void {
-		super.onPieceGrabLeave(p, ev);
+	protected override onPieceGrabLeave(p: XPiece<PieceMeta>): void {
 		this.gameLoop();
 	}
 	protected movementInfo(
@@ -1271,27 +1295,21 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		};
 	}
 	protected override onGrabedPieceHover(
+		p: XPiece<PieceMeta>,
 		colIndex: number,
-		rowIndex: number,
-		ev: null | DragEvent
-	): boolean {
-		const changed = super.onGrabedPieceHover(colIndex, rowIndex, ev);
-		if (!changed) return changed;
-		this.clearExplosiveInteractions();
-		this.clearFocusInteractions('danger');
-		this.clearMarker();
-		const p = this.getGrabedPiece()!;
+		rowIndex: number
+	): void {
 		const info = this.movementInfo(p, colIndex, rowIndex);
-		if (info.type === 'moved') return changed;
+		if (info.type === 'moved') return;
 		this.focusInteractions(colIndex, rowIndex, 'danger');
 		if (info.type === 'block-spawn') {
 			this.showMarker(info.spawn.colIndex, info.spawn.rowIndex, `death`);
-			return changed;
+			return;
 		}
 		if (info.type === 'pawn-kill') {
 			this.showMarker(colIndex, rowIndex, `coin-${info.reward}`);
 			this.focusInteractions(colIndex, rowIndex, 'danger');
-			return changed;
+			return;
 		}
 		if (info.type === 'knight-kill') {
 			this.showMarker(
@@ -1299,7 +1317,7 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 				rowIndex,
 				info.willDie ? 'death' : info.killCount === 2 ? `takes-2ed` : 'takes-1st'
 			);
-			return changed;
+			return;
 		}
 		if (info.type === 'explosion') {
 			this.showMarker(colIndex, rowIndex, `explodes`);
@@ -1309,30 +1327,26 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 			for (const p of info.explosionGarded) {
 				this.showMarker(p.colIndex, p.rowIndex, 'shield');
 			}
-			return changed;
+			return;
 		}
 		throw new Error('Unknown');
 	}
 
 	protected override onGrabedPieceHoverExit(
+		p: XPiece<PieceMeta>,
 		colIndex: number,
-		rowIndex: number,
-		ev: null | DragEvent
-	): boolean {
-		const changed = super.onGrabedPieceHoverExit(colIndex, rowIndex, ev);
-		if (!changed) return changed;
+		rowIndex: number
+	): void {
 		this.clearExplosiveInteractions();
 		this.clearFocusInteractions('danger');
 		this.clearMarker();
-		return changed;
 	}
 
 	protected override async onGrabedPiecePut(
+		p: XPiece<PieceMeta>,
 		colIndex: number,
-		rowIndex: number,
-		ev: null | DragEvent
+		rowIndex: number
 	): Promise<void> {
-		const p = this.getGrabedPiece()!;
 		const info = this.movementInfo(p, colIndex, rowIndex);
 		this.incr(Pieces.pBlack, 0.5);
 		this.incr(Pieces.pWhite, 0.5);
@@ -1394,7 +1408,6 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		} else {
 			throw new Error('Unkonwn!');
 		}
-		await super.onGrabedPiecePut(colIndex, rowIndex, ev);
 		await this.movePiece(p, colIndex, rowIndex);
 		if (info.type === 'pawn-kill') {
 			this.removePiece(p);
@@ -1481,41 +1494,29 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		await delay(150);
 		this.onSelect(7, 7, Pieces.pBlack, Pieces.rRook);
 		await delay(150);
-		this.onPieceGrab(this.pieceAt(7, 1)!, null);
+		this.onPieceGrab(this.pieceAt(7, 1)!);
 		await delay(250);
-		this.onGrabedPieceHover(7, 3, null);
+		this.onGrabedPiecePut(this.pieceAt(7, 1)!, 7, 3);
 		await delay(250);
-		this.onGrabedPiecePut(7, 3, null);
+		this.onPieceGrab(this.pieceAt(7, 6)!);
 		await delay(250);
-		this.onPieceGrab(this.pieceAt(7, 6)!, null);
+		this.onGrabedPiecePut(this.pieceAt(7, 6)!, 7, 4);
 		await delay(250);
-		this.onGrabedPieceHover(7, 4, null);
+		this.onPieceGrab(this.pieceAt(7, 0)!);
 		await delay(250);
-		this.onGrabedPiecePut(7, 4, null);
+		this.onGrabedPiecePut(this.pieceAt(7, 0)!, 7, 2);
 		await delay(250);
-		this.onPieceGrab(this.pieceAt(7, 0)!, null);
+		this.onPieceGrab(this.pieceAt(7, 7)!);
 		await delay(250);
-		this.onGrabedPieceHover(7, 2, null);
+		this.onGrabedPiecePut(this.pieceAt(7, 7)!, 7, 5);
 		await delay(250);
-		this.onGrabedPiecePut(7, 2, null);
+		this.onPieceGrab(this.pieceAt(7, 2)!);
 		await delay(250);
-		this.onPieceGrab(this.pieceAt(7, 7)!, null);
+		this.onGrabedPiecePut(this.pieceAt(7, 2)!, 5, 2);
 		await delay(250);
-		this.onGrabedPieceHover(7, 5, null);
+		this.onPieceGrab(this.pieceAt(4, 6)!);
 		await delay(250);
-		this.onGrabedPiecePut(7, 5, null);
-		await delay(250);
-		this.onPieceGrab(this.pieceAt(7, 2)!, null);
-		await delay(250);
-		this.onGrabedPieceHover(5, 2, null);
-		await delay(250);
-		this.onGrabedPiecePut(5, 2, null);
-		await delay(250);
-		this.onPieceGrab(this.pieceAt(4, 6)!, null);
-		await delay(250);
-		this.onGrabedPieceHover(4, 4, null);
-		await delay(250);
-		this.onGrabedPiecePut(4, 4, null);
+		this.onGrabedPiecePut(this.pieceAt(4, 6)!, 4, 4);
 		await delay(250);
 	}
 }

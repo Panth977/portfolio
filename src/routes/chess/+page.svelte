@@ -3,29 +3,52 @@
 	import { onMount } from 'svelte';
 
 	let canvasDiv: HTMLDivElement;
+	let canvasDivParent: HTMLDivElement;
 	let chess: ChesXplore;
+	const boardSize = 800;
+	const logsHeightSize = 800;
+	const logsWidthSize = 300;
+	const widgetWidthSize = boardSize + logsWidthSize;
+	const widgetHeightSize = Math.max(boardSize, logsHeightSize);
+	let widgetScaleFactor = 1;
 	function setupChess() {
 		if (chess && !confirm('Are you shure you would like to reset the existing game?')) return;
 		canvasDiv.innerHTML = ``;
 		const rootDiv = document.createElement('div');
 		const logsDiv = document.createElement('div');
 		canvasDiv.append(rootDiv, logsDiv);
-		const isFirstTime = typeof chess === 'undefined';
-		chess = new ChesXplore(rootDiv, 800);
-		chess.mountLogs(logsDiv, 800, 400);
-		if (isFirstTime) chess.fakerun();
+		chess = new ChesXplore(rootDiv, boardSize);
+		chess.setScalingFactor(widgetScaleFactor);
+		chess.mountLogs(logsDiv, logsHeightSize, logsWidthSize);
 	}
-	onMount(setupChess);
+	function handleResize() {
+		const currentWidth = window.innerWidth;
+		widgetScaleFactor = currentWidth >= widgetWidthSize ? 1 : currentWidth / widgetWidthSize;
+		canvasDiv.style.transformOrigin = 'top left';
+		canvasDiv.style.transform = `scale(${widgetScaleFactor})`;
+		canvasDiv.style.width = `${widgetWidthSize}px`;
+		canvasDiv.style.height = `${widgetHeightSize}px`;
+		const scaledW = Math.round(widgetWidthSize * widgetScaleFactor);
+		const scaledH = Math.round(widgetHeightSize * widgetScaleFactor);
+		canvasDivParent.style.width = `${scaledW}px`;
+		canvasDivParent.style.height = `${scaledH}px`;
+		canvasDivParent.style.overflow = 'hidden';
+		chess?.setScalingFactor(widgetScaleFactor);
+	}
+	onMount(() => {
+		handleResize();
+		setupChess();
+		window.addEventListener('resize', handleResize);
+		chess.fakerun();
+	});
 </script>
 
 <div class="mx-auto max-w-4xl p-6">
 	<h1 class="text-center text-3xl font-bold md:text-4xl">🏰 Explosive Chess</h1>
 </div>
-<div
-	bind:this={canvasDiv}
-	style="min-width: 1200px; min-height: 800px;"
-	class="m-2 mx-auto flex h-min w-min border-1 border-gray-500"
-></div>
+<div bind:this={canvasDivParent} class="mx-auto my-2 border-1 border-gray-500">
+	<div bind:this={canvasDiv} class="flex"></div>
+</div>
 <div class="mx-auto max-w-4xl p-6">
 	<button
 		class="border-1 border-r-4 border-s-slate-950 text-center text-3xl font-bold md:text-4xl"
