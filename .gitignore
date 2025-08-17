@@ -9,6 +9,7 @@ node_modules
 **/firebase_storage
 /build
 **/assets
+**/chess
 
 # OS
 .DS_Store
