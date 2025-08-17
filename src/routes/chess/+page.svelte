@@ -21,9 +21,40 @@
 		chess.setScalingFactor(widgetScaleFactor);
 		chess.mountLogs(logsDiv, logsHeightSize, logsWidthSize);
 	}
+	function Size() {
+		if (document.fullscreenElement || (document as any).webkitFullscreenElement) {
+			// Native fullscreen || Safari prefix
+			return {
+				currentWidth: screen.width * 0.95,
+				currentHeight: screen.height * 0.95,
+				widgetWidthSize,
+				widgetHeightSize,
+				get widgetScaleFactor() {
+					return Math.min(
+						this.currentHeight / this.widgetHeightSize,
+						this.currentWidth / this.widgetWidthSize
+					);
+				}
+			};
+		} else {
+			// Not in fullscreen
+			return {
+				currentWidth: window.innerWidth,
+				currentHeight: window.innerHeight,
+				widgetWidthSize,
+				widgetHeightSize,
+				get widgetScaleFactor() {
+					return Math.min(
+						window.innerHeight >= widgetHeightSize ? 1 : window.innerHeight / widgetHeightSize,
+						window.innerWidth >= widgetWidthSize ? 1 : window.innerWidth / widgetWidthSize
+					);
+				}
+			};
+		}
+	}
 	function handleResize() {
-		const currentWidth = window.innerWidth;
-		widgetScaleFactor = currentWidth >= widgetWidthSize ? 1 : currentWidth / widgetWidthSize;
+		const { currentWidth, currentHeight, widgetHeightSize, widgetWidthSize, widgetScaleFactor } =
+			Size();
 		canvasDiv.style.transformOrigin = 'top left';
 		canvasDiv.style.transform = `scale(${widgetScaleFactor})`;
 		canvasDiv.style.width = `${widgetWidthSize}px`;
@@ -36,11 +67,86 @@
 		chess?.setScalingFactor(widgetScaleFactor);
 	}
 	onMount(() => {
+		document.addEventListener('fullscreenchange', onFsChange);
+		document.addEventListener('webkitfullscreenchange', onFsChange);
 		handleResize();
 		setupChess();
 		window.addEventListener('resize', handleResize);
 		chess.fakerun();
 	});
+	// fullscreen.ts
+	async function enterFullscreen(el: HTMLElement) {
+		const req =
+			el.requestFullscreen ||
+			// @ts-ignore - vendor prefixes
+			el.webkitRequestFullscreen ||
+			// Older Safari
+			(el as any).webkitEnterFullscreen;
+		if (req) {
+			try {
+				await req.call(el);
+				document.documentElement.classList.add('fs-active');
+				// Try to lock orientation for a better gaming experience (best-effort)
+				// This can be ignored/rejected on some platforms.
+				// @ts-ignore
+				if (screen.orientation?.lock) screen.orientation.lock('landscape').catch(() => {});
+				return;
+			} catch {
+				// fall through to CSS fallback
+			}
+		}
+
+		// Fallback: simulate fullscreen by pinning element to viewport
+		el.classList.add('fs-fallback');
+		document.documentElement.classList.add('fs-active');
+	}
+	async function exitFullscreen(el?: HTMLElement) {
+		const isNative =
+			document.fullscreenElement ||
+			// @ts-ignore
+			document.webkitFullscreenElement;
+
+		if (isNative) {
+			const exit =
+				document.exitFullscreen ||
+				// @ts-ignore
+				document.webkitExitFullscreen;
+			try {
+				await exit.call(document);
+			} finally {
+				document.documentElement.classList.remove('fs-active');
+			}
+		} else {
+			// Fallback off
+			el?.classList.remove('fs-fallback');
+			document.documentElement.classList.remove('fs-active');
+		}
+	}
+	async function toggleFullscreen(el: HTMLElement) {
+		const isNative =
+			document.fullscreenElement === el ||
+			// @ts-ignore
+			document.webkitFullscreenElement === el;
+
+		const isFallback = el.classList.contains('fs-fallback');
+
+		if (isNative || isFallback) return exitFullscreen(el);
+		return enterFullscreen(el);
+	}
+	function onFsChange() {
+		if (
+			!document.fullscreenElement &&
+			// @ts-ignore
+			!document.webkitFullscreenElement
+		) {
+			document.documentElement.classList.remove('fs-active');
+		}
+	}
+	function goFullscreen() {
+		if (!chess || !confirm('Enable fullscreen?')) return;
+		toggleFullscreen(canvasDivParent);
+		handleResize();
+	}
 </script>
 
 <div class="mx-auto max-w-4xl p-6">
@@ -55,6 +161,12 @@
 		onclick={setupChess}
 	>
 		Reset?
+	</button>
+	<button
+		class="border-1 border-r-4 border-s-slate-950 text-center text-3xl font-bold md:text-4xl"
+		onclick={goFullscreen}
+	>
+		Full Screen Mode?
 	</button>
 </div>
 <div class="mx-auto max-w-4xl p-6">
@@ -214,3 +326,25 @@
 		</p>
 	</section>
 </div>
+
+<style>
+	/* Lock page scroll while in fullscreen (native or fallback) */
+	:global(.fs-active, .fs-active body) {
+		overflow: hidden !important;
+	}
+
+	/* Native fullscreen styles for your game container */
+	:fullscreen {
+		background: #000; /* optional: letterbox background */
+	}
+
+	/* Fallback "fullscreen" when the API isn't available/allowed */
+	:global(.fs-fallback) {
+		position: fixed !important;
+		inset: 0 !important;
+		width: 100vw !important;
+		height: 100vh !important;
+		background: #000 !important;
+		z-index: 999999 !important;
+	}
+</style>
