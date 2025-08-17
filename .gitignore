@@ -8,8 +8,8 @@ node_modules
 /.svelte-kit
 **/firebase_storage
 /build
-**/assets
-**/chess
+static/**/assets
+static/**/chess
 
 # OS
 .DS_Store
