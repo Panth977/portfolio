@@ -22,6 +22,7 @@
 		chess.mountLogs(logsDiv, logsHeightSize, logsWidthSize);
 	}
 	function Size() {
+		console.log(document.fullscreenElement || (document as any).webkitFullscreenElement);
 		if (document.fullscreenElement || (document as any).webkitFullscreenElement) {
 			// Native fullscreen || Safari prefix
 			return {
@@ -53,8 +54,7 @@
 		}
 	}
 	function handleResize() {
-		const { currentWidth, currentHeight, widgetHeightSize, widgetWidthSize, widgetScaleFactor } =
-			Size();
+		const { widgetHeightSize, widgetWidthSize, widgetScaleFactor } = Size();
 		canvasDiv.style.transformOrigin = 'top left';
 		canvasDiv.style.transform = `scale(${widgetScaleFactor})`;
 		canvasDiv.style.width = `${widgetWidthSize}px`;
@@ -69,9 +69,9 @@
 	onMount(() => {
 		document.addEventListener('fullscreenchange', onFsChange);
 		document.addEventListener('webkitfullscreenchange', onFsChange);
-		handleResize();
 		setupChess();
 		window.addEventListener('resize', handleResize);
+		handleResize();
 		chess.fakerun();
 	});
 	// fullscreen.ts
@@ -141,6 +141,7 @@
 		) {
 			document.documentElement.classList.remove('fs-active');
 		}
+		handleResize();
 	}
 	function goFullscreen() {
 		if (!chess || !confirm('Enable fullscreen?')) return;
@@ -149,6 +150,9 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Explosive Chess</title>
+</svelte:head>
 <div class="mx-auto max-w-4xl p-6">
 	<h1 class="text-center text-3xl font-bold md:text-4xl">🏰 Explosive Chess</h1>
 </div>
@@ -242,6 +246,78 @@
 	</section>
 
 	<section class="mb-8">
+		<h2 class="mb-2 text-xl font-semibold text-blue-700">Overview</h2>
+		<div class="overflow-x-auto">
+			<table class="min-w-full overflow-hidden rounded-lg border border-gray-300">
+				<thead class="bg-gray-800 text-white">
+					<tr>
+						<th class="px-4 py-2 text-left">Piece</th>
+						<th class="px-4 py-2">Attact</th>
+						<th class="px-4 py-2">Shild</th>
+						<th class="px-4 py-2">Power</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-gray-200 bg-slate-900">
+					<tr>
+						<td class="px-4 py-2 font-medium">
+							<img src="chess/pieces/WK.png" alt="WhiteKing" class="inline h-[1rem]" />
+							King
+						</td>
+						<td class="px-4 py-2 text-center">NO KILLS</td>
+						<td class="px-4 py-2 text-center">🛡️ shilds on explosion</td>
+						<td class="px-4 py-2 text-center">Can recurute more players</td>
+					</tr>
+					<tr>
+						<td class="px-4 py-2 font-medium">
+							<img src="chess/pieces/WQ.png" alt="WhiteQueen" class="inline h-[1rem]" />
+							Queen
+						</td>
+						<td class="px-4 py-2 text-center">1 Kill + 💥 blast</td>
+						<td class="px-4 py-2 text-center">💀 dies to explosion</td>
+						<td class="px-4 py-2 text-center">💥 blast, all direction except moveing direction</td>
+					</tr>
+					<tr>
+						<td class="px-4 py-2 font-medium">
+							<img src="chess/pieces/WR.png" alt="WhiteRook" class="inline h-[1rem]" />
+							Rook
+						</td>
+						<td class="px-4 py-2 text-center">1 Kill + 💥 blast</td>
+						<td class="px-4 py-2 text-center">💀 dies to explosion</td>
+						<td class="px-4 py-2 text-center">💥 blast, digonal in moveing direction</td>
+					</tr>
+					<tr>
+						<td class="px-4 py-2 font-medium">
+							<img src="chess/pieces/WB.png" alt="WhiteBishop" class="inline h-[1rem]" />
+							Bishop
+						</td>
+						<td class="px-4 py-2 text-center">1 Kill + 💥 blast</td>
+						<td class="px-4 py-2 text-center">💀 dies to explosion</td>
+						<td class="px-4 py-2 text-center">💥 blast, digonal in moveing direction</td>
+					</tr>
+					<tr>
+						<td class="px-4 py-2 font-medium">
+							<img src="chess/pieces/WN.png" alt="WhiteKnight" class="inline h-[1rem]" />
+							Knight
+						</td>
+						<td class="px-4 py-2 text-center">3 Kills, then 💀 dies</td>
+						<td class="px-4 py-2 text-center">💀 dies to explosion</td>
+						<td class="px-4 py-2 text-center">‼️, angry snipper higest kill count</td>
+					</tr>
+					<tr>
+						<td class="px-4 py-2 font-medium">
+							<img src="chess/pieces/WP.png" alt="WhitePawn" class="inline h-[1rem]" />
+							Pawn
+						</td>
+						<td class="px-4 py-2 text-center">1 Kills + 💰 Reward</td>
+						<td class="px-4 py-2 text-center">🛡️ shilds on explosion</td>
+						<td class="px-4 py-2 text-center">mighty pawn, shilds explosions & </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<section class="mb-8">
 		<h2 class="mb-2 text-xl font-semibold text-blue-700">Wallet & Recruitment</h2>
 		<ul class="list-inside list-disc space-y-1">
 			<li>The King holds the treasury (“wallet”) and can recruit new pieces.</li>
@@ -273,7 +349,7 @@
 							<img src="chess/pieces/WQ.png" alt="WhiteQueen" class="inline h-[1rem]" />
 							Queen
 						</td>
-						<td class="px-4 py-2 text-center">7 coins</td>
+						<td class="px-4 py-2 text-center">-7 coins</td>
 						<td class="px-4 py-2 text-center">Base row only</td>
 						<td class="px-4 py-2 text-center">+3 coins</td>
 					</tr>
@@ -282,7 +358,7 @@
 							<img src="chess/pieces/WR.png" alt="WhiteRook" class="inline h-[1rem]" />
 							Rook
 						</td>
-						<td class="px-4 py-2 text-center">5 coins</td>
+						<td class="px-4 py-2 text-center">-5 coins</td>
 						<td class="px-4 py-2 text-center">Up to 2nd row</td>
 						<td class="px-4 py-2 text-center">+2 coins</td>
 					</tr>
@@ -291,7 +367,7 @@
 							<img src="chess/pieces/WB.png" alt="WhiteBishop" class="inline h-[1rem]" />
 							Bishop
 						</td>
-						<td class="px-4 py-2 text-center">5 coins</td>
+						<td class="px-4 py-2 text-center">-5 coins</td>
 						<td class="px-4 py-2 text-center">Up to 2nd row</td>
 						<td class="px-4 py-2 text-center">+2 coins</td>
 					</tr>
@@ -300,7 +376,7 @@
 							<img src="chess/pieces/WN.png" alt="WhiteKnight" class="inline h-[1rem]" />
 							Knight
 						</td>
-						<td class="px-4 py-2 text-center">4.5 coins</td>
+						<td class="px-4 py-2 text-center">-4.5 coins</td>
 						<td class="px-4 py-2 text-center">Up to 3rd row</td>
 						<td class="px-4 py-2 text-center">+2.5 coins</td>
 					</tr>
@@ -309,7 +385,7 @@
 							<img src="chess/pieces/WP.png" alt="WhitePawn" class="inline h-[1rem]" />
 							Pawn
 						</td>
-						<td class="px-4 py-2 text-center">3 coins</td>
+						<td class="px-4 py-2 text-center">-3 coins</td>
 						<td class="px-4 py-2 text-center">Up to 3rd row</td>
 						<td class="px-4 py-2 text-center">+1.5 coins</td>
 					</tr>

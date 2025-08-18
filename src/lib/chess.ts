@@ -492,7 +492,13 @@ abstract class ChessBoard<T> {
 		this.fieldClickDivs = [];
 	}
 	protected abstract onFieldClick(colIndex: number, rowIndex: number): void;
-	protected openSelection(colIndex: number, rowIndex: number, player: Player, ranks: Rank[]) {
+	protected openSelection(
+		colIndex: number,
+		rowIndex: number,
+		player: Player,
+		ranks: Rank[],
+		cancelable: boolean
+	) {
 		if (colIndex >= 8 || colIndex <= -1) return;
 		if (rowIndex >= 8 || rowIndex <= -1) return;
 		if (this.selectionPopup) return;
@@ -505,7 +511,8 @@ abstract class ChessBoard<T> {
 		let X = colIndex * this.cellSize;
 		let Y = rowIndex * this.cellSize;
 		const height = selecetionCellSize + (2 * this.cellSize) / 50;
-		const width = (ranks.length + 1) * selecetionCellSize + (2 * this.cellSize) / 50;
+		const width =
+			(ranks.length + (cancelable ? 1 : 0)) * selecetionCellSize + (2 * this.cellSize) / 50;
 		if (X + width > this.cellSize * 8) {
 			X = this.cellSize * 8 - width;
 		}
@@ -544,18 +551,20 @@ abstract class ChessBoard<T> {
 			}
 			div.onclick = this.onSelect.bind(this, colIndex, rowIndex, player, rank);
 		}
-		const div = document.createElement('div');
-		selectionDiv.append(div);
-		div.style.setProperty(`cursor`, `pointer`);
-		div.style.setProperty(`background-image`, `url(chess/x.png)`);
-		div.style.setProperty(`background-size`, `cover`);
-		div.style.setProperty(`background-repeat`, `no-repeat`);
-		div.style.setProperty(`background-position`, `center`);
-		div.style.setProperty('height', `${selecetionCellSize}px`);
-		div.style.setProperty('width', `${selecetionCellSize}px`);
-		div.style.setProperty(`background-color`, `white`);
-		div.style.setProperty(`color`, `black`);
-		div.onclick = this.onSelectCancel.bind(this);
+		if (cancelable) {
+			const div = document.createElement('div');
+			selectionDiv.append(div);
+			div.style.setProperty(`cursor`, `pointer`);
+			div.style.setProperty(`background-image`, `url(chess/x.png)`);
+			div.style.setProperty(`background-size`, `cover`);
+			div.style.setProperty(`background-repeat`, `no-repeat`);
+			div.style.setProperty(`background-position`, `center`);
+			div.style.setProperty('height', `${selecetionCellSize}px`);
+			div.style.setProperty('width', `${selecetionCellSize}px`);
+			div.style.setProperty(`background-color`, `white`);
+			div.style.setProperty(`color`, `black`);
+			div.onclick = this.onSelectCancel.bind(this);
+		}
 	}
 	protected abstract onSelect(colIndex: number, rowIndex: number, player: Player, rank: Rank): void;
 	protected abstract onSelectCancel(): void;
@@ -698,15 +707,23 @@ type PieceMeta = {
 	isFirst?: boolean;
 	killed?: number;
 	isSpawning?: boolean;
+	movedFrom?: [number, number];
 };
 type SetupLog = {
 	type: 'setup';
 	piece: Piece<PieceMeta>[];
+	walletSnap: Record<Player, number>;
 };
 type MoveLog = {
 	type: 'move';
 	piece: Piece<PieceMeta>;
 	to: [Col, Row];
+	walletSnap: Record<Player, number>;
+};
+type UpgradeLog = {
+	type: 'upgrade';
+	piece: Piece<PieceMeta>;
+	upgradeTo: Piece<PieceMeta>;
 	walletSnap: Record<Player, number>;
 };
 type MoveAttackLog = {
@@ -719,22 +736,19 @@ type MoveAttackLog = {
 	rewardCoins: number;
 	walletSnap: Record<Player, number>;
 };
-type SpawnSetupLog = {
-	type: 'spawn-setup';
+type SpawningLog = {
+	type: 'spawning';
 	cost: number;
 	piece: Piece<PieceMeta>;
 	walletSnap: Record<Player, number>;
 };
-type SpawnLog = {
-	type: 'spawn';
-	spawned: Piece<PieceMeta>;
+type SpawnBlockLog = {
+	type: 'block-spawn';
+	piece: Piece<PieceMeta>;
+	spawnBlocked: Piece<PieceMeta>;
+	walletSnap: Record<Player, number>;
 };
-type SpawnKillLog = {
-	type: 'spawn-kill';
-	spawnKilled: Piece<PieceMeta>;
-	killed: Piece<PieceMeta>;
-};
-type Log = SetupLog | MoveLog | MoveAttackLog | SpawnLog | SpawnKillLog | SpawnSetupLog;
+type Log = SetupLog | MoveLog | MoveAttackLog | UpgradeLog | SpawnBlockLog | SpawningLog;
 export class ChesXplore extends ChessBoard<PieceMeta> {
 	constructor(root: HTMLElement, boardSize: number) {
 		super(root, boardSize / 8, [
@@ -782,6 +796,7 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 	private logsDiv?: HTMLElement;
 	private logHeightSize: number = 0;
 	private logWidthSize: number = 0;
+	private upgrade?: XPiece<PieceMeta>;
 	mountLogs(logsDiv: HTMLElement, height: number, width: number) {
 		this.logsDiv = logsDiv;
 		this.logHeightSize = height;
@@ -828,6 +843,9 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 			const div = document.createElement('div');
 			div.style.setProperty('border-bottom', '1px solid black');
 			logsDiv.appendChild(div);
+			function previewRank(player: Player, rank: Rank) {
+				return `<img src="chess/pieces/${player}${rank}.png" style="display: inline; height: 20px" />`;
+			}
 			function previewPiece(p: Piece<PieceMeta>) {
 				return `<img src="chess/pieces/${p[0]}${p[1]}.png" style="display: inline; height: 20px" />${p[2].toLowerCase()}${p[3]}`;
 			}
@@ -838,21 +856,18 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 				div.innerHTML = `SETUP: ${log.piece
 					.filter((x) => x[3] === Position.r8)
 					.sort((x, y) => XPiece.colIndexOf(x[2]) - XPiece.colIndexOf(y[2]))
-					.map(
-						(x) =>
-							`<img src="chess/pieces/${Pieces.pBlack}${x[1]}.png" style="display: inline; height: 20px" />`
-					)
+					.map((x) => previewRank(x[0], x[1]))
 					.join('')}`;
 			} else if (log.type === 'move') {
 				div.innerHTML = `MOVE: ${previewPiece(log.piece)} → ${previewLoc(log.to)}`;
-			} else if (log.type === 'spawn-setup') {
-				div.innerHTML = `SPAWN-SETUP: ${previewPiece(log.piece)} [-💲${log.cost.toFixed(1)}]`;
-			} else if (log.type === 'spawn') {
-				div.innerHTML = `spawned: ${previewPiece(log.spawned)}`;
-			} else if (log.type === 'spawn-kill') {
-				div.innerHTML = `spawned-and-killed: ${previewPiece(log.spawnKilled)} (${previewPiece(log.killed)})`;
+			} else if (log.type === 'upgrade') {
+				div.innerHTML = `MOVE: ⚡️ ${previewPiece(log.piece)} → ${previewPiece(log.upgradeTo)}`;
+			} else if (log.type === 'spawning') {
+				div.innerHTML = `SPAWN-SETUP: 🎊 ${previewPiece(log.piece)} [-💲${log.cost.toFixed(1)}]`;
+			} else if (log.type === 'block-spawn') {
+				div.innerHTML = `block-spawn: 💀 ${previewPiece(log.piece)} → 🚫 ${previewPiece(log.spawnBlocked)}`;
 			} else if (log.type === 'move-attack') {
-				div.innerHTML = `MOVE-ATTACK: ${log.selfKilled ? '💀' : log.piece[4].killed === 2 ? '‼️' : '❗️'} ${previewPiece(log.piece)} → (${previewPiece(log.targetKilled)}) ${log.blasticKilled.length ? `[💥 ${log.blasticKilled.map(previewPiece).join(' ')}]` : ''} ${log.rewardCoins ? `[+💲${log.rewardCoins}]` : ''}`;
+				div.innerHTML = `ATTACK: ${log.selfKilled ? '💀' : log.piece[4].killed === 2 ? '‼️' : '❗️'} ${previewPiece(log.piece)} → (${previewPiece(log.targetKilled)}) ${log.blasticKilled.length ? `[💥 ${log.blasticKilled.map(previewPiece).join(' ')}]` : ''} ${log.rewardCoins ? `[+💲${log.rewardCoins}]` : ''}`;
 			} else {
 				div.innerHTML = `⚠️ UNKNOWN ⚠️`;
 			}
@@ -887,7 +902,6 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 				delete p.meta.isSpawning;
 				p.meta.isFirst = true;
 				this.spawning.delete(p);
-				this.logs.push({ type: 'spawn', spawned: p.toPiece() });
 			} else {
 				p.meta.isSpawning = true;
 			}
@@ -904,7 +918,11 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		SETUP: if (this.setup) {
 			if (this.setup.row.every((x) => x !== null)) {
 				this.turn = Pieces.pWhite;
-				this.logs.push({ type: 'setup', piece: this.getCurrentSetup() });
+				this.logs.push({
+					type: 'setup',
+					piece: this.getCurrentSetup(),
+					walletSnap: structuredClone(this.wallet)
+				});
 				delete this.setup;
 				this.refreshLogs();
 				break SETUP;
@@ -915,6 +933,17 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 					this.focusInteractions(colIndex, 7, 'secondary');
 				}
 			}
+			return;
+		}
+		if (this.upgrade) {
+			this.focusInteractions(this.upgrade.colIndex, this.upgrade.rowIndex, 'primary');
+			this.openSelection(
+				this.upgrade.colIndex,
+				this.upgrade.rowIndex,
+				this.turn,
+				[Pieces.rQueen, Pieces.rBishop, Pieces.rRook, Pieces.rKnight],
+				false
+			);
 			return;
 		}
 		for (const p of this.getPieces()) {
@@ -939,7 +968,7 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 			for (const [rank, avl] of Object.entries(this.setup.canPut)) {
 				if (avl > 0) ranks.push(rank as Rank);
 			}
-			this.openSelection(colIndex, rowIndex, Pieces.pBlack, ranks);
+			this.openSelection(colIndex, rowIndex, Pieces.pBlack, ranks, true);
 			return;
 		}
 		this.clearPickables();
@@ -964,7 +993,7 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 			}
 		}
 		if (ranks.length) {
-			this.openSelection(colIndex, rowIndex, this.turn, ranks);
+			this.openSelection(colIndex, rowIndex, this.turn, ranks, true);
 		} else {
 			this.gameLoop();
 		}
@@ -986,6 +1015,28 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 			this.gameLoop();
 			return;
 		}
+		if (this.upgrade) {
+			const p = new XPiece(player, rank, colIndex, rowIndex, {});
+			this.incr(Pieces.pBlack, 0.5);
+			this.incr(Pieces.pWhite, 0.5);
+			this.logs.push({
+				type: 'upgrade',
+				upgradeTo: p.toPiece(),
+				piece: this.upgrade.toPiece(),
+				walletSnap: structuredClone(this.wallet)
+			});
+			this.insertPiece(p);
+			this.removePiece(this.upgrade);
+			if (this.turn === Pieces.pBlack) {
+				this.turn = Pieces.pWhite;
+			} else {
+				this.turn = Pieces.pBlack;
+			}
+			delete this.upgrade;
+			this.gameLoop();
+			this.refreshLogs();
+			return;
+		}
 		const p = new XPiece(this.turn, rank, colIndex, rowIndex, { isSpawning: true });
 		this.insertPiece(p);
 		const cost = ChesXplore.Cost[rank as Exclude<Rank, typeof Pieces.rKing>][0];
@@ -993,7 +1044,7 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		this.incr(Pieces.pBlack, 0.5);
 		this.incr(Pieces.pWhite, 0.5);
 		this.logs.push({
-			type: 'spawn-setup',
+			type: 'spawning',
 			cost,
 			piece: p.toPiece(),
 			walletSnap: structuredClone(this.wallet)
@@ -1350,6 +1401,22 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 		const info = this.movementInfo(p, colIndex, rowIndex);
 		this.incr(Pieces.pBlack, 0.5);
 		this.incr(Pieces.pWhite, 0.5);
+		if (
+			info.type === 'moved' &&
+			p.rank === Pieces.rPawn &&
+			(this.turn === Pieces.pBlack ? rowIndex === 0 : rowIndex === 7)
+		) {
+			this.upgrade = p;
+			this.focusInteractions(colIndex, rowIndex, 'primary');
+			this.openSelection(
+				colIndex,
+				rowIndex,
+				this.turn,
+				[Pieces.rQueen, Pieces.rBishop, Pieces.rRook, Pieces.rKnight],
+				false
+			);
+			return;
+		}
 		if (info.type === 'moved') {
 			this.logs.push({
 				type: 'move',
@@ -1366,9 +1433,10 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 			});
 			this.spawning.delete(info.spawn);
 			this.logs.push({
-				type: 'spawn-kill',
-				killed: info.spawn.toPiece(),
-				spawnKilled: p.toPiece()
+				type: 'block-spawn',
+				spawnBlocked: info.spawn.toPiece(),
+				piece: p.toPiece(),
+				walletSnap: structuredClone(this.wallet)
 			});
 		} else if (info.type === 'pawn-kill') {
 			this.incr(this.turn, info.reward);
@@ -1434,7 +1502,7 @@ export class ChesXplore extends ChessBoard<PieceMeta> {
 				this.removePiece(p);
 			}
 		}
-		delete p.meta.isFirst;
+		if (p.meta.isFirst) delete p.meta.isFirst;
 		if (this.turn === Pieces.pBlack) {
 			this.turn = Pieces.pWhite;
 		} else {
