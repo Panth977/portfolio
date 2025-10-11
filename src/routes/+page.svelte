@@ -200,7 +200,7 @@
 </svelte:head>
 
 <div class="relative">
-	<div class="absolute z-0 h-full w-full opacity-50">
+	<div class="absolute z-0 h-full w-full opacity-35">
 		<Squares />
 	</div>
 	<div class="page-block p-4 md:px-10">
@@ -321,7 +321,7 @@
 </div>
 <!-- <div class="w-full border border-dashed border-[deeppink] opacity-30"></div> -->
 <div class="relative">
-	<div class="absolute z-0 h-full w-full opacity-50">
+	<div class="absolute z-0 h-full w-full opacity-35">
 		<Squares />
 	</div>
 	<div class="page-block space-y-5 p-4 font-mono md:space-y-10 md:px-10">
@@ -466,7 +466,7 @@
 	</div>
 </div>
 <div class="relative">
-	<div class="absolute z-0 h-full w-full opacity-70">
+	<div class="absolute z-0 h-full w-full opacity-35">
 		<Squares />
 	</div>
 	<div class="page-block z-10 space-y-10 p-4 md:px-10">

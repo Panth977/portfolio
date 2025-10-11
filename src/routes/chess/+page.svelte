@@ -1,15 +1,17 @@
 <script lang="ts">
-	import { ChesXplore } from '$lib/chess';
+	import ChessPlayerState from '$lib/chess/state.svelte';
+	import ChessLogs from '$lib/chess/logs.svelte';
+	import { ChesXplore } from '$lib/chess/chess';
 	import { onMount } from 'svelte';
 
 	let canvasDiv: HTMLDivElement;
 	let canvasDivParent: HTMLDivElement;
 	let chess: ChesXplore;
 	const boardSize = 800;
-	const logsHeightSize = 800;
+	const logsHeightSize = boardSize;
 	const logsWidthSize = 300;
 	const widgetWidthSize = boardSize + logsWidthSize;
-	const widgetHeightSize = Math.max(boardSize, logsHeightSize);
+	const widgetHeightSize = boardSize;
 	let widgetScaleFactor = 1;
 	function setupChess() {
 		if (chess && !confirm('Are you shure you would like to reset the existing game?')) return;
@@ -17,24 +19,28 @@
 		const rootDiv = document.createElement('div');
 		const logsDiv = document.createElement('div');
 		canvasDiv.append(rootDiv, logsDiv);
-		chess = new ChesXplore(rootDiv, boardSize);
+		chess = new ChesXplore(rootDiv, boardSize, []);
 		chess.setScalingFactor(widgetScaleFactor);
-		chess.mountLogs(logsDiv, logsHeightSize, logsWidthSize);
+		// chess.mountLogs(logsDiv, logsHeightSize, logsWidthSize);
 	}
 	function Size() {
-		console.log(document.fullscreenElement || (document as any).webkitFullscreenElement);
 		if (document.fullscreenElement || (document as any).webkitFullscreenElement) {
 			// Native fullscreen || Safari prefix
 			return {
 				currentWidth: screen.width * 0.95,
 				currentHeight: screen.height * 0.95,
-				widgetWidthSize,
+				get widgetWidthSize() {
+					return boardSize + this.logsWidthSize;
+				},
 				widgetHeightSize,
 				get widgetScaleFactor() {
-					return Math.min(
-						this.currentHeight / this.widgetHeightSize,
-						this.currentWidth / this.widgetWidthSize
-					);
+					return this.currentHeight / this.widgetHeightSize;
+				},
+				logsHeightSize,
+				get logsWidthSize() {
+					const avalableWidth = this.currentWidth - this.currentHeight;
+					const scale = this.currentHeight / this.widgetHeightSize;
+					return avalableWidth / scale;
 				}
 			};
 		} else {
@@ -44,6 +50,8 @@
 				currentHeight: window.innerHeight,
 				widgetWidthSize,
 				widgetHeightSize,
+				logsHeightSize,
+				logsWidthSize,
 				get widgetScaleFactor() {
 					return Math.min(
 						window.innerHeight >= widgetHeightSize ? 1 : window.innerHeight / widgetHeightSize,
@@ -54,16 +62,25 @@
 		}
 	}
 	function handleResize() {
-		const { widgetHeightSize, widgetWidthSize, widgetScaleFactor } = Size();
-		canvasDiv.style.transformOrigin = 'top left';
-		canvasDiv.style.transform = `scale(${widgetScaleFactor})`;
-		canvasDiv.style.width = `${widgetWidthSize}px`;
-		canvasDiv.style.height = `${widgetHeightSize}px`;
+		const { logsHeightSize, logsWidthSize, widgetHeightSize, widgetWidthSize, widgetScaleFactor } =
+			Size();
+		console.log({
+			logsHeightSize,
+			logsWidthSize,
+			widgetHeightSize,
+			widgetWidthSize,
+			widgetScaleFactor
+		});
+		canvasDiv?.style.setProperty('transform-origin', 'top left');
+		canvasDiv?.style.setProperty('transform', `scale(${widgetScaleFactor})`);
+		canvasDiv?.style.setProperty('width', `${widgetWidthSize}px`);
+		canvasDiv?.style.setProperty('height', `${widgetHeightSize}px`);
 		const scaledW = Math.round(widgetWidthSize * widgetScaleFactor);
 		const scaledH = Math.round(widgetHeightSize * widgetScaleFactor);
-		canvasDivParent.style.width = `${scaledW}px`;
-		canvasDivParent.style.height = `${scaledH}px`;
-		canvasDivParent.style.overflow = 'hidden';
+		canvasDivParent?.style.setProperty('width', `${scaledW}px`);
+		canvasDivParent?.style.setProperty('height', `${scaledH}px`);
+		canvasDivParent?.style.setProperty('overflow', 'hidden');
+		// chess.updateLogsSize(logsHeightSize, logsWidthSize);
 		chess?.setScalingFactor(widgetScaleFactor);
 	}
 	onMount(() => {
@@ -72,7 +89,6 @@
 		setupChess();
 		window.addEventListener('resize', handleResize);
 		handleResize();
-		chess.fakerun();
 	});
 	// fullscreen.ts
 	async function enterFullscreen(el: HTMLElement) {
