@@ -211,7 +211,7 @@
 			</button>
 		</h1>
 		<h2 class="mt-2 text-center font-mono text-2xl sm:text-4xl">
-			<span class="mr-3 italic"> ˈSēnyər </span>Developer
+			Software Tech Lead <span class="mr-3 text-lg italic"> At Oizom </span>
 		</h2>
 		<div class="mt-10 flex justify-around">
 			{#await import('$lib/ProfileCard.svelte')}

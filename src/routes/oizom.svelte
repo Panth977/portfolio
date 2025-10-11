@@ -16,7 +16,7 @@
 		</h3>
 	</div>
 	<h4 class="text-2xl sm:text-4xl">
-		Senior Engineer <span class="text-lg text-gray-500 sm:text-2xl">April 2025</span>
+		Software Tech Lead <span class="text-lg text-gray-500 sm:text-2xl">Oct 2025</span>
 	</h4>
 	<ol class="mx-0.5 list-inside list-disc text-base font-light font-stretch-90%">
 		<li>
