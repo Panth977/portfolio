@@ -396,9 +396,6 @@
 <div class="page-block space-y-10 p-4 md:px-10">
 	<h2 class="text-center text-4xl sm:text-5xl md:text-7xl">Professional Experience</h2>
 	<Oizom />
-	<!-- import Genuin from './genuin.svelte';
-	import Techcrista from './techcrista.svelte';
-	import Vdp from './vdp.svelte'; -->
 	{#await import('./genuin.svelte') then Genuin}
 		<div class="w-full border border-dashed border-gray-500"></div>
 		<Genuin.default />

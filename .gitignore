@@ -10,6 +10,7 @@ node_modules
 /build
 static/**/assets
 static/**/chess
+static/**/app
 
 # OS
 .DS_Store
