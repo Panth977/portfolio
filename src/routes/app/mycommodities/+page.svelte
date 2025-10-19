@@ -82,6 +82,12 @@
 		>
 			💬 WhatsApp
 		</a>
+		<a
+			href="/app/mycommodities/tc"
+			class="rounded-xl bg-yellow-600 px-5 py-3 text-white transition hover:bg-yellow-700"
+		>
+			📜 Terms And Condition
+		</a>
 	</div>
 	<section class="max-w-3xl text-center">
 		<h2 class="mb-4 text-2xl font-semibold">Why My Commodities?</h2>
