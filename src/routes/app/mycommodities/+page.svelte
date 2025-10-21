@@ -12,6 +12,7 @@
 			apkVersion: { stringValue: string };
 			apkUrl: { stringValue: string };
 			supportNumber: { stringValue: string };
+			termsAndConditionsUrl: { stringValue: string };
 		};
 	} | null = $state(null);
 
@@ -83,7 +84,7 @@
 			💬 WhatsApp
 		</a>
 		<a
-			href="/app/mycommodities/tc"
+			href={data?.fields.termsAndConditionsUrl.stringValue ?? '/app/mycommodities/tc'}
 			class="rounded-xl bg-yellow-600 px-5 py-3 text-white transition hover:bg-yellow-700"
 		>
 			📜 Terms And Condition
