@@ -446,7 +446,7 @@
 			<Img src="hashnode-logo.svg" class="inline h-6 sm:h-10" />
 			<a
 				class="pink-link font-stretch-75%"
-				href="https://blogs.whiteloves.in/how-i-generated-heatmaps-100x-faster"
+				href="/blog/how-i-generated-heatmaps-100x-faster"
 			>
 				Heatmap x100 faster
 			</a>
@@ -505,9 +505,7 @@
 					</a>
 				</li>
 				<li class="h-9">
-					<a href="https://blogs.whiteloves.in/">
-						<Img src="hashnode-logo.svg" class="inline h-5" />
-					</a>
+					<a href="/blog" class="pink-link font-mono text-sm" aria-label="Blog">blog</a>
 				</li>
 				<li class="h-9">
 					<a href="https://www.linkedin.com/in/panth-patel-447a88240/">
@@ -575,9 +573,7 @@
 			</a>
 		</li>
 		<li class="h-9">
-			<a href="https://blogs.whiteloves.in/">
-				<Img src="hashnode-logo.svg" class="inline h-5" />
-			</a>
+			<a href="/blog" class="pink-link font-mono text-sm" aria-label="Blog">blog</a>
 		</li>
 		<li class="h-9">
 			<a href="https://www.linkedin.com/in/panth-patel-447a88240/">

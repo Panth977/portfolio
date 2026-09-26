@@ -1,1 +1,7 @@
 /wsrv   https://wsrv.nl/  301
+https://blogs.whiteloves.in/  https://panth.whiteloves.in/blog  301
+https://blogs.whiteloves.in/archive  https://panth.whiteloves.in/blog  301
+https://blogs.whiteloves.in/members  https://panth.whiteloves.in/blog  301
+https://blogs.whiteloves.in/rss.xml  https://panth.whiteloves.in/rss.xml  301
+https://blogs.whiteloves.in/sitemap.xml  https://panth.whiteloves.in/sitemap.xml  301
+https://blogs.whiteloves.in/*  https://panth.whiteloves.in/blog/:splat  301
