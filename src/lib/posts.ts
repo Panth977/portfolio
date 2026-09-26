@@ -10,6 +10,7 @@ export interface Post {
 	tags: string[];
 	canonical?: string;
 	cover?: string;
+	poster?: string;
 	video?: string;
 	readingTime: number;
 	html: string;
@@ -37,6 +38,7 @@ function build(): Post[] {
 			tags: data.tags ?? [],
 			canonical: data.canonical,
 			cover: data.cover,
+			poster: data.poster,
 			video: data.video,
 			readingTime: data.readingTime ?? Math.max(1, Math.round(words / 220)),
 			html: marked.parse(content) as string

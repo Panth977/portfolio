@@ -68,7 +68,8 @@
 <div class="progress" style="transform: scaleX({progress})" aria-hidden="true"></div>
 
 <header class="relative overflow-hidden">
-	<div class="absolute inset-0 z-0 opacity-40"><Squares /></div>
+	<div class="absolute inset-0 z-0 opacity-35"><Squares /></div>
+	<div class="fade" aria-hidden="true"></div>
 	<div class="wrap relative z-10 px-4 pt-8 pb-14 md:px-10 md:pb-20">
 		<nav class="flex items-baseline justify-between font-mono text-sm text-gray-400">
 			<a class="pink-link" href="/blog">← Blog</a>
@@ -101,6 +102,7 @@
 <style>
 	.wrap { margin-inline: auto; max-width: 780px; }
 	.pink-link { border-bottom: 2px dashed deeppink; }
+	.fade { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, #000 100%); }
 	.progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; background: deeppink; transform-origin: left; z-index: 50; }
 
 	/* prose, in the site's voice */
@@ -113,7 +115,9 @@
 	.post :global(a:hover) { color: deeppink; }
 	.post :global(strong) { color: #fff; font-weight: 600; }
 	.post :global(em) { color: #e8eaee; }
-	.post :global(ul), .post :global(ol) { padding-left: 1.4em; margin: 1.25em 0; }
+	.post :global(ul) { list-style: disc; padding-left: 1.4em; margin: 1.25em 0; }
+	.post :global(ol) { list-style: decimal; padding-left: 1.6em; margin: 1.25em 0; }
+	.post :global(ol li::marker) { font-family: 'IBM Plex Mono', ui-monospace, monospace; color: deeppink; }
 	.post :global(li) { margin: 0.4em 0; }
 	.post :global(li::marker) { color: deeppink; }
 	.post :global(blockquote) { border-left: 3px solid deeppink; padding-left: 1.2em; color: #aeb4bc; margin: 1.5em 0; }

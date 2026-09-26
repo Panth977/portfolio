@@ -7,6 +7,7 @@ description: "How a small team turned its ticket tracker into the only developer
 tags: [devops, ai-agents, developer-experience, platform-engineering]
 canonical: https://dev.to/panthpatel/the-ticket-is-the-interface-how-our-developers-ship-without-a-laptop-4of1
 cover: /assets/blog/pipeline_og_1200x628.png
+poster: /assets/blog/pipeline_cover_1000x420.png
 video: https://youtu.be/5IuE38UzhW4
 readingTime: 7
 ---
