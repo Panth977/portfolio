@@ -10,5 +10,7 @@ export function entries() {
 export function load({ params }) {
 	const post = getPost(params.slug);
 	if (!post) error(404, 'Not found');
-	return { post };
+	const i = posts.findIndex((p) => p.slug === post.slug);
+	const strip = (p?: (typeof posts)[number]) => (p ? { slug: p.slug, title: p.title, date: p.date } : null);
+	return { post, newer: strip(posts[i - 1]), older: strip(posts[i + 1]) };
 }
