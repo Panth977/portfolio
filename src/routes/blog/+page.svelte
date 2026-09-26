@@ -43,7 +43,6 @@
 	{#if latest}
 		<a href="/blog/{latest.slug}" class="poster group block">
 			<img class="poster-img" src={latest.poster ?? latest.cover ?? '/assets/blog/pipeline_og_1200x628.png'} alt="" loading="eager" />
-			<div class="poster-shade" aria-hidden="true"></div>
 			<div class="poster-body">
 				<p class="font-mono text-sm text-[deeppink]">Latest{#if latest.video}, with a 2-minute film{/if}</p>
 				<h2 class="mt-3 max-w-3xl font-mono text-2xl leading-tight text-white sm:text-4xl md:text-5xl">{latest.title}</h2>
@@ -81,12 +80,11 @@
 	.pink-link { border-bottom: 2px dashed deeppink; }
 	.fade { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 55%, #000 100%); }
 
-	.poster { position: relative; display: block; border: 2px dashed deeppink; border-radius: 4px; overflow: hidden; background: #060010; }
-	.poster-img { display: block; width: 100%; aspect-ratio: 1000 / 420; object-fit: cover; object-position: center; filter: saturate(0.8) brightness(0.9); transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.7s; }
-	.poster:hover .poster-img, .poster:focus-visible .poster-img { transform: scale(1.025); filter: saturate(1) brightness(1); }
-	.poster-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.85) 45%, rgba(0, 0, 0, 0.25) 75%, rgba(0, 0, 0, 0) 100%); }
-	.poster-body { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.25rem; }
-	@media (min-width: 640px) { .poster-body { padding: 2rem 2.5rem; } }
+	.poster { display: block; border: 2px dashed deeppink; border-radius: 4px; overflow: hidden; background: #060010; }
+	.poster-img { display: block; width: 100%; aspect-ratio: 1000 / 420; object-fit: cover; object-position: center; filter: saturate(0.85); transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.7s; }
+	.poster:hover .poster-img, .poster:focus-visible .poster-img { transform: scale(1.02); filter: saturate(1); }
+	.poster-body { padding: 1.25rem; border-top: 1px dashed rgba(255, 20, 147, 0.4); }
+	@media (min-width: 640px) { .poster-body { padding: 1.75rem 2rem 2rem; } }
 	.poster:focus-visible { outline: 2px dashed deeppink; outline-offset: 8px; }
 
 	.ledger { border-top: 1px dashed rgba(255, 20, 147, 0.4); }
