@@ -6,7 +6,7 @@ description: "My company spent a bunch of months building the backend for Heatma
 tags: []
 migratedFrom: https://blogs.whiteloves.in/how-i-generated-heatmaps-100x-faster
 readingTime: 6
-cover: /assets/blog/how-i-generated-heatmaps-100x-faster/img1.jpeg
+cover: /assets/blog/covers/how-i-generated-heatmaps-100x-faster.png
 ---
 
 My company spent a bunch of months building the backend for Heatmap. Here's how it went down: we used the IDW algorithm with wind speed and direction to figure out the value for each spot.

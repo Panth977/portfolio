@@ -1,8 +1,14 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import Squares from '$lib/Squares.svelte';
 	import DecryptedText from '$lib/DecryptedText.svelte';
 
 	let { data } = $props();
+	let Splash: any = $state(null);
+	onMount(async () => {
+		const fine = matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (fine) Splash = (await import('$lib/SplashCursor.svelte')).default;
+	});
 	const site = 'https://panth.whiteloves.in';
 	const [latest, ...older] = data.posts;
 	const fmt = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -21,6 +27,8 @@
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:site" content="@panthXYZ" />
 </svelte:head>
+
+{#if Splash}<Splash />{/if}
 
 <header class="relative overflow-hidden">
 	<div class="absolute inset-0 z-0 opacity-35"><Squares /></div>
@@ -61,12 +69,14 @@
 		<ol class="ledger mt-4">
 			{#each older as p}
 				<li>
-					<a href="/blog/{p.slug}" class="ledger-row group">
-						<span class="font-mono text-sm text-gray-500">{fmt(p.date)}</span>
-						<span class="ledger-title font-mono text-xl text-white sm:text-2xl">{p.title}</span>
-						<span class="hidden font-mono text-sm text-gray-500 sm:block">{p.readingTime} min</span>
+					<a href="/blog/{p.slug}" class="row group">
+						<img class="thumb" src={p.cover ?? '/assets/blog/pipeline_og_1200x628.png'} alt="" loading="lazy" />
+						<div>
+							<span class="font-mono text-sm text-gray-500">{fmt(p.date)} <span class="mx-2 text-gray-700">/</span> {p.readingTime} min</span>
+							<span class="title mt-1 block font-mono text-xl leading-snug text-white sm:text-2xl">{p.title}</span>
+							<span class="mt-2 block text-gray-400">{p.description}</span>
+						</div>
 					</a>
-					<p class="ledger-desc text-gray-400">{p.description}</p>
 				</li>
 			{/each}
 		</ol>
@@ -88,13 +98,13 @@
 	.poster:focus-visible { outline: 2px dashed deeppink; outline-offset: 8px; }
 
 	.ledger { border-top: 1px dashed rgba(255, 20, 147, 0.4); }
-	.ledger li { border-bottom: 1px dashed rgba(255, 20, 147, 0.4); padding: 1.25rem 0; }
-	.ledger-row { display: grid; grid-template-columns: 8.5rem 1fr auto; gap: 1rem; align-items: baseline; }
-	@media (max-width: 640px) { .ledger-row { grid-template-columns: 1fr; gap: 0.25rem; } }
-	.ledger-title { transition: color 0.2s; }
-	.ledger-row:hover .ledger-title, .ledger-row:focus-visible .ledger-title { color: deeppink; }
-	.ledger-desc { margin-top: 0.5rem; }
-	@media (min-width: 641px) { .ledger-desc { margin-left: 9.5rem; } }
-
-	@media (prefers-reduced-motion: reduce) { .poster-img { transition: none; } }
+	.ledger li { border-bottom: 1px dashed rgba(255, 20, 147, 0.4); }
+	.row { display: grid; grid-template-columns: 1fr; gap: 1rem; padding: 1.5rem 0; }
+	@media (min-width: 640px) { .row { grid-template-columns: 260px 1fr; gap: 1.5rem; align-items: start; } }
+	.thumb { display: block; width: 100%; aspect-ratio: 1200 / 628; object-fit: cover; border: 2px dashed rgba(255, 20, 147, 0.6); border-radius: 4px; background: #060010; filter: saturate(0.8); transition: filter 0.3s, border-color 0.3s, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+	.row:hover .thumb, .row:focus-visible .thumb { filter: saturate(1); border-color: deeppink; transform: translateY(-2px); }
+	.title { transition: color 0.2s; }
+	.row:hover .title, .row:focus-visible .title { color: deeppink; }
+	.row:focus-visible { outline: 2px dashed deeppink; outline-offset: 6px; }
+	@media (prefers-reduced-motion: reduce) { .poster-img, .thumb { transition: none; } }
 </style>

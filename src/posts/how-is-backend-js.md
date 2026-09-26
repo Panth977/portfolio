@@ -6,6 +6,7 @@ description: "Unless you're a decades-old company or a big firm, you're probably
 tags: [javascript, typescript]
 migratedFrom: https://blogs.whiteloves.in/how-is-backend-js
 readingTime: 5
+cover: /assets/blog/covers/how-is-backend-js.png
 ---
 
 Unless you're a decades-old company or a big firm, you're probably using Node.js as your backend! It's unfortunate that people talk so much about various frontend JavaScript frameworks that they forget to mention the vast array of features available. 😰

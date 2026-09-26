@@ -463,7 +463,7 @@
 			<Img src="youtube-logo.png" class="inline h-6 sm:h-10" />
 			<a
 				class="pink-link font-stretch-75%"
-				href="https://youtube.com/playlist?list=PLeXF8QGCGNK7MrBOweoDSd6E1L_7upSPV&si=FDVE_6IrqF0m4STB"
+				href="/blog/1mil-datapoints-in-nodejs"
 			>
 				1mil+ DataPonits in NodeJs
 			</a>

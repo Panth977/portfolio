@@ -6,6 +6,7 @@ description: "const userChanges = new PubSub(); userChanges.subscribe((username)
 tags: [node-js, promises, zod, asynchronous, trycatch, typescript]
 migratedFrom: https://blogs.whiteloves.in/10-common-issues-in-nodejs-to-keep-in-mind
 readingTime: 4
+cover: /assets/blog/covers/10-common-issues-in-nodejs-to-keep-in-mind.png
 ---
 
 #### If you have a callback API function, fix it using the Promise constructor.

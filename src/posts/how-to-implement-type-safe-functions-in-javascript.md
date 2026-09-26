@@ -6,6 +6,7 @@ description: "Ever run into the issue where you can't make type-safe functions i
 tags: [dispose, functional-programming, javascript, typescript, wrapper-functions, context]
 migratedFrom: https://blogs.whiteloves.in/how-to-implement-type-safe-functions-in-javascript
 readingTime: 7
+cover: /assets/blog/covers/how-to-implement-type-safe-functions-in-javascript.png
 ---
 
 Ever run into the issue where you can't make type-safe functions in JavaScript? So you switch to TypeScript, only to find out that types are just for development and don't actually validate function inputs or outputs! Then you end up using a validation library like Zod to solve it.

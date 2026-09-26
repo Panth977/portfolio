@@ -6,6 +6,7 @@ description: "< gives you a cool design system to set up your routes, with suppo
 tags: [http, node-js, routes, openapi, swagger, express-js]
 migratedFrom: https://blogs.whiteloves.in/a-guide-to-nodejs-generic-routing-system
 readingTime: 5
+cover: /assets/blog/covers/a-guide-to-nodejs-generic-routing-system.png
 ---
 
 <https://jsr.io/@panth977/routes> gives you a cool design system to set up your routes, with support for Middleware, HTTP (req, single res), and SSE. But keep in mind, this package isn't meant to serve your routes! For that, you'll need <https://jsr.io/@panth977/routes-express> as a handler, or you can create your own custom handler!

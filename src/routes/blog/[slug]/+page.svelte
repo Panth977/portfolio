@@ -84,6 +84,9 @@
 </header>
 
 <article bind:this={article} class="wrap px-4 pb-10 md:px-10">
+	{#if p.cover && !p.video}
+		<img class="hero" src={p.cover} alt="" loading="eager" />
+	{/if}
 	<div class="post">{@html p.html}</div>
 
 	<footer class="mt-16 border-t border-dashed border-[deeppink]/40 pt-8 font-mono text-sm text-gray-400">
@@ -103,6 +106,7 @@
 	.wrap { margin-inline: auto; max-width: 780px; }
 	.pink-link { border-bottom: 2px dashed deeppink; }
 	.fade { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, #000 100%); }
+	.hero { display: block; width: 100%; aspect-ratio: 1200 / 628; object-fit: cover; border: 2px dashed deeppink; border-radius: 4px; margin: 0 0 2.5rem; background: #060010; }
 	.progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; background: deeppink; transform-origin: left; z-index: 50; }
 
 	/* prose, in the site's voice */

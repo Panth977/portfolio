@@ -6,6 +6,7 @@ description: "I was just watching some videos, you know, YT and chill. < Then Pr
 tags: [node-js, promises, synchronous, asynchronous, async-await, performance]
 migratedFrom: https://blogs.whiteloves.in/the-hidden-cost-of-promise-in-nodejs
 readingTime: 4
+cover: /assets/blog/covers/the-hidden-cost-of-promise-in-nodejs.png
 ---
 
 I was just watching some videos, you know, YT and chill.  

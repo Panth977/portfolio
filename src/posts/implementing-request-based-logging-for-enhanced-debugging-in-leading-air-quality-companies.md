@@ -6,7 +6,7 @@ description: "We often run into issues when trying to debug a request! But debug
 tags: [logs, logging, log, requests, apis, express]
 migratedFrom: https://blogs.whiteloves.in/implementing-request-based-logging-for-enhanced-debugging-in-leading-air-quality-companies
 readingTime: 9
-cover: /assets/blog/implementing-request-based-logging-for-enhanced-debugging-in-leading-air-quality-companies/img1.png
+cover: /assets/blog/covers/implementing-request-based-logging-for-enhanced-debugging-in-leading-air-quality-companies.png
 ---
 
 We often run into issues when trying to debug a request! But debugging in production? 😰 So many logs to sift through, and then you have to track down all the related logs! Sure, you could use top-notch logging services like AWS, GCP, DataDog, etc. But none of them offer request-based logging! Unless you set up a server for every request, 🤑 which means you must be loaded! Or you'll end up with tons of tiny node projects for each service 😵‍💫.

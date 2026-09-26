@@ -6,6 +6,7 @@ description: "Hey there, developer! You might need some tools to boost your skil
 tags: [javascript, typescript, tools, event-loop, batch-processing, pubsub]
 migratedFrom: https://blogs.whiteloves.in/10-javascript-tools-for-clear-code-design
 readingTime: 5
+cover: /assets/blog/covers/10-javascript-tools-for-clear-code-design.png
 ---
 
 Hey there, developer! You might need some tools to boost your skills, and here are a few to check out: (<https://jsr.io/@panth977/tools>)

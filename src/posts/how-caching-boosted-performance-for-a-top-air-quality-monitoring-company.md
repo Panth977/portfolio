@@ -6,7 +6,7 @@ description: "What does your usual caching strategy look like? Maybe something l
 tags: [cache, cache-invalidation, redis, postgresql, node-js]
 migratedFrom: https://blogs.whiteloves.in/how-caching-boosted-performance-for-a-top-air-quality-monitoring-company
 readingTime: 13
-cover: /assets/blog/how-caching-boosted-performance-for-a-top-air-quality-monitoring-company/img1.jpeg
+cover: /assets/blog/covers/how-caching-boosted-performance-for-a-top-air-quality-monitoring-company.png
 ---
 
 What does your usual caching strategy look like? Maybe something like this:
