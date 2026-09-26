@@ -10,6 +10,16 @@
 		if (fine) Splash = (await import('$lib/SplashCursor.svelte')).default;
 	});
 	const site = 'https://panth.whiteloves.in';
+	let q = $state('');
+	const norm = (s: string) => s.toLowerCase();
+	const hits = $derived(
+		q.trim().length < 2
+			? null
+			: data.posts.filter((p) => {
+					const hay = norm(p.title + ' ' + p.description + ' ' + p.tags.join(' '));
+					return q.trim().toLowerCase().split(/\s+/).every((w) => hay.includes(w));
+				})
+	);
 	const [latest, ...older] = data.posts;
 	const fmt = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 </script>
@@ -33,7 +43,7 @@
 <header class="relative overflow-hidden">
 	<div class="absolute inset-0 z-0 opacity-35"><Squares /></div>
 	<div class="fade" aria-hidden="true"></div>
-	<div class="wrap relative z-10 px-4 pt-8 pb-16 md:px-10 md:pb-24">
+	<div class="wrap relative z-10 px-4 pt-8 pb-12 md:px-10 md:pb-16">
 		<nav class="flex items-baseline justify-between font-mono text-sm text-gray-400">
 			<a class="pink-link" href="/">← Meet Panth</a>
 			<a class="pink-link" href="/rss.xml">RSS</a>
@@ -47,7 +57,34 @@
 	</div>
 </header>
 
-<main class="wrap px-4 pb-24 md:px-10">
+<main class="wrap relative z-10 px-4 pb-24 md:px-10">
+	<form class="search" role="search" onsubmit={(e) => e.preventDefault()}>
+		<label class="sr-only" for="q">Search posts</label>
+		<span class="font-mono text-[deeppink]" aria-hidden="true">&gt;</span>
+		<input id="q" type="search" bind:value={q} placeholder="search titles, tags, summaries" autocomplete="off" spellcheck="false" />
+		{#if hits}<span class="font-mono text-sm text-gray-500">{hits.length} of {data.posts.length}</span>{/if}
+	</form>
+
+	{#if hits}
+		{#if hits.length}
+			<ol class="ledger mt-6">
+				{#each hits as p}
+					<li>
+						<a href="/blog/{p.slug}" class="row group">
+							<img class="thumb" src={p.cover ?? '/assets/blog/pipeline_og_1200x628.png'} alt="" loading="lazy" />
+							<div>
+								<span class="font-mono text-sm text-gray-500">{fmt(p.date)} <span class="mx-2 text-gray-700">/</span> {p.readingTime} min</span>
+								<span class="title mt-1 block font-mono text-xl leading-snug text-white sm:text-2xl">{p.title}</span>
+								<span class="mt-2 block text-gray-400">{p.description}</span>
+							</div>
+						</a>
+					</li>
+				{/each}
+			</ol>
+		{:else}
+			<p class="mt-8 font-mono text-sm text-gray-500">Nothing matches "{q}". Try a tag like node-js, cache or devops.</p>
+		{/if}
+	{:else}
 	{#if latest}
 		<a href="/blog/{latest.slug}" class="poster group block">
 			<img class="poster-img" src={latest.poster ?? latest.cover ?? '/assets/blog/pipeline_og_1200x628.png'} alt="" loading="eager" />
@@ -83,6 +120,7 @@
 	{:else}
 		<p class="mt-16 font-mono text-sm text-gray-500">More every couple of weeks. The RSS link above is the reliable way to catch them.</p>
 	{/if}
+	{/if}
 </main>
 
 <style>
@@ -97,6 +135,10 @@
 	@media (min-width: 640px) { .poster-body { padding: 1.75rem 2rem 2rem; } }
 	.poster:focus-visible { outline: 2px dashed deeppink; outline-offset: 8px; }
 
+	.search { display: flex; align-items: center; gap: 0.75rem; margin: 0 0 2.5rem; padding: 0.6rem 0.9rem; border: 1px dashed rgba(255, 20, 147, 0.5); border-radius: 4px; background: #060010; }
+	.search input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; color: #fff; font: 500 1rem 'IBM Plex Mono', ui-monospace, monospace; }
+	.search input::placeholder { color: #6b6b7a; }
+	.search:focus-within { border-color: deeppink; }
 	.ledger { border-top: 1px dashed rgba(255, 20, 147, 0.4); }
 	.ledger li { border-bottom: 1px dashed rgba(255, 20, 147, 0.4); }
 	.row { display: grid; grid-template-columns: 1fr; gap: 1rem; padding: 1.5rem 0; }

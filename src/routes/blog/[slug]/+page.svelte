@@ -95,6 +95,20 @@
 			Share on <a class="pink-link" href={share}>X</a> or <a class="pink-link" href={shareLi}>LinkedIn</a>.
 			Questions go on <a class="pink-link" href={p.canonical ?? 'https://dev.to/panthpatel'}>dev.to</a> or <a class="pink-link" href="https://www.linkedin.com/in/panth-patel-447a88240/">LinkedIn</a>; I answer all of them and collect the good ones into a follow-up.
 		</p>
+		{#if data.related.length}
+			<h2 class="mt-12 font-mono text-lg text-gray-300">Read next</h2>
+			<ul class="related mt-4">
+				{#each data.related as r}
+					<li>
+						<a href="/blog/{r.slug}" class="rel">
+							<img src={r.cover ?? '/assets/blog/pipeline_og_1200x628.png'} alt="" loading="lazy" />
+							<span class="block font-mono text-base leading-snug text-white">{r.title}</span>
+							<span class="mt-1 block font-mono text-xs text-gray-500">{fmt(r.date)} <span class="mx-1 text-gray-700">/</span> {r.readingTime} min</span>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/if}
 		<div class="mt-10 grid gap-6 sm:grid-cols-2">
 			{#if data.older}<a href="/blog/{data.older.slug}" class="block"><span class="text-gray-500">Earlier</span><br /><span class="pink-link text-white">{data.older.title}</span></a>{:else}<span></span>{/if}
 			{#if data.newer}<a href="/blog/{data.newer.slug}" class="block sm:text-right"><span class="text-gray-500">Newer</span><br /><span class="pink-link text-white">{data.newer.title}</span></a>{/if}
@@ -107,6 +121,12 @@
 	.pink-link { border-bottom: 2px dashed deeppink; }
 	.fade { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, #000 100%); }
 	.hero { display: block; width: 100%; aspect-ratio: 1200 / 628; object-fit: cover; border: 2px dashed deeppink; border-radius: 4px; margin: 0 0 2.5rem; background: #060010; }
+	.related { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+	@media (min-width: 640px) { .related { grid-template-columns: repeat(3, 1fr); } }
+	.rel img { display: block; width: 100%; aspect-ratio: 1200 / 628; object-fit: cover; border: 2px dashed rgba(255, 20, 147, 0.5); border-radius: 4px; margin-bottom: 0.6rem; filter: saturate(0.8); transition: filter 0.3s, border-color 0.3s; }
+	.rel:hover img, .rel:focus-visible img { filter: saturate(1); border-color: deeppink; }
+	.rel:hover span:first-of-type { color: deeppink; }
+	.rel:focus-visible { outline: 2px dashed deeppink; outline-offset: 6px; }
 	.progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; background: deeppink; transform-origin: left; z-index: 50; }
 
 	/* prose, in the site's voice */
