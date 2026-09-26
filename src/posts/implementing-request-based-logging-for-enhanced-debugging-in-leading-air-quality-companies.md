@@ -2,7 +2,7 @@
 title: "Implementing Request-Based Logging for Enhanced Debugging in Leading Air Quality Companies"
 slug: implementing-request-based-logging-for-enhanced-debugging-in-leading-air-quality-companies
 date: 2025-01-04
-description: "We often run into issues when trying to debug a request! But debugging in production? 😰 So many logs to sift through, and then you have to track down all the related logs! Sure, you could use top-notch logging services like AWS, GCP, DataDog, etc. B..."
+description: "We often run into issues when trying to debug a request! But debugging in production? 😰 So many logs to sift through, and then you have to track down all the related logs!"
 tags: [logs, logging, log, requests, apis, express]
 migratedFrom: https://blogs.whiteloves.in/implementing-request-based-logging-for-enhanced-debugging-in-leading-air-quality-companies
 readingTime: 9

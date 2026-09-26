@@ -2,7 +2,7 @@
 title: "10 Common Issues in Node.js to keep in Mind"
 slug: 10-common-issues-in-nodejs-to-keep-in-mind
 date: 2024-12-01
-description: "If you have a callback API function, fix it using the Promise constructor. function badImplementation() { return new Promise((resolve, reject) => { someOldLibWithCb((data, err) => { if (err) { reject(err); ..."
+description: "const userChanges = new PubSub(); userChanges.subscribe((username) = { // Invalidate user cache }) async function getUser(username) { // cache this!"
 tags: [node-js, promises, zod, asynchronous, trycatch, typescript]
 migratedFrom: https://blogs.whiteloves.in/10-common-issues-in-nodejs-to-keep-in-mind
 readingTime: 4

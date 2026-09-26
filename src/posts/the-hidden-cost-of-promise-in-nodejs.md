@@ -2,7 +2,7 @@
 title: "The hidden cost of Promise In NodeJS"
 slug: the-hidden-cost-of-promise-in-nodejs
 date: 2025-05-13
-description: "I was just watching some videos, you know, YT and chill.https://www.youtube.com/watch?v=i0YfiQlzv6MThen Prime mentioned something that caught me off guard. He said sync Promises go behind event loops. I was like, no way, that can't be true. Promises ..."
+description: "I was just watching some videos, you know, YT and chill. < Then Prime mentioned something that caught me off guard. He said sync Promises go behind event loops. I was like, no way, that can't be true."
 tags: [node-js, promises, synchronous, asynchronous, async-await, performance]
 migratedFrom: https://blogs.whiteloves.in/the-hidden-cost-of-promise-in-nodejs
 readingTime: 4

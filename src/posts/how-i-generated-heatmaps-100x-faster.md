@@ -2,7 +2,7 @@
 title: "How I generated Heatmaps 100x faster"
 slug: how-i-generated-heatmaps-100x-faster
 date: 2025-01-15
-description: "My company spent a bunch of months building the backend for Heatmap. Here's how it went down: we used the IDW algorithm with wind speed and direction to figure out the value for each spot. We set up a heatmap config in our database. A cron job ran ..."
+description: "My company spent a bunch of months building the backend for Heatmap. Here's how it went down: we used the IDW algorithm with wind speed and direction to figure out the value for each spot. 1."
 tags: []
 migratedFrom: https://blogs.whiteloves.in/how-i-generated-heatmaps-100x-faster
 readingTime: 6

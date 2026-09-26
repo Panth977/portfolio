@@ -2,7 +2,7 @@
 title: "10 Javascript tools for clear code design"
 slug: 10-javascript-tools-for-clear-code-design
 date: 2024-12-07
-description: "Hey there, developer! You might need some tools to boost your skills, and here are a few to check out: (https://jsr.io/@panth977/tools) Rate limit function invocation Sometimes you just want to make sure you don't go over the max number of calls to a..."
+description: "Hey there, developer! You might need some tools to boost your skills, and here are a few to check out: (<…"
 tags: [javascript, typescript, tools, event-loop, batch-processing, pubsub]
 migratedFrom: https://blogs.whiteloves.in/10-javascript-tools-for-clear-code-design
 readingTime: 5

@@ -2,7 +2,7 @@
 title: "How Caching Boosted Performance for a Top Air Quality Monitoring Company"
 slug: how-caching-boosted-performance-for-a-top-air-quality-monitoring-company
 date: 2025-01-25
-description: "What does your usual caching strategy look like? Maybe something like this: async function getUser(userId) { const cacheResult = await cache.get(`USERS:${userId}`); if (cacheResult !== null) return JSON.parse(cacheResult); const result = ..."
+description: "What does your usual caching strategy look like? Maybe something like this:…"
 tags: [cache, cache-invalidation, redis, postgresql, node-js]
 migratedFrom: https://blogs.whiteloves.in/how-caching-boosted-performance-for-a-top-air-quality-monitoring-company
 readingTime: 13
