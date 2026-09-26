@@ -196,7 +196,17 @@
 </script>
 
 <svelte:head>
-	<title>Meet Panth</title>
+	<title>Panth Patel · Software Tech Lead at Oizom</title>
+	<meta name="description" content="Panth Patel, Software Tech Lead at Oizom (Envizom platform). Developer tooling, agent-driven dev pipelines, backend and platform engineering. Blog, resume and projects." />
+	<link rel="canonical" href="https://panth.whiteloves.in/" />
+	<meta property="og:title" content="Panth Patel · Software Tech Lead at Oizom" />
+	<meta property="og:description" content="Developer tooling, agent-driven dev pipelines, backend and platform engineering." />
+	<meta property="og:url" content="https://panth.whiteloves.in/" />
+	<meta property="og:image" content="https://panth.whiteloves.in/assets/blog/pipeline_og_1200x628.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@panthXYZ" />
+	<link rel="alternate" type="application/rss+xml" title="Panth Patel" href="https://panth.whiteloves.in/rss.xml" />
+	{@html `<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'Person',name:'Panth Patel',jobTitle:'Software Tech Lead',worksFor:{'@type':'Organization',name:'Oizom',url:'https://oizom.com'},url:'https://panth.whiteloves.in/',sameAs:['https://www.linkedin.com/in/panth-patel-447a88240/','https://x.com/panthXYZ','https://dev.to/panthpatel','https://github.com/Panth977','https://medium.com/@ppanth977','https://youtube.com/@LogiGates']})}</script>`}
 </svelte:head>
 
 <div class="relative">
@@ -240,7 +250,10 @@
 			<Img src="react-bits-logo.svg" class="inline h-5 sm:h-9" />
 			again?
 		</p>
-		<div class="mt-10 text-center">
+		<div class="mt-8 text-center">
+			<a class="pink-link font-mono text-lg sm:text-2xl" href="/blog">→ Read the blog</a>
+		</div>
+		<div class="mt-6 text-center">
 			<p class="text-center text-base text-gray-500">
 				This one's built using
 				<a class="pink-link" href="https://github.com/Panth977/portfolio" aria-label="Svelte">
