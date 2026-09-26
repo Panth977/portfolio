@@ -26,12 +26,13 @@ function build(): Post[] {
 	for (const [path, raw] of Object.entries(files)) {
 		const { data, content } = matter(raw);
 		const slug = data.slug ?? path.split('/').pop()!.replace(/\.md$/, '');
+		const iso = (d: unknown) => (d instanceof Date ? d.toISOString().slice(0, 10) : String(d).slice(0, 10));
 		const words = content.split(/\s+/).length;
 		out.push({
 			slug,
 			title: data.title,
-			date: String(data.date),
-			updated: data.updated ? String(data.updated) : undefined,
+			date: iso(data.date),
+			updated: data.updated ? iso(data.updated) : undefined,
 			description: data.description ?? '',
 			tags: data.tags ?? [],
 			canonical: data.canonical,
