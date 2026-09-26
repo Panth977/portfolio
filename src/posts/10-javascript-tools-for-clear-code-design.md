@@ -2,7 +2,7 @@
 title: "10 Javascript tools for clear code design"
 slug: 10-javascript-tools-for-clear-code-design
 date: 2024-12-07
-description: "Hey there, developer! You might need some tools to boost your skills, and here are a few to check out: (<…"
+description: "Ten small utilities I reach for to keep JavaScript readable: batching, pub/sub, rate limiting, one-to-many relations, delays, connection strings, and a few others, each with the code."
 tags: [javascript, typescript, tools, event-loop, batch-processing, pubsub]
 migratedFrom: https://blogs.whiteloves.in/10-javascript-tools-for-clear-code-design
 readingTime: 5

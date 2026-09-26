@@ -2,7 +2,7 @@
 title: "A Guide to Node.js Generic Routing System"
 slug: a-guide-to-nodejs-generic-routing-system
 date: 2024-12-11
-description: "< gives you a cool design system to set up your routes, with support for Middleware, HTTP (req, single res), and SSE. But keep in mind, this package isn't meant to serve your routes!"
+description: "A routing layer that takes one typed schema per endpoint and gives you the Express handler, the OpenAPI docs and the TypeScript types from it. Middleware, plain HTTP and SSE included."
 tags: [http, node-js, routes, openapi, swagger, express-js]
 migratedFrom: https://blogs.whiteloves.in/a-guide-to-nodejs-generic-routing-system
 readingTime: 5

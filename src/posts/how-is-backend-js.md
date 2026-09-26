@@ -2,7 +2,7 @@
 title: "😰 How is Backend (js)"
 slug: how-is-backend-js
 date: 2024-12-01
-description: "Unless you're a decades-old company or a big firm, you're probably using Node.js as your backend!"
+description: "Node.js is probably your backend, and JavaScript gives you far more rope than most people use. A tour of the features that matter on the server, and the ones that quietly hurt."
 tags: [javascript, typescript]
 migratedFrom: https://blogs.whiteloves.in/how-is-backend-js
 readingTime: 5
