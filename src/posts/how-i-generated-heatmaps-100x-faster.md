@@ -2,7 +2,7 @@
 title: "How I generated Heatmaps 100x faster"
 slug: how-i-generated-heatmaps-100x-faster
 date: 2025-01-15
-description: "My company spent a bunch of months building the backend for Heatmap. Here's how it went down: we used the IDW algorithm with wind speed and direction to figure out the value for each spot. 1."
+description: "Heatmaps used to take about 5 seconds each on a Python cron. Moving the IDW interpolation to a pre-computed 1 km grid and generating on the fly made them near-instant."
 tags: []
 migratedFrom: https://blogs.whiteloves.in/how-i-generated-heatmaps-100x-faster
 readingTime: 6

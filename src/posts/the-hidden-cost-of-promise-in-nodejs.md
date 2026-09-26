@@ -2,7 +2,7 @@
 title: "The hidden cost of Promise In NodeJS"
 slug: the-hidden-cost-of-promise-in-nodejs
 date: 2025-05-13
-description: "I was just watching some videos, you know, YT and chill. < Then Prime mentioned something that caught me off guard. He said sync Promises go behind event loops. I was like, no way, that can't be true."
+description: "A video of Prime's said synchronous Promises still go through the event loop. I did not believe it, so I measured. They do, and it is not free."
 tags: [node-js, promises, synchronous, asynchronous, async-await, performance]
 migratedFrom: https://blogs.whiteloves.in/the-hidden-cost-of-promise-in-nodejs
 readingTime: 4

@@ -2,7 +2,7 @@
 title: "How Caching Boosted Performance for a Top Air Quality Monitoring Company"
 slug: how-caching-boosted-performance-for-a-top-air-quality-monitoring-company
 date: 2025-01-25
-description: "What does your usual caching strategy look like? Maybe something like this:…"
+description: "Our usual cache-aside pattern was leaking stale reads and hammering PostgreSQL. Here is the cache layer we ended up with, how invalidation works, and what it did to query volume."
 tags: [cache, cache-invalidation, redis, postgresql, node-js]
 migratedFrom: https://blogs.whiteloves.in/how-caching-boosted-performance-for-a-top-air-quality-monitoring-company
 readingTime: 13
