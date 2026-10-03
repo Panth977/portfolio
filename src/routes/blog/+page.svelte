@@ -9,7 +9,7 @@
 		const fine = matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches;
 		if (fine) Splash = (await import('$lib/SplashCursor.svelte')).default;
 	});
-	const site = 'https://panth.whiteloves.in';
+	const site = 'https://panth.vardayinitech.in';
 	let q = $state('');
 	const norm = (s: string) => s.toLowerCase();
 	const hits = $derived(

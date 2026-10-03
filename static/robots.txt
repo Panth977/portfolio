@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://panth.whiteloves.in/sitemap.xml
+Sitemap: https://panth.vardayinitech.in/sitemap.xml

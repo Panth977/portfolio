@@ -13,7 +13,7 @@ cover: /assets/blog/covers/a-guide-to-nodejs-generic-routing-system.png
 
 Here, we're just focusing on the [/routes](https://jsr.io/@panth977/routes) package!
 
-The route setup uses the design approach from <https://jsr.io/@panth977/functions> as its foundation! So, you still get all the goodies like `wrappers`, `context`, `static`, `name & namespace`, `build`, and `input/output schema`! Check out [functions-blog](https://how-is-my-backend.whiteloves.in/how-to-implement-type-safe-functions-in-javascript) for more details.
+The route setup uses the design approach from <https://jsr.io/@panth977/functions> as its foundation! So, you still get all the goodies like `wrappers`, `context`, `static`, `name & namespace`, `build`, and `input/output schema`! Check out [functions-blog](/blog/how-to-implement-type-safe-functions-in-javascript) for more details.
 
 Since this system design already ensures all your routes are type-declared, we can use this schema to build an open-api JSON, which can be used for serving some doc UI or generating a front-end schema!
 
