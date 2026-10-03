@@ -95,8 +95,8 @@ export interface WSRVOptions {
 	enlarge?: boolean;
 }
 
-const WSRVBaseUrl = env.PUBLIC_WSRV_URL ?? 'https://panth.whiteloves.in/wsrv'; // 'https://wsrv.nl/';
-const hostname = env.PUBLIC_HOSTNAME ?? 'panth.whiteloves.in';
+const WSRVBaseUrl = env.PUBLIC_WSRV_URL ?? 'https://panth.vardayinitech.in/wsrv'; // 'https://wsrv.nl/';
+const hostname = env.PUBLIC_HOSTNAME ?? 'panth.vardayinitech.in';
 const allowImagePreview = env.PUBLIC_IMAGE_PREVIEW === 'true';
 export function getAssetsPath(filename: string) {
 	return `https://${hostname}/assets/${filename}`;

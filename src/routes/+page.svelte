@@ -198,15 +198,15 @@
 <svelte:head>
 	<title>Panth Patel · Software Tech Lead at Oizom</title>
 	<meta name="description" content="Panth Patel, Software Tech Lead at Oizom (Envizom platform). Developer tooling, agent-driven dev pipelines, backend and platform engineering. Blog, resume and projects." />
-	<link rel="canonical" href="https://panth.whiteloves.in/" />
+	<link rel="canonical" href="https://panth.vardayinitech.in/" />
 	<meta property="og:title" content="Panth Patel · Software Tech Lead at Oizom" />
 	<meta property="og:description" content="Developer tooling, agent-driven dev pipelines, backend and platform engineering." />
-	<meta property="og:url" content="https://panth.whiteloves.in/" />
-	<meta property="og:image" content="https://panth.whiteloves.in/assets/blog/pipeline_og_1200x628.png" />
+	<meta property="og:url" content="https://panth.vardayinitech.in/" />
+	<meta property="og:image" content="https://panth.vardayinitech.in/assets/blog/pipeline_og_1200x628.png" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:site" content="@panthXYZ" />
-	<link rel="alternate" type="application/rss+xml" title="Panth Patel" href="https://panth.whiteloves.in/rss.xml" />
-	{@html `<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'Person',name:'Panth Patel',jobTitle:'Software Tech Lead',worksFor:{'@type':'Organization',name:'Oizom',url:'https://oizom.com'},url:'https://panth.whiteloves.in/',sameAs:['https://www.linkedin.com/in/panth-patel-447a88240/','https://x.com/panthXYZ','https://dev.to/panthpatel','https://github.com/Panth977','https://medium.com/@ppanth977','https://youtube.com/@LogiGates']})}</script>`}
+	<link rel="alternate" type="application/rss+xml" title="Panth Patel" href="https://panth.vardayinitech.in/rss.xml" />
+	{@html `<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'Person',name:'Panth Patel',jobTitle:'Software Tech Lead',worksFor:{'@type':'Organization',name:'Oizom',url:'https://oizom.com'},url:'https://panth.vardayinitech.in/',sameAs:['https://www.linkedin.com/in/panth-patel-447a88240/','https://x.com/panthXYZ','https://dev.to/panthpatel','https://github.com/Panth977','https://medium.com/@ppanth977','https://youtube.com/@LogiGates']})}</script>`}
 </svelte:head>
 
 <div class="relative">

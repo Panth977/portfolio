@@ -16,7 +16,7 @@ export interface Post {
 	html: string;
 }
 
-const SITE = 'https://panth.whiteloves.in';
+const SITE = 'https://panth.vardayinitech.in';
 
 const files = import.meta.glob('/src/posts/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 

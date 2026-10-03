@@ -39,7 +39,7 @@
 			<br />
 			<li>
 				Back to website:
-				<a class="underline" href="https://panth.whiteloves.in/"> https://panth.whiteloves.in/ </a>
+				<a class="underline" href="https://panth.vardayinitech.in/"> https://panth.vardayinitech.in/ </a>
 			</li>
 		</ol>
 	</div>

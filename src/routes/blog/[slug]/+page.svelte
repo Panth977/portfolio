@@ -3,7 +3,7 @@
 	import Squares from '$lib/Squares.svelte';
 
 	let { data } = $props();
-	const site = 'https://panth.whiteloves.in';
+	const site = 'https://panth.vardayinitech.in';
 	const p = $derived(data.post);
 	const url = $derived(`${site}/blog/${p.slug}`);
 	const canonical = $derived(p.canonical ?? url);
