@@ -1,15 +1,26 @@
 ---
-title: "How I generated Heatmaps 100x faster"
+title: "5 seconds to 30 ms: rebuilding IDW heatmaps in Go"
 slug: how-i-generated-heatmaps-100x-faster
 date: 2025-01-15
-description: "Heatmaps used to take about 5 seconds each on a Python cron. Moving the IDW interpolation to a pre-computed 1 km grid and generating on the fly made them near-instant."
-tags: []
+updated: 2026-09-27
+description: "Our air-quality heatmaps took about 5 seconds per image on an hourly Python cron. An on-request Go service with precomputed weights and JPEG instead of Base64 PNG does 20 images in 30 ms, for any past time range."
+tags: [go, performance, data-visualization, geospatial]
 migratedFrom: https://blogs.whiteloves.in/how-i-generated-heatmaps-100x-faster
 readingTime: 6
 cover: /assets/blog/covers/how-i-generated-heatmaps-100x-faster.png
+ship: 2026-09-27
+devto_tags: [webdev, go, performance, dataviz]
+devto_url: https://dev.to/panthpatel/5-seconds-to-30-ms-rebuilding-idw-heatmaps-in-go-5m
+devto_id: 4755861
 ---
 
-My company spent a bunch of months building the backend for Heatmap. Here's how it went down: we used the IDW algorithm with wind speed and direction to figure out the value for each spot.
+Our air-quality heatmaps took about 5 seconds per image, on an hourly Python cron that used 4 GB of RAM and 2 CPUs and still wasn't enough. The rebuild is a Go service that makes them on request: 20 images in 30 ms, for any past time range.
+
+I lead the software team at Oizom, an air-quality monitoring company (the platform is Envizom). This is how the heatmap backend was rebuilt there, including the bottleneck I didn't expect: PNG encoding.
+
+## How the old version worked
+
+We used the IDW (inverse distance weighting) algorithm with wind speed and direction to figure out the value for each spot.
 
 1. We set up a heatmap config in our database.
 2. A cron job ran every hour.
@@ -27,53 +38,43 @@ My company spent a bunch of months building the backend for Heatmap. Here's how 
 
 This was written in Python and used up a ton of resources (4GB RAM, 2 CPUs, 1-2 instances depending on the load), and it still wasn't enough. Each image took 10-20 seconds to process. It just wasn't fast. Back then, heatmap was a brand new feature, and we only had 3 configs, so it clearly wasn't scalable. Plus, on closer look, the wind effects weren't even used correctly.
 
-When I found out about this, I suggested generating the heatmap on the frontend! My boss thought the idea was nuts. He didn't believe it was even possible. My argument was simple: today, there are tools like Canva and Figma, and many others that let you edit photos and videos right in the browser. There are even proper 2D games and simulations being played in the browser, and some resume websites are like 3D games. Technology has improved, and coding patterns and styles have changed a lot in the past 2 years, so I thought it was doable. He was convinced and decided to hire an intern to do the R&D 😂, typical corporate.
+## A weekend proof of concept in the browser
 
-This really bugged me because I've always wanted to dive into image generation projects, and this seemed like my golden opportunity. So, I spent a weekend 💪 putting together a POC for a heatmap in the browser. And guess what? It worked 🎉.
+When I found out about this, I suggested generating the heatmap on the frontend. My boss thought the idea was nuts. He didn't believe it was even possible. My argument was simple: today, there are tools like Canva and Figma, and many others that let you edit photos and videos right in the browser. There are even proper 2D games and simulations being played in the browser, and some resume websites are like 3D games. Technology has improved, and coding patterns and styles have changed a lot in the past 2 years, so I thought it was doable. He was convinced and decided to hire an intern to do the R&D. Typical corporate.
+
+This really bugged me because I've always wanted to dive into image generation projects, and this seemed like my golden opportunity. So, I spent a weekend putting together a POC for a heatmap in the browser. It worked.
 
 <https://youtu.be/2wsYBaBtCY4>
 
 This was just the start. I still needed to add wind effects, map (long, lat) to (x, y) coordinates, include user-defined boundaries (from a GeoJson polygon), and finally, add gradient colors.
 
-Boss saw it, boss liked it, and of course, I felt great. Everyone was happy 🤭.
+Boss saw it, boss liked it, and everyone was happy.
 
 He still had a good point. We don't want to do this on the frontend because our frontend runs on old phones, corporate laptops, and sometimes even TVs—in other words, places without much computing power. So, maybe we can set up a proxy server to handle all the heatmaps and generate them on the fly.
 
-Pretty smart idea, right? So, I went ahead and set up a Node server and built the whole thing. It worked great! Turns out, when you use gradient colors, there's not much difference between a 150px resolution and a 1000px resolution, except for having sharper edges.
+## Node.js, then Go, then the real bottleneck
+
+So, I went ahead and set up a Node server and built the whole thing. It worked great. Turns out, when you use gradient colors, there's not much difference between a 150px resolution and a 1000px resolution, except for having sharper edges.
 
 ![](/assets/blog/how-i-generated-heatmaps-100x-faster/img2.png)
 
-Test case: each request with 100px resolution, 10 known points with 40 images
+Test case: each request with 100px resolution, 10 known points with 40 images. Each load ran for 5 seconds.
 
-In Node.js, the results were amazing!
+In Node.js the results were already so much better than anything we had before. After this, I decided that to make it even faster, we should use a lower-level language. We also wanted to ensure the language is easy for other developers to understand. So, I chose GoLang. Go was faster and throttled less.
 
-1. 5 req/sec for 5 seconds: 108ms-874ms (average 419ms)
-2. 50 req/sec for 5 seconds: 97ms-26,588ms (average 14,687ms, with 2 req/sec failing)
-3. 500 req/sec for 5 seconds: 172ms-37048ms (average 22,152ms, with 432 requests failing)
+Something still felt off; it shouldn't take this long. After adding time logs for each function, I discovered the bottleneck was Base64 PNG encoding. Each image took 1-3ms, which was 80% of the time. Switching to JPEG boosted performance dramatically.
 
-This is so, so much better than anything we had before! 🎉
-
-After this, I decided that to make it even faster, we should use a lower-level language. We also wanted to ensure the language is easy for other developers to understand. So, I chose GoLang.
-
-1. 5 req/sec for 5 seconds: 80ms-175ms (average 114ms)
-2. 50 req/sec for 5 seconds: 157ms-265ms (average 458ms)
-3. 500 req/sec for 5 seconds: 241ms-10,891ms (average 4,405ms, 296 req/sec failing)
-
-This was so much faster and had less throttling! 🎉
-
-Something still felt off; it shouldn't take this long! After adding time logs for each function, I discovered the bottleneck was Base64 PNG encoding. Each image took 1-3ms, which was 80% of the time! Switching to JPEG boosted performance dramatically!
-
-1. 5 req/sec for 5 seconds: 18ms-56ms (average 29ms)
-2. 50 req/sec for 5 seconds: 29ms-132ms (average 88ms)
-3. 500 req/sec for 5 seconds: 44ms-929ms (average 496ms, 80 req/sec failing)
-
-### 🥳 🎉 👏
+| Load (5 s) | Node.js | Go, Base64 PNG | Go, JPEG |
+|---|---|---|---|
+| 5 req/sec | 108ms-874ms (average 419ms) | 80ms-175ms (average 114ms) | 18ms-56ms (average 29ms) |
+| 50 req/sec | 97ms-26,588ms (average 14,687ms, with 2 req/sec failing) | 157ms-265ms (average 458ms) | 29ms-132ms (average 88ms) |
+| 500 req/sec | 172ms-37048ms (average 22,152ms, with 432 requests failing) | 241ms-10,891ms (average 4,405ms, 296 req/sec failing) | 44ms-929ms (average 496ms, 80 req/sec failing) |
 
 The only downside to JPEG is that it cannot create transparent images, as it lacks an alpha channel. However, we have a straightforward solution: let the backend handle all the computational tasks, while the frontend focuses on one task—masking the image and selecting only the required portions. This can be accomplished in the frontend using JavaScript, within 10-30ms. If the client can render GeoJSON, maps, and images, it can also perform image masking.
 
 This approach also offers an advantage: the difference between a 150px and a 1000px image is that the 1000px image has sharper edges. To achieve sharper edges for a 150px image, we generate an image with an additional 2px around the boundary and crop the necessary section in the frontend. This results in sharper edges.
 
-🎉🎉🎉 Here's what I did:
+## What the new pipeline does
 
 1. The frontend creates a config from backend APIs and stores it in the database.
 2. The frontend requests images for a config, gas parameters, and given time bounds.
@@ -93,7 +94,9 @@ This approach also offers an advantage: the difference between a 150px and a 100
 
 ![](/assets/blog/how-i-generated-heatmaps-100x-faster/img3.jpeg)
 
-Benefits: Images are generated on the fly, so we can now create past images too. We use fewer resources, which makes everything cheaper overall. Plus, it's finally scalable and versatile.
+## Before and after
+
+Images are generated on the fly, so we can now create past images too. We use fewer resources, which makes everything cheaper overall. Plus, it's finally scalable and versatile.
 
 1. Heatmaps were only available after they were created → Now we can get heatmaps for any time range.
 2. For a fixed 1-hour average → You can completely customize it.
@@ -106,4 +109,6 @@ Finally:
 
 ![](/assets/blog/how-i-generated-heatmaps-100x-faster/img4.png)
 
-Of course, the data used to create this heatmap is fake and random. But this is how it would look. 😍
+Of course, the data used to create this heatmap is fake and random. But this is how it would look.
+
+The fix I didn't see coming wasn't the language or the algorithm. It was a time log on every function, which showed the image encoder taking 80% of the time. What was the last bottleneck you found that way, somewhere you weren't looking?

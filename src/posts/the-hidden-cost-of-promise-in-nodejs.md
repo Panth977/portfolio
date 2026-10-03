@@ -1,30 +1,42 @@
 ---
-title: "The hidden cost of Promise In NodeJS"
+title: "await on a sync function: 2 ms to 51 ms for 1M calls in Node.js"
 slug: the-hidden-cost-of-promise-in-nodejs
 date: 2025-05-13
-description: "A video of Prime's said synchronous Promises still go through the event loop. I did not believe it, so I measured. They do, and it is not free."
+updated: 2026-10-01
+description: "A million calls to an empty sync function take 2 ms in Node.js. Put await in front of it and the same loop takes 51 ms; in Chrome, 3 ms becomes 1,500 ms. The benchmark, the numbers for Node, Deno, Bun and Chrome, and why."
 tags: [node-js, promises, synchronous, asynchronous, async-await, performance]
 migratedFrom: https://blogs.whiteloves.in/the-hidden-cost-of-promise-in-nodejs
 readingTime: 4
-cover: /assets/blog/covers/the-hidden-cost-of-promise-in-nodejs.png
+cover: /assets/blog/covers/the-hidden-cost-of-promise-in-nodejs-2026.png
+ship: 2026-10-01
+devto_tags: [javascript, node, performance, async]
+devto_url: https://dev.to/panthpatel/await-on-a-sync-function-2-ms-to-51-ms-for-1m-calls-in-nodejs-371p
+devto_id: 4782682
 ---
 
-I was just watching some videos, you know, YT and chill.  
-<https://www.youtube.com/watch?v=i0YfiQlzv6M>  
-Then Prime mentioned something that caught me off guard. He said sync Promises go behind event loops. I was like, no way, that can't be true. Promises have to be wrapped in function wrappers to work, and they have built-in syntax. NodeJS wouldn't take shortcuts like that, right? RIGHT?!
+```plaintext
+1,000,000 calls to an empty sync function     2 ms
+the same calls with await in front           51 ms
+```
+
+That is Node.js. In Chrome the same loop went from 3 ms to 1,500 ms. The function does nothing and is not async; the whole difference is the `await`.
+
+I'm Panth, and I lead the software team at Oizom. I measured this in May 2025, after Prime said in [a video](https://www.youtube.com/watch?v=i0YfiQlzv6M) that even sync code behind a Promise waits for the event loop. I didn't believe it, so I tested it.
+
+## An async function starts synchronously
+
+My first guess was that an async function with nothing to wait for would just run inline.
 
 ```typescript
 async function a() {
     console.log('a');
 }
 console.log('1');
-setTimeout(() => console.log('t1')); // this gose to next event loop
-a(); // this is sync code, so should not go to event loop
+setTimeout(() => console.log('t1')); // runs later, after the current code
+a(); // sync body, so it should run right here
 setTimeout(() => console.log('t2'));
 console.log('2');
 ```
-
-Here is the output
 
 ```plaintext
 1
@@ -34,9 +46,11 @@ t1
 t2
 ```
 
-Yes, I was right.
+It does. `a` prints between `1` and `2`.
 
-But hold on, this might just be due to the async syntax. Maybe the Promise constructor works differently. Perhaps `.then` and `await` actually go to the event loop. Let's find out.
+## `.then` and `await` do not
+
+That could just be the `async` keyword, so the next test used a Promise constructor, `.then` and `await`.
 
 ```typescript
 async function a() {
@@ -56,8 +70,6 @@ setTimeout(() => console.log('t2'));
 console.log('2');
 ```
 
-Here is the output
-
 ```plaintext
 1
 a1
@@ -70,17 +82,17 @@ t1
 t2
 ```
 
-OMG, he's right! The log `p<<<` should come before `2`, which proves that async returns are pushed to the next event loop tick!  
-If you're not sure what this means 😰, it's a big deal.  
-Let me show you with an example.
+The Promise body runs at once (`p>>>`), but the `.then` callback and everything after `await` wait until the current synchronous code has finished: `p<<<` and `a3` print after `2`. They still run before the timers (`t1`, `t2`). The Promise resolved immediately and the work was still deferred.
 
-Let's make some empty sync and async functions, and we'll call them a million times.
+## Measuring what the deferral costs
 
-1. Use a sync function and run it synchronously.
-2. Use a sync function and run it asynchronously.
-3. Use an async function and run it synchronously.
-4. Use an async function and run it asynchronously.
-5. Use an async function, run it synchronously, and await all at once.
+Five ways to call an empty function a million times:
+
+1. a sync function, called directly
+2. a sync function, called with `await`
+3. an async function, called without `await`
+4. an async function, called with `await`
+5. an async function, called without `await`, then `await Promise.all` on all the results
 
 ```javascript
 function sf() {}
@@ -138,19 +150,19 @@ function case5() {
 case1();
 ```
 
-|  | sync func & sync exe | sync func & async exe | async func & sync exe | async func & async exe | async func & await all exe |
+|  | 1. sync fn, direct | 2. sync fn, await | 3. async fn, no await | 4. async fn, await | 5. async fn, Promise.all |
 | --- | --- | --- | --- | --- | --- |
-| Crome Browser | 3ms | 1500ms | 33ms | 1559ms | — |
-| NodeJS | 2ms | 51ms | 7ms | 46ms | 171ms |
+| Chrome | 3ms | 1500ms | 33ms | 1559ms | — |
+| Chrome, fresh start | 3ms | 1289ms | 33ms | 1477ms | 388ms |
+| Node.js | 2ms | 51ms | 7ms | 46ms | 171ms |
 | Deno | 1ms | 49ms | 7ms | 42ms | 183ms |
 | Bun | 2ms | 73ms | 19ms | 74ms | 130ms |
-| Crome Browser Fresh Start | 3ms | 1289ms | 33ms | 1477ms | 388ms |
 
-## 😱😱 OH NO 😱😱
+Every runtime pays for the `await`, and Chrome pays the most. A fresh Chrome start did not change that, so it was not my open tabs.
 
-None of these runtimes have fixed this, and the browser is the slowest of them all, probably because I have way too many tabs open (Nope).
+## With a body in the function
 
-Let's try doing something inside our empty functions, just in case these runtimes have a little optimization for empty functions.
+Runtimes might special-case empty functions, so the second run gave both functions one line of work, `cnt++`, and reset the counter after each case:
 
 ```javascript
 let cnt = 0;
@@ -171,19 +183,19 @@ function run(fn, next) {
 }
 ```
 
-|  | sync func & sync exe | sync func & async exe | async func & sync exe | async func & async exe | async func & await all exe |
+|  | 1. sync fn, direct | 2. sync fn, await | 3. async fn, no await | 4. async fn, await | 5. async fn, Promise.all |
 | --- | --- | --- | --- | --- | --- |
-| Crome Browser Fresh Start | 3ms | 1307ms | 32ms | 1493ms | 396ms |
-| NodeJS | 10ms | 50ms | 8ms | 46ms | 170ms |
+| Chrome, fresh start | 3ms | 1307ms | 32ms | 1493ms | 396ms |
+| Node.js | 10ms | 50ms | 8ms | 46ms | 170ms |
 | Deno | 5ms | 51ms | 7ms | 44ms | 181ms |
 | Bun | 4ms | 68ms | 20ms | 76ms | 131ms |
 
-## DAMN
+Same picture. The cost is the `await`, not the empty body.
 
-I really did not know cost of this, Now I know.
+## What I took from it
 
-Now I get why folks using Rust and GoLang say async is tough when I thought it was easy. Sure, it's easy, but at what cost? If you want to build high-performance software, you really have to lean on sync callbacks. Async will just slow your code down by 10 times, and for what? Literally doing nothing. It's wild. Node JS is super popular, and yet this is where we're at!
+I didn't know the cost of this before I measured it. It also explained why people who write Rust and Go say async is hard, when it had always looked easy to me in JavaScript. It is easy to write, and it has a price: in these runs, putting `await` in front of code with nothing to wait for made the loop at least 5x slower in every runtime, and several hundred times slower in Chrome.
 
-## Damn!!
+For high-performance code, that pushed me towards sync callbacks on hot paths. I am thinking about changing my libraries and framework to support sync callbacks fully, and maybe rewriting the backend from scratch to use them.
 
-I’m not sure what to do next, but I guess I’ll need to dig deeper to figure out the best approach. Running any sync code in async is clearly a big bottleneck. Maybe I’ll revamp my libraries and framework to fully support sync callbacks, and who knows, I might even rewrite the backend from scratch to make the most out of callbacks.
+Where has an `await` on something that was already there cost you time?
